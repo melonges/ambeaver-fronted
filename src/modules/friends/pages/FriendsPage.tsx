@@ -26,7 +26,7 @@ export const FrinedsPage = () => {
         invitations
       </div>
 
-      <button className="mt-8 bg-primary p-2 w-full rounded">
+      <button className="mt-4 bg-primary p-2 w-full rounded">
         INVITE A FRIEND
       </button>
     </div>
