@@ -1,4 +1,3 @@
-import { useTg } from "@/modules/common/telegram/useTg";
 import { memo, useCallback, useEffect, useRef } from "react";
 
 const TREE_WIDTH = 25;
@@ -12,8 +11,6 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
   const beaverRef = useRef<HTMLDivElement | null>(null);
   const beaverDirection = useRef<"left" | "right">("left");
   const clickBlocked = useRef(false);
-
-  const tg = useTg();
 
   const clickHandler = () => {
     if (
@@ -104,8 +101,7 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
 
   useEffect(() => {
     initValues();
-    tg.onEvent("viewportChanged", initValues);
-  }, [initValues, tg]);
+  }, [initValues]);
 
   return (
     <div
