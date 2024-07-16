@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router-dom";
-import { PropertyPage } from "../pages/ProperyPage";
+import { PropertyPage } from "../pages/PropertyPage";
 import { PROPERTY_PAGE_PATH } from "./constants";
 
 export const propertyRoutes: RouteObject[] = [

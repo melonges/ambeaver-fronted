@@ -11,6 +11,7 @@ export default {
         primary: "#aff4c6",
         secondary: "#bde3ff",
         "secondary-border": "#22b4ff",
+        disabled: "#e6e6e6",
       },
       screens: {
         xs: "380px",

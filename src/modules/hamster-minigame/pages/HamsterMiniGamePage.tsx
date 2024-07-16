@@ -11,7 +11,7 @@ export const HamsterMiniGamePage = () => {
   return (
     <>
       <div className="flex flex-col items-center">
-        <img src={AmberIcon} alt="$amber" className="h-10 w-10" />
+        <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
         <p className="font-bold text-2xl mt-2">Hamster catching game</p>
         <span>Play and multiply ur ambers for the last day.</span>
 
