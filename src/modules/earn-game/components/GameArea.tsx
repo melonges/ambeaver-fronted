@@ -46,17 +46,14 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
     eatenTreeRef.current.style.height =
       treeMaxHeight - parseFloat(treeRef.current.style.height) + "px";
 
-    // _________________
-
     if (parseFloat(eatenTreeRef.current.style.height) === treeMaxHeight) {
       beaverRef.current.style.left = 0 + "px";
 
       clickBlocked.current = true;
-      // TODO: block click on timeouts & clear TIMEOUTS!!!
+
       setTimeout(() => {
         eatenTreeRef.current!.style.height = 0 + "px";
         beaverRef.current!.style.top = treeMaxHeight - beaverHeight + "px";
-        // tree.style.height = 100 + "px";
         setTimeout(() => {
           initValues();
         }, 200);
