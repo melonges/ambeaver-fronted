@@ -1,7 +1,6 @@
 import { memo, useLayoutEffect, useRef } from "react";
 
 const TREE_WIDTH = 25;
-const GAME_ZONE_SIZE = 300;
 const BEAVER_SPEED = 6;
 
 export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
@@ -100,9 +99,8 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
 
   return (
     <div
-      className="bg-primary rounded-full p-6"
+      className="bg-primary rounded-full p-6 aspect-square h-[180px] xxs:h-[240px] xs:h-[300px]"
       onClick={clickHandler}
-      style={{ width: GAME_ZONE_SIZE, height: GAME_ZONE_SIZE }}
     >
       <div
         className="h-full w-full flex flex-col items-center justify-center"
