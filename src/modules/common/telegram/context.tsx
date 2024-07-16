@@ -1,21 +1,15 @@
-import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo } from "react";
 
 export type TgContextType = WebApp | null;
 
 export const TgContext = createContext<TgContextType>(null);
 
 export const TgProvider = ({ children }: { children: ReactNode }) => {
-  const [webApp, setWebApp] = useState<WebApp | null>(null);
+  const webApp = useMemo(() => window.Telegram?.WebApp, []);
 
   useEffect(() => {
-    const app = window.Telegram?.WebApp;
-    if (app) {
-      app.ready();
-      setWebApp(app);
-    }
-  }, []);
+    webApp?.ready();
+  }, [webApp]);
 
-  const value = useMemo(() => webApp || null, [webApp]);
-
-  return <TgContext.Provider value={value}>{children}</TgContext.Provider>;
+  return <TgContext.Provider value={webApp}>{children}</TgContext.Provider>;
 };

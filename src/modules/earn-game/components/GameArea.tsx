@@ -1,25 +1,27 @@
-import { memo, useLayoutEffect, useRef } from "react";
+import { useTg } from "@/modules/common/telegram/useTg";
+import { memo, useCallback, useEffect, useRef } from "react";
 
 const TREE_WIDTH = 25;
 const BEAVER_SPEED = 6;
 
 export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const treeContainer = useRef<HTMLDivElement | null>(null);
+  const treeContainerRef = useRef<HTMLDivElement | null>(null);
   const treeRef = useRef<HTMLDivElement | null>(null);
   const eatenTreeRef = useRef<HTMLDivElement | null>(null);
   const beaverRef = useRef<HTMLDivElement | null>(null);
   const beaverDirection = useRef<"left" | "right">("left");
   const clickBlocked = useRef(false);
 
-  useLayoutEffect(initValues, []);
+  const tg = useTg();
 
-  function clickHandler() {
+  const clickHandler = () => {
     if (
       !wrapperRef.current ||
       !treeRef.current ||
       !eatenTreeRef.current ||
       !beaverRef.current ||
+      !treeContainerRef.current ||
       clickBlocked.current
     )
       return;
@@ -45,7 +47,10 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
     eatenTreeRef.current.style.height =
       treeMaxHeight - parseFloat(treeRef.current.style.height) + "px";
 
-    if (parseFloat(eatenTreeRef.current.style.height) === treeMaxHeight) {
+    if (
+      parseFloat(beaverRef.current.style.top) <
+      treeContainerRef.current.clientTop
+    ) {
       beaverRef.current.style.left = 0 + "px";
 
       clickBlocked.current = true;
@@ -58,9 +63,9 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
         }, 200);
       }, 200);
     }
-  }
+  };
 
-  function initValues() {
+  const initValues = useCallback(() => {
     if (
       !wrapperRef.current ||
       !treeRef.current ||
@@ -95,7 +100,12 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
     }
 
     clickBlocked.current = false;
-  }
+  }, []);
+
+  useEffect(() => {
+    initValues();
+    tg.onEvent("viewportChanged", initValues);
+  }, [initValues, tg]);
 
   return (
     <div
@@ -108,7 +118,7 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
       >
         <div
           className="relative h-full flex flex-col-reverse items-center"
-          ref={treeContainer}
+          ref={treeContainerRef}
         >
           <div className="bg-amber-800 transition-all" ref={eatenTreeRef}></div>
           <div className="bg-amber-800 transition-all" ref={treeRef} />
