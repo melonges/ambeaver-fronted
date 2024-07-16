@@ -11,10 +11,11 @@ export const TgProvider = ({ children }: { children: ReactNode }) => {
     if (!webApp) {
       return;
     }
+
     webApp.ready();
     webApp.expand();
     webApp.disableVerticalSwipes();
-  }, [webApp]);
+  }, []);
 
   return <TgContext.Provider value={webApp}>{children}</TgContext.Provider>;
 };

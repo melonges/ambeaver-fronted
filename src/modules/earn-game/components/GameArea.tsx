@@ -101,7 +101,7 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
 
   useEffect(() => {
     initValues();
-  }, [initValues]);
+  }, []);
 
   return (
     <div

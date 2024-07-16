@@ -5,10 +5,12 @@ export default {
     extend: {
       colors: {
         "main-bg": "#fbfbfb",
+        "main-border": "#e3e3e3",
         "main-text": "#1e1e1e",
         "game-bg": "#e4ccff",
         primary: "#aff4c6",
         secondary: "#bde3ff",
+        "secondary-border": "#22b4ff",
       },
       screens: {
         xs: "380px",

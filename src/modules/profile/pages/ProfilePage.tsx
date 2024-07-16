@@ -1,52 +1,32 @@
+import AmberIcon from "@/modules/common/assets/amber-icon.png";
+import { useLayout } from "@/modules/common/layouts/useLayout";
+import { useBackButton } from "@/modules/common/telegram/useBackButton";
+
 export const ProfilePage = () => {
+  useLayout("empty");
+
+  useBackButton();
+
   return (
-    <div className="p-4 rounded-lg shadow-lg bg-white">
-      <div className="text-center mb-4">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-full">
+    <div className="flex flex-col">
+      <div className="flex justify-center">
+        <div className="w-8/12 h-20 flex justify-center items-center bg-secondary border border-secondary-border rounded-full">
           Profile
-        </button>
+        </div>
       </div>
-      <div className="text-left">
-        <p>Total points: ....</p>
-        <p>Passive points: +..../ per hour</p>
-        <p>EA badge: ✅</p>
-        <p>GM streak: ....</p>
-      </div>
-      <div className="mt-4 text-center">
-        <img src="path/to/image" alt="AMBER" className="w-32 h-32 mx-auto" />
-        <p>$AMBER airdrop is coming soon</p>
-      </div>
-      {/* ________ */}
-      <div className="text-center mb-4">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-full">
-          Profile
-        </button>
-      </div>
-      <div className="text-left">
-        <p>Total points: ....</p>
-        <p>Passive points: +..../ per hour</p>
-        <p>EA badge: ✅</p>
-        <p>GM streak: ....</p>
-      </div>
-      <div className="mt-4 text-center">
-        <img src="path/to/image" alt="AMBER" className="w-32 h-32 mx-auto" />
-        <p>$AMBER airdrop is coming soon</p>
-      </div>{" "}
-      <div className="text-center mb-4">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-full">
-          Profile
-        </button>
-      </div>
-      <div className="text-left">
-        <p>Total points: ....</p>
-        <p>Passive points: +..../ per hour</p>
-        <p>EA badge: ✅</p>
-        <p>GM streak: ....</p>
-      </div>
-      <div className="mt-4 text-center">
-        <img src="path/to/image" alt="AMBER" className="w-32 h-32 mx-auto" />
-        <p>$AMBER airdrop is coming soon</p>
-      </div>
+
+      <ul className="mt-4">
+        <li>Total points: ...</li>
+        <li>Passive points: +... /per hour</li>
+        <li>EA badge: ...</li>
+        <li>GM streak: ...</li>
+
+        <div className="flex flex-col items-center font-bold">
+          <img src={AmberIcon} alt="$amber" className="w-8/12 mt-2" />
+          <p>$AMBERS</p>
+          <span>airdrop is coming</span>
+        </div>
+      </ul>
     </div>
   );
 };

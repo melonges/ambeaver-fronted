@@ -10,5 +10,5 @@ export const useLayout = (newLayout: LayoutType) => {
     return () => {
       setLayout("default");
     };
-  }, [newLayout, setLayout]);
+  }, [newLayout]);
 };

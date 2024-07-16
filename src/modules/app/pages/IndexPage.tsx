@@ -7,7 +7,7 @@ export const IndexPage = () => {
 
   useEffect(() => {
     navigate(EARN_GAME_PAGE_PATH);
-  }, [navigate]);
+  }, []);
 
   return null;
 };

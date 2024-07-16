@@ -22,5 +22,6 @@ module.exports = {
     //   { allowConstantExport: true },
     // ],
     "react/display-name": "off",
+    "react-hooks/exhaustive-deps": "off",
   },
 };
