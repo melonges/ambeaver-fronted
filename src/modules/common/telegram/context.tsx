@@ -8,7 +8,12 @@ export const TgProvider = ({ children }: { children: ReactNode }) => {
   const webApp = useMemo(() => window.Telegram?.WebApp, []);
 
   useEffect(() => {
-    webApp?.ready();
+    if (!webApp) {
+      return;
+    }
+    webApp.ready();
+    webApp.expand();
+    webApp.disableVerticalSwipes();
   }, [webApp]);
 
   return <TgContext.Provider value={webApp}>{children}</TgContext.Provider>;
