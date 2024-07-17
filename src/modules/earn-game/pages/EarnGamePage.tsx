@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { GameArea } from "../components/GameArea";
 import { OverEnergyArea } from "../components/OverEnergyArea";
 
-const MAX_ENERGY = 10;
+const MAX_ENERGY = 48;
 
 export const EarnGamePage = () => {
   const [points, setPoints] = useState(0);
