@@ -18,11 +18,15 @@ export const TasksPage = () => {
           return (
             <li
               key={task.id}
-              className="w-full flex justify-between items-center px-1 py-2 border-b-2"
+              className="w-full flex gap-1 justify-between items-center px-1 py-2 border-b-2 last:border-0"
             >
-              <div className="flex flex-col">
-                <strong className="font-bold">{task.title}</strong>
-                <span>{task.reward}</span>
+              <div className="flex gap-1 items-center">
+                <img src={AmberIcon} alt="$amber" className="h-10 w-10" />
+
+                <div className="flex flex-col">
+                  <strong className="font-bold">{task.title}</strong>
+                  <span>{task.reward}</span>
+                </div>
               </div>
               <button className={`p-2 rounded-md w-20 ${taskTypeClassName}`}>
                 {task.type}

@@ -1,3 +1,4 @@
+import AmberIcon from "@/modules/common/assets/amber-icon.png";
 import { EARN_GAME_PAGE_PATH } from "@/modules/earn-game/routes/constants";
 import { FRINEDS_PAGE_PATH } from "@/modules/friends/routes/constants";
 import { PROPERTY_PAGE_PATH } from "@/modules/property/routes/constants";
@@ -23,9 +24,11 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
           <Link
             to={path}
             key={path}
-            className="bg-primary rounded w-20 h-12 flex items-center justify-center"
+            className="bg-primary rounded w-20 flex flex-col items-center justify-center p-2"
           >
             {label}
+
+            <img src={AmberIcon} alt="amber" className="w-8 h-8" />
           </Link>
         ))}
       </nav>

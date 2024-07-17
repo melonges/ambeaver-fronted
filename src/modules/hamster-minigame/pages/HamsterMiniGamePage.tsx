@@ -26,7 +26,7 @@ export const HamsterMiniGamePage = () => {
                   <img
                     src={HamsterMiniGameIcon}
                     alt="hamster"
-                    className="h-full w-full object-cover"
+                    className="w-full scale-125 object-cover"
                   />
                 )}
               </div>
