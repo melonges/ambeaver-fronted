@@ -12,6 +12,8 @@ export default {
         secondary: "#bde3ff",
         "secondary-border": "#22b4ff",
         disabled: "#e6e6e6",
+        "secondary-darken": "#0d99ff",
+        "secondary-darken-broder": "#0059b9",
       },
       screens: {
         xs: "380px",
