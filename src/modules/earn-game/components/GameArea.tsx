@@ -3,7 +3,7 @@ import { memo, useCallback, useEffect, useRef } from "react";
 const TREE_WIDTH = 25;
 const BEAVER_SPEED = 6;
 
-export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
+export const GameArea = memo(({ decPoint }: { decPoint: () => void }) => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const treeContainerRef = useRef<HTMLDivElement | null>(null);
   const treeRef = useRef<HTMLDivElement | null>(null);
@@ -23,7 +23,7 @@ export const GameArea = memo(({ incPoint }: { incPoint: () => void }) => {
     )
       return;
 
-    incPoint();
+    decPoint();
 
     const treeMaxHeight = wrapperRef.current.clientHeight;
     const beaverHeight = treeMaxHeight / BEAVER_SPEED;
