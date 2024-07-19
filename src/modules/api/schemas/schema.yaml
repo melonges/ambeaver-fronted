@@ -5,8 +5,8 @@ paths:
       operationId: AppController_getHello
       parameters: []
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
@@ -20,16 +20,16 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TelegramInitDataDto'
+              $ref: "#/components/schemas/TelegramInitDataDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AccessTokenDto'
-        '400':
-          description: ''
+                $ref: "#/components/schemas/AccessTokenDto"
+        "400":
+          description: ""
       tags:
         - Authorization
   /player:
@@ -41,14 +41,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatePlayerDto'
+              $ref: "#/components/schemas/CreatePlayerDto"
       responses:
-        '201':
-          description: ''
+        "201":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Player'
+                $ref: "#/components/schemas/Player"
   /player/{id}:
     get:
       operationId: PlayerController_findOne
@@ -59,15 +59,15 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: ''
+        "200":
+          description: ""
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Player'
+                $ref: "#/components/schemas/Player"
 info:
   title: Ambeaver API
-  description: ''
+  description: ""
   version: 0.0.1
   contact: {}
 tags: []
