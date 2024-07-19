@@ -1,0 +1,108 @@
+openapi: 3.0.0
+paths:
+  /:
+    get:
+      operationId: AppController_getHello
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+  /auth/login:
+    post:
+      operationId: AuthController_signIn
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelegramInitDataDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessTokenDto'
+        '400':
+          description: ''
+      tags:
+        - Authorization
+  /player:
+    post:
+      operationId: PlayerController_create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlayerDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+  /player/{id}:
+    get:
+      operationId: PlayerController_findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+info:
+  title: Ambeaver API
+  description: ''
+  version: 0.0.1
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    TelegramInitDataDto:
+      type: object
+      properties:
+        string:
+          type: string
+      required:
+        - string
+    AccessTokenDto:
+      type: object
+      properties:
+        access_token:
+          type: string
+      required:
+        - access_token
+    CreatePlayerDto:
+      type: object
+      properties:
+        id:
+          type: number
+      required:
+        - id
+    Player:
+      type: object
+      properties:
+        id:
+          type: number
+        createdAt:
+          type: object
+          default: 2024-07-18T12:35:20.970Z
+      required:
+        - id
+        - createdAt
