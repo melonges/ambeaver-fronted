@@ -5,6 +5,8 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export interface CreatePlayerDto {
-  id: number;
+export interface PlayerAssetsDto {
+  ar: number;
+  energy: number;
+  points: number;
 }

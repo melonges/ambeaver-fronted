@@ -6,7 +6,6 @@
  */
 
 export * from "./accessTokenDto";
-export * from "./createPlayerDto";
-export * from "./player";
-export * from "./playerCreatedAt";
+export * from "./playerAssetsDto";
+export * from "./tapEventDto";
 export * from "./telegramInitDataDto";

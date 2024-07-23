@@ -1,16 +1,5 @@
 openapi: 3.0.0
 paths:
-  /:
-    get:
-      operationId: AppController_getHello
-      parameters: []
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                type: string
   /auth/login:
     post:
       operationId: AuthController_signIn
@@ -32,39 +21,38 @@ paths:
           description: ""
       tags:
         - Authorization
-  /player:
-    post:
-      operationId: PlayerController_create
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreatePlayerDto"
-      responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Player"
-  /player/{id}:
+  /asset:
     get:
-      operationId: PlayerController_findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
+      operationId: AssetController_getPlayerAssets
+      parameters: []
       responses:
         "200":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Player"
+                $ref: "#/components/schemas/PlayerAssetsDto"
+      tags:
+        - Asset
+      security:
+        - bearer: []
+  /event/tap:
+    patch:
+      operationId: EventController_tap
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TapEventDto"
+      responses:
+        "200":
+          description: ""
+      tags:
+        - Event
+      security:
+        - bearer: []
 info:
   title: Ambeaver API
   description: ""
@@ -73,14 +61,19 @@ info:
 tags: []
 servers: []
 components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
   schemas:
     TelegramInitDataDto:
       type: object
       properties:
-        string:
+        initData:
           type: string
       required:
-        - string
+        - initData
     AccessTokenDto:
       type: object
       properties:
@@ -88,21 +81,24 @@ components:
           type: string
       required:
         - access_token
-    CreatePlayerDto:
+    PlayerAssetsDto:
       type: object
       properties:
-        id:
+        points:
+          type: number
+        energy:
+          type: number
+        ar:
           type: number
       required:
-        - id
-    Player:
+        - points
+        - energy
+        - ar
+    TapEventDto:
       type: object
       properties:
-        id:
+        amount:
           type: number
-        createdAt:
-          type: object
-          default: 2024-07-18T12:35:20.970Z
+          minimum: 1
       required:
-        - id
-        - createdAt
+        - amount

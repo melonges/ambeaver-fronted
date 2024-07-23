@@ -18,7 +18,11 @@ export const authControllerSignIn = (
   telegramInitDataDto: TelegramInitDataDto,
   options?: AxiosRequestConfig
 ): Promise<AxiosResponse<AccessTokenDto>> => {
-  return axios.default.post(`/auth/login`, telegramInitDataDto, options);
+  return axios.default.post(
+    `https://api.skufjob.ru/auth/login`,
+    telegramInitDataDto,
+    options
+  );
 };
 
 export const getAuthControllerSignInMutationOptions = <

@@ -6,5 +6,5 @@
  */
 
 export interface TelegramInitDataDto {
-  string: string;
+  initData: string;
 }

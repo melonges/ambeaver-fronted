@@ -7,6 +7,7 @@ module.exports = {
       schemas: "src/modules/api/model",
       client: "react-query",
       prettier: true,
+      baseUrl: "https://api.skufjob.ru/",
     },
     input: {
       target: "./src/modules/api/schemas/schema.yaml",
