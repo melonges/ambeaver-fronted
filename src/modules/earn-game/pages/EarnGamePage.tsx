@@ -22,8 +22,9 @@ export const EarnGamePage = () => {
 
   const tg = useTg();
 
-  const [points, setPoints] = useState(10);
+  const [points, setPoints] = useState(data?.data.points || 0);
   const [energy, setEnergy] = useState(data?.data.energy || 0);
+  const [arCoint, setArCoin] = useState(data?.data.ar || 0);
 
   const { mutateAsync: tapEvent } = useEventControllerTap();
 
@@ -36,6 +37,7 @@ export const EarnGamePage = () => {
 
   const decPoint = useCallback(() => {
     setPoints((points) => points - 1);
+    setArCoin((arCoint) => arCoint + 1);
     pointsAmout.current++;
     tapEventDebounced(pointsAmout.current);
   }, []);
@@ -55,7 +57,7 @@ export const EarnGamePage = () => {
     <>
       <div className="flex justify-between mb-4">
         <Link to={PROFILE_PAGE_PATH} className="bg-primary px-4 py-2 rounded">
-          $ AMBERS
+          $ AMBERS: {arCoint}
         </Link>
         <Link
           to={HAMSTER_MINIGAME_PAGE_PATH}
