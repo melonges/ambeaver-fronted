@@ -1,11 +1,13 @@
+import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
 import { useLayout } from "@/modules/common/layouts/useLayout";
 import { useBackButton } from "@/modules/common/telegram/useBackButton";
 
 export const ProfilePage = () => {
   useLayout("empty");
-
   useBackButton();
+
+  const { data } = useAssetControllerGetPlayerAssets();
 
   return (
     <div className="flex flex-col">
@@ -16,7 +18,7 @@ export const ProfilePage = () => {
       </div>
 
       <ul className="mt-4">
-        <li>Total points: ...</li>
+        <li>Total points: {data?.data.points || "..."}</li>
         <li>Passive points: +... /per hour</li>
         <li>EA badge: ...</li>
         <li>GM streak: ...</li>

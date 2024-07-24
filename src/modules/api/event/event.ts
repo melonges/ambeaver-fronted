@@ -18,11 +18,7 @@ export const eventControllerTap = (
   tapEventDto: TapEventDto,
   options?: AxiosRequestConfig
 ): Promise<AxiosResponse<void>> => {
-  return axios.default.patch(
-    `https://api.skufjob.ru/event/tap`,
-    tapEventDto,
-    options
-  );
+  return axios.default.patch(`/event/tap`, tapEventDto, options);
 };
 
 export const getEventControllerTapMutationOptions = <

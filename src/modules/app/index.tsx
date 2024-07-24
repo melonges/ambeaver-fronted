@@ -2,23 +2,33 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useLayoutEffect } from "react";
 import { BrowserRouter, useNavigate } from "react-router-dom";
+import { useAssetControllerGetPlayerAssets } from "../api/asset/asset";
 import { useAuthControllerSignIn } from "../api/authorization/authorization";
 import { LayoutProvider } from "../common/layouts/context";
 import { TgProvider } from "../common/telegram/context";
 import { useTg } from "../common/telegram/useTg";
+import { Loader } from "./components/Loader";
 import { RoutesWrapper, UN_AUTHORIZED_PAGE_PATH } from "./routes";
 import "./styles.css";
 
 const queryClient = new QueryClient();
 
+axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
+
 const InitComponent = () => {
   const tg = useTg();
-  const { mutateAsync, error } = useAuthControllerSignIn();
+  const {
+    mutateAsync: login,
+    error: loginError,
+    status: loginStatus,
+  } = useAuthControllerSignIn();
+
+  const { status: assetsStatus } = useAssetControllerGetPlayerAssets();
 
   const navigate = useNavigate();
 
   useLayoutEffect(() => {
-    mutateAsync({
+    login({
       data: {
         initData: tg.initData,
       },
@@ -28,8 +38,8 @@ const InitComponent = () => {
   }, []);
 
   useEffect(() => {
-    if (error) {
-      const errorServerData = error?.response?.data as unknown as
+    if (loginError) {
+      const errorServerData = loginError?.response?.data as unknown as
         | { message: string }
         | undefined;
 
@@ -37,13 +47,21 @@ const InitComponent = () => {
         state: {
           errorMessage:
             errorServerData?.message ||
-            "Не удалось авторизоваться " + error?.message,
+            "Не удалось авторизоваться " + loginError?.message,
         },
       });
     }
-  }, [error]);
+  }, [loginError]);
 
-  return null;
+  if (loginStatus === "pending" || assetsStatus === "pending") {
+    return <Loader />;
+  }
+
+  return (
+    <LayoutProvider>
+      <RoutesWrapper />
+    </LayoutProvider>
+  );
 };
 
 export const App = () => {
@@ -52,9 +70,6 @@ export const App = () => {
       <BrowserRouter>
         <TgProvider>
           <InitComponent />
-          <LayoutProvider>
-            <RoutesWrapper />
-          </LayoutProvider>
         </TgProvider>
       </BrowserRouter>
     </QueryClientProvider>

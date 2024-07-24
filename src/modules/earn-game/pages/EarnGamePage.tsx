@@ -1,8 +1,11 @@
+import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
+import { useEventControllerTap } from "@/modules/api/event/event";
+import { useDebounce } from "@/modules/common/hooks/useDebounce";
 import { useTg } from "@/modules/common/telegram/useTg";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
 import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { EndGameArea } from "../components/EndGameArea";
 import { GameArea } from "../components/GameArea";
@@ -13,14 +16,29 @@ const POINTS_PRICE = 12;
 const POINTS_AMOUNT = 20;
 
 export const EarnGamePage = () => {
+  const pointsAmout = useRef(0);
+
+  const { data } = useAssetControllerGetPlayerAssets();
+
   const tg = useTg();
 
   const [points, setPoints] = useState(10);
-  const [energy, setEnergy] = useState(12);
+  const [energy, setEnergy] = useState(data?.data.energy || 0);
+
+  const { mutateAsync: tapEvent } = useEventControllerTap();
+
+  const tapEventDebounced = useDebounce((amount: number) => {
+    tapEvent({ data: { amount } });
+    pointsAmout.current = 0;
+  }, 500);
 
   const pointsIsOver = points <= 0;
 
-  const decPoint = useCallback(() => setPoints((points) => points - 1), []);
+  const decPoint = useCallback(() => {
+    setPoints((points) => points - 1);
+    pointsAmout.current++;
+    tapEventDebounced(pointsAmout.current);
+  }, []);
 
   const buyPoints = useCallback(() => {
     setEnergy((energy) => {

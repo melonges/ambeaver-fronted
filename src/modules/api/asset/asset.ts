@@ -18,11 +18,11 @@ import type { PlayerAssetsDto } from ".././model";
 export const assetControllerGetPlayerAssets = (
   options?: AxiosRequestConfig
 ): Promise<AxiosResponse<PlayerAssetsDto>> => {
-  return axios.default.get(`https://api.skufjob.ru/asset`, options);
+  return axios.default.get(`/asset`, options);
 };
 
 export const getAssetControllerGetPlayerAssetsQueryKey = () => {
-  return [`https://api.skufjob.ru/asset`] as const;
+  return [`/asset`] as const;
 };
 
 export const getAssetControllerGetPlayerAssetsQueryOptions = <
