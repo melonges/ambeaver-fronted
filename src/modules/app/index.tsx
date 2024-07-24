@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { BrowserRouter, useNavigate } from "react-router-dom";
 import { useAssetControllerGetPlayerAssets } from "../api/asset/asset";
 import { useAuthControllerSignIn } from "../api/authorization/authorization";
@@ -11,7 +11,7 @@ import { Loader } from "./components/Loader";
 import { RoutesWrapper, UN_AUTHORIZED_PAGE_PATH } from "./routes";
 import "./styles.css";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 
@@ -23,7 +23,13 @@ const InitComponent = () => {
     status: loginStatus,
   } = useAuthControllerSignIn();
 
-  const { status: assetsStatus } = useAssetControllerGetPlayerAssets();
+  const [canFetchAssests, setCanFetchAssests] = useState(false);
+
+  const { status: assetsStatus } = useAssetControllerGetPlayerAssets({
+    query: {
+      enabled: canFetchAssests,
+    },
+  });
 
   const navigate = useNavigate();
 
@@ -34,6 +40,7 @@ const InitComponent = () => {
       },
     }).then(({ data }) => {
       axios.defaults.headers.common.Authorization = `Bearer ${data.access_token}`;
+      setCanFetchAssests(true);
     });
   }, []);
 

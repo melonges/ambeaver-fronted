@@ -1,11 +1,15 @@
-import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
+import {
+  getAssetControllerGetPlayerAssetsQueryKey,
+  useAssetControllerGetPlayerAssets,
+} from "@/modules/api/asset/asset";
 import { useEventControllerTap } from "@/modules/api/event/event";
+import { queryClient } from "@/modules/app";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
 import { useTg } from "@/modules/common/telegram/useTg";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
 import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { EndGameArea } from "../components/EndGameArea";
 import { GameArea } from "../components/GameArea";
@@ -22,11 +26,29 @@ export const EarnGamePage = () => {
 
   const tg = useTg();
 
+  const [arCoint, setArCoin] = useState(data?.data.ar || 0);
   const [points, setPoints] = useState(data?.data.points || 0);
   const [energy, setEnergy] = useState(data?.data.energy || 0);
-  const [arCoint, setArCoin] = useState(data?.data.ar || 0);
 
   const { mutateAsync: tapEvent } = useEventControllerTap();
+
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      queryKey: [getAssetControllerGetPlayerAssetsQueryKey()],
+    });
+
+    return () => {
+      if (pointsAmout.current > 0) {
+        tapEventDebounced(pointsAmout.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    setArCoin(data?.data.ar || 0);
+    setPoints(data?.data.points || 0);
+    setEnergy(data?.data.energy || 0);
+  }, [data]);
 
   const tapEventDebounced = useDebounce((amount: number) => {
     tapEvent({ data: { amount } });
