@@ -15,8 +15,8 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
   ];
 
   return (
-    <div className="h-[var(--tg-viewport-stable-height)] text-main-text flex flex-col items-center overflow-hidden relative">
-      <main className="mb-[88px] flex-1 w-full bg-main-bg overflow-auto p-2 flex flex-col">
+    <div className="h-[var(--tg-viewport-stable-height)] text-main-text flex flex-col items-center relative">
+      <main className="mb-[88px] flex-1 w-full bg-main-bg p-2 flex flex-col">
         {children}
       </main>
 
