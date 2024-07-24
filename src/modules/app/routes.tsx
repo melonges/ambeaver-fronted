@@ -6,14 +6,15 @@ import { profileRoutes } from "../profile/routes";
 import { propertyRoutes } from "../property/routes";
 import { storeRoutes } from "../store/routes";
 import { tasksRoutes } from "../tasks/routes";
-import { IndexPage } from "./pages/IndexPage";
+import { UnAuthorizedPage } from "./pages/UnAuthorizedPage";
 
 export const HOME_PAGE_PATH = "/";
+export const UN_AUTHORIZED_PAGE_PATH = "/unauthorized";
 
 export const routesConfig: RouteObject[] = [
   {
-    path: HOME_PAGE_PATH,
-    element: <IndexPage />,
+    path: UN_AUTHORIZED_PAGE_PATH,
+    element: <UnAuthorizedPage />,
   },
 
   ...earnGameRoutes,
