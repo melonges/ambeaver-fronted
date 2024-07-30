@@ -1,9 +1,5 @@
-import {
-  getAssetControllerGetPlayerAssetsQueryKey,
-  useAssetControllerGetPlayerAssets,
-} from "@/modules/api/asset/asset";
+import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
 import { useEventControllerTap } from "@/modules/api/event/event";
-import { queryClient } from "@/modules/app";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
 import { useTg } from "@/modules/common/telegram/useTg";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
@@ -19,10 +15,12 @@ const MAX_POINTS = 500;
 const POINTS_PRICE = 12;
 const POINTS_AMOUNT = 20;
 
+const CLICKS_TO_WIN = MAX_POINTS;
+
 export const EarnGamePage = () => {
   const pointsAmout = useRef(0);
 
-  const { data } = useAssetControllerGetPlayerAssets();
+  const { data, refetch } = useAssetControllerGetPlayerAssets();
 
   const tg = useTg();
   const [arCoint, setArCoin] = useState(data?.data.ar || 0);
@@ -32,9 +30,7 @@ export const EarnGamePage = () => {
   const { mutateAsync: tapEvent } = useEventControllerTap();
 
   useEffect(() => {
-    queryClient.invalidateQueries({
-      queryKey: [getAssetControllerGetPlayerAssetsQueryKey()],
-    });
+    refetch();
 
     return () => {
       if (pointsAmout.current > 0) {
@@ -77,35 +73,33 @@ export const EarnGamePage = () => {
 
   return (
     <>
-      <div className="flex justify-between mb-4">
-        <Link to={PROFILE_PAGE_PATH} className="bg-primary px-4 py-2 rounded">
-          $ AMBERS: {arCoint}
-        </Link>
-        <Link
-          to={HAMSTER_MINIGAME_PAGE_PATH}
-          className="bg-primary px-4 py-2 rounded"
-        >
-          Ticket for minigame
-        </Link>
-      </div>
-
-      <div className="text-center flex-grow flex flex-col items-center justify-center bg-game-bg p-4 rounded">
-        <div className="h-full flex items-center">
-          {pointsIsOver ? (
-            <EndGameArea pointsPrice={POINTS_PRICE} buyPoints={buyPoints} />
-          ) : (
-            <GameArea decPoint={decPoint} />
-          )}
-        </div>
-
-        <div className="w-full flex justify-between mt-4">
-          <p>
-            {points}/{MAX_POINTS} points
-          </p>
-          <Link to={STORE_PAGE_PATH}>
-            {energy}/{MAX_ENERGY} ⚡
+      {pointsIsOver ? (
+        <EndGameArea buyPoints={buyPoints} pointsPrice={POINTS_PRICE} />
+      ) : (
+        <GameArea decPoints={decPoint} clicksToWin={CLICKS_TO_WIN}>
+          <Link
+            to={PROFILE_PAGE_PATH}
+            className="fixed left-4 top-4 z-10 rounded bg-primary px-4 py-2"
+          >
+            $ AMBERS: {arCoint}
           </Link>
-        </div>
+
+          <Link
+            to={HAMSTER_MINIGAME_PAGE_PATH}
+            className="fixed right-4 top-4 z-10 rounded bg-primary px-4 py-2"
+          >
+            Ticket for minigame
+          </Link>
+        </GameArea>
+      )}
+
+      <div className="mt-1 flex w-full justify-between">
+        <p>
+          {points}/{MAX_POINTS} points
+        </p>
+        <Link to={STORE_PAGE_PATH}>
+          {energy}/{MAX_ENERGY} ⚡
+        </Link>
       </div>
     </>
   );

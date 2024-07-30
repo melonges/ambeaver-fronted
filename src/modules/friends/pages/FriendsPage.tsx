@@ -25,30 +25,30 @@ export const FrinedsPage = () => {
   return (
     <div className="flex flex-col items-center">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
-      <p className="font-bold text-2xl mt-2">Ur friends-beavers</p>
+      <p className="mt-2 text-2xl font-bold">Ur friends-beavers</p>
       <span>Invite friends and receive ambers.</span>
 
-      <div className="grid grid-cols-2 mt-4 gap-4">
-        <div className="bg-primary flex p-4 justify-center items-center rounded text-center">
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        <div className="flex items-center justify-center rounded bg-primary p-4 text-center">
           5,000 for fren
         </div>
 
-        <div className="bg-primary flex p-4 justify-center items-center rounded text-center">
+        <div className="flex items-center justify-center rounded bg-primary p-4 text-center">
           10,000 for fren <br /> with telegram premium
         </div>
       </div>
 
-      <div className="mt-4 w-full flex justify-between px-6 items-center">
+      <div className="mt-4 flex w-full items-center justify-between px-6">
         <p>List of your frineds</p>
         <button
-          className="bg-primary py-2 px-4 rounded"
+          className="rounded bg-primary px-4 py-2"
           onClick={() => refetchReferrals()}
         >
           refresh {isRefetching && "loading..."}
         </button>
       </div>
 
-      <div className="mt-4 bg-primary h-32 w-full text-center flex flex-col items-center justify-center rounded">
+      <div className="mt-4 flex h-32 w-full flex-col items-center justify-center rounded bg-primary text-center">
         <div>
           {referralsData?.pages.map((page) =>
             (page.data.data?.length || 0) > 0
@@ -63,7 +63,7 @@ export const FrinedsPage = () => {
       </div>
 
       <button
-        className="mt-4 bg-primary p-2 w-full rounded"
+        className="mt-4 w-full rounded bg-primary p-2"
         onClick={inviteFriendsClickHandler}
       >
         INVITE A FRIEND

@@ -15,21 +15,21 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
   ];
 
   return (
-    <div className="h-[var(--tg-viewport-stable-height)] text-main-text flex flex-col items-center relative">
-      <main className="mb-[88px] h-full w-full p-2 flex flex-col overflow-y-auto">
+    <div className="relative flex h-[var(--tg-viewport-stable-height)] flex-col items-center text-main-text">
+      <main className="mb-[88px] flex h-full w-full flex-col overflow-y-auto p-2">
         {children}
       </main>
 
-      <nav className="h-[88px] bg-main-bg w-full flex gap-2 p-2 justify-evenly fixed bottom-0">
+      <nav className="fixed bottom-0 flex h-[88px] w-full justify-evenly gap-2 bg-main-bg p-2">
         {navItems.map(({ path, label }) => (
           <Link
             to={path}
             key={path}
-            className="bg-primary rounded w-20 flex flex-col items-center justify-center p-2"
+            className="flex w-20 flex-col items-center justify-center rounded bg-primary p-2"
           >
             {label}
 
-            <img src={AmberIcon} alt="amber" className="w-8 h-8" />
+            <img src={AmberIcon} alt="amber" className="h-8 w-8" />
           </Link>
         ))}
       </nav>

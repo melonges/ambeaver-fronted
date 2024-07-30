@@ -4,7 +4,7 @@ export const TasksPage = () => {
   return (
     <div className="flex flex-col items-center">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
-      <p className="font-bold text-2xl mt-2">Tasks</p>
+      <p className="mt-2 text-2xl font-bold">Tasks</p>
       <span>Complete tasks and receive rewards</span>
 
       <ul className="w-full">
@@ -18,9 +18,9 @@ export const TasksPage = () => {
           return (
             <li
               key={task.id}
-              className="w-full flex gap-1 justify-between items-center px-1 py-2 border-b-2 last:border-0"
+              className="flex w-full items-center justify-between gap-1 border-b-2 px-1 py-2 last:border-0"
             >
-              <div className="flex gap-1 items-center">
+              <div className="flex items-center gap-1">
                 <img src={AmberIcon} alt="$amber" className="h-10 w-10" />
 
                 <div className="flex flex-col">
@@ -28,7 +28,7 @@ export const TasksPage = () => {
                   <span>{task.reward}</span>
                 </div>
               </div>
-              <button className={`p-2 rounded-md w-20 ${taskTypeClassName}`}>
+              <button className={`w-20 rounded-md p-2 ${taskTypeClassName}`}>
                 {task.type}
               </button>
             </li>

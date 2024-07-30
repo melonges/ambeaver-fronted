@@ -7,7 +7,7 @@ export const UnAuthorizedPage = () => {
   const { state } = useLocation();
 
   return (
-    <div className="h-full flex flex-col items-center justify-center font-bold">
+    <div className="flex h-full flex-col items-center justify-center font-bold">
       {state?.errorMessage}
     </div>
   );

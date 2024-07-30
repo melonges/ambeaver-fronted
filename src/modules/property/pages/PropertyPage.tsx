@@ -4,9 +4,9 @@ export const PropertyPage = () => {
   return (
     <div className="flex flex-col items-center">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
-      <p className="font-bold text-2xl mt-2">Property</p>
+      <p className="mt-2 text-2xl font-bold">Property</p>
 
-      <div className="w-8/12 h-32 mt-8 flex justify-center items-center bg-secondary border border-secondary-border rounded-3xl font-bold text-3xl">
+      <div className="mt-8 flex h-32 w-8/12 items-center justify-center rounded-3xl border border-secondary-border bg-secondary text-3xl font-bold">
         SOON
       </div>
     </div>

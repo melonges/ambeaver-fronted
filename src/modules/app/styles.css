@@ -6,3 +6,229 @@ body {
   overscroll-behavior: none;
   background-color: #fbfbfb;
 }
+
+:root {
+  --bg-slides-z-index: 5;
+  --tree-cotainer-z-index: 10;
+  --beaver-z-index: 15;
+
+  --tree-width: 25px;
+}
+
+.slides-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-slides {
+  z-index: var(--bg-slides-z-index);
+
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+
+  .slide {
+    position: relative;
+
+    height: 65%;
+    width: 100%;
+  }
+
+  .slide-999 {
+    background-color: #288a19;
+
+    .river {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: 50%;
+      width: 50%;
+      background-color: aqua;
+
+      animation: river 5s linear infinite;
+    }
+  }
+
+  .slide-0 {
+    background-color: #8b8b13;
+
+    .house {
+      position: absolute;
+
+      bottom: 2%;
+      left: 2%;
+
+      height: 30%;
+      width: 30%;
+
+      background-color: #4b3808;
+
+      .chimney {
+        position: absolute;
+        top: -40px;
+        left: 50%;
+
+        transform: translateX(-50%);
+
+        height: 40px;
+        width: 25px;
+
+        background-color: #4b3808;
+
+        .smoke {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 40px;
+          width: 25px;
+
+          animation: smoke 2s linear infinite;
+
+          .smoke-1,
+          .smoke-2,
+          .smoke-3 {
+            position: absolute;
+            left: 0;
+            background-color: #414141;
+            border-radius: 100%;
+          }
+
+          .smoke-1 {
+            top: -40px;
+            height: 15px;
+            width: 15px;
+          }
+
+          .smoke-2 {
+            top: -20px;
+            left: 20px;
+            height: 5px;
+            width: 5px;
+          }
+
+          .smoke-3 {
+            top: -10px;
+            left: 5px;
+            height: 8px;
+            width: 8px;
+          }
+        }
+      }
+    }
+  }
+
+  .slide-1 {
+    background-color: #698b13;
+  }
+
+  .slide-2 {
+    background-color: #13438b;
+  }
+
+  .slide-3 {
+    background-color: #8b1383;
+  }
+}
+
+.tree-container {
+  z-index: var(--tree-cotainer-z-index);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .tree-crown {
+    border-style: solid;
+    border-width: 0 20px 20px 20px;
+    border-color: transparent transparent #ff4532 transparent;
+  }
+
+  .tree-trunk {
+    background-color: brown;
+    width: var(--tree-width);
+    position: relative;
+
+    .beaver {
+      z-index: var(--beaver-z-index);
+
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      bottom: 0;
+      left: 0;
+      background-color: red;
+      transition: all 0.1s;
+    }
+  }
+
+  .tree-eaten {
+    width: var(--tree-width);
+    background-color: #64511b;
+  }
+
+  .tree-base {
+    background-color: #641b1b;
+    height: 25px;
+    width: 50px;
+  }
+}
+
+.to-right-jump {
+  animation: to-right 0.1s ease-in-out;
+  transform: translate(75%);
+}
+
+.to-left-jump {
+  animation: to-left 0.1s ease-in-out;
+  transform: translate(-50%);
+}
+
+@keyframes to-right {
+  0% {
+    transform: translate(-50%, 75%);
+  }
+  100% {
+    transform: translate(75%);
+  }
+}
+
+@keyframes to-left {
+  0% {
+    transform: translate(75%, 75%);
+  }
+  100% {
+    transform: translate(-50%);
+  }
+}
+
+@keyframes river {
+  0% {
+    background-color: aqua;
+  }
+  50% {
+    background-color: blue;
+  }
+  100% {
+    background-color: aqua;
+  }
+}
+
+@keyframes smoke {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(-1, 1);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
