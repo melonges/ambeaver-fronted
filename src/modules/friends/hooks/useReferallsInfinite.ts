@@ -1,11 +1,12 @@
 import { useReferralControllerGetReferralsInfinite } from "@/modules/api/referral/referral";
 
 const PER_PAGE = 10;
+const FIRST_PAGE = 0;
 
 export const useReferallsInfinite = () =>
   useReferralControllerGetReferralsInfinite(
     {
-      page: 1,
+      page: FIRST_PAGE,
       perPage: PER_PAGE,
     },
     {
@@ -22,7 +23,7 @@ export const useReferallsInfinite = () =>
         getPreviousPageParam: (firstPage) => {
           const { page } = firstPage.data.meta;
 
-          if (page > 1) {
+          if (page > FIRST_PAGE) {
             return page - 1;
           }
 

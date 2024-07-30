@@ -95,6 +95,21 @@ paths:
         - Referral
       security:
         - bearer: []
+  /referral/link:
+    get:
+      operationId: ReferralController_getReferralLink
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReferralLinkDto"
+      tags:
+        - Referral
+      security:
+        - bearer: []
   /event/tap:
     patch:
       operationId: EventController_tap
@@ -192,6 +207,13 @@ components:
           type: number
       required:
         - ar
+    ReferralLinkDto:
+      type: object
+      properties:
+        link:
+          type: string
+      required:
+        - link
     TapEventDto:
       type: object
       properties:

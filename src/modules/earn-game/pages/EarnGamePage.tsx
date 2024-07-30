@@ -25,7 +25,6 @@ export const EarnGamePage = () => {
   const { data } = useAssetControllerGetPlayerAssets();
 
   const tg = useTg();
-
   const [arCoint, setArCoin] = useState(data?.data.ar || 0);
   const [points, setPoints] = useState(data?.data.points || 0);
   const [energy, setEnergy] = useState(data?.data.energy || 0);
@@ -62,8 +61,7 @@ export const EarnGamePage = () => {
     setArCoin((arCoint) => arCoint + 1);
     pointsAmout.current++;
     tapEventDebounced(pointsAmout.current);
-
-    tg.HapticFeedback.notificationOccurred("warning");
+    tg.HapticFeedback.impactOccurred("soft");
   }, []);
 
   const buyPoints = useCallback(() => {

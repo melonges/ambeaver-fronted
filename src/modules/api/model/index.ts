@@ -13,6 +13,7 @@ export * from "./referralControllerGetReferrals200";
 export * from "./referralControllerGetReferrals200AllOf";
 export * from "./referralControllerGetReferralsParams";
 export * from "./referralDto";
+export * from "./referralLinkDto";
 export * from "./remainingTimeDto";
 export * from "./tapEventDto";
 export * from "./telegramInitDataDto";

@@ -19,6 +19,7 @@ import * as axios from "axios";
 import type {
   ReferralControllerGetReferrals200,
   ReferralControllerGetReferralsParams,
+  ReferralLinkDto,
 } from ".././model";
 
 export const referralControllerGetReferrals = (
@@ -179,6 +180,152 @@ export const useReferralControllerGetReferrals = <
     params,
     options
   );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const referralControllerGetReferralLink = (
+  options?: AxiosRequestConfig
+): Promise<AxiosResponse<ReferralLinkDto>> => {
+  return axios.default.get(`/referral/link`, options);
+};
+
+export const getReferralControllerGetReferralLinkQueryKey = () => {
+  return [`/referral/link`] as const;
+};
+
+export const getReferralControllerGetReferralLinkInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof referralControllerGetReferralLink>>
+  >,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof referralControllerGetReferralLink>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getReferralControllerGetReferralLinkQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof referralControllerGetReferralLink>>
+  > = ({ signal }) =>
+    referralControllerGetReferralLink({ signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof referralControllerGetReferralLink>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ReferralControllerGetReferralLinkInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof referralControllerGetReferralLink>>
+>;
+export type ReferralControllerGetReferralLinkInfiniteQueryError =
+  AxiosError<unknown>;
+
+export const useReferralControllerGetReferralLinkInfinite = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof referralControllerGetReferralLink>>
+  >,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof referralControllerGetReferralLink>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions =
+    getReferralControllerGetReferralLinkInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const getReferralControllerGetReferralLinkQueryOptions = <
+  TData = Awaited<ReturnType<typeof referralControllerGetReferralLink>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof referralControllerGetReferralLink>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getReferralControllerGetReferralLinkQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof referralControllerGetReferralLink>>
+  > = ({ signal }) =>
+    referralControllerGetReferralLink({ signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof referralControllerGetReferralLink>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type ReferralControllerGetReferralLinkQueryResult = NonNullable<
+  Awaited<ReturnType<typeof referralControllerGetReferralLink>>
+>;
+export type ReferralControllerGetReferralLinkQueryError = AxiosError<unknown>;
+
+export const useReferralControllerGetReferralLink = <
+  TData = Awaited<ReturnType<typeof referralControllerGetReferralLink>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof referralControllerGetReferralLink>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions =
+    getReferralControllerGetReferralLinkQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
