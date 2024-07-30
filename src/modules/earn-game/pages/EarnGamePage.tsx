@@ -15,7 +15,7 @@ import { EndGameArea } from "../components/EndGameArea";
 import { GameArea } from "../components/GameArea";
 
 const MAX_ENERGY = 48;
-const MAX_POINTS = 5000;
+const MAX_POINTS = 500;
 const POINTS_PRICE = 12;
 const POINTS_AMOUNT = 20;
 
@@ -62,6 +62,8 @@ export const EarnGamePage = () => {
     setArCoin((arCoint) => arCoint + 1);
     pointsAmout.current++;
     tapEventDebounced(pointsAmout.current);
+
+    tg.HapticFeedback.notificationOccurred("warning");
   }, []);
 
   const buyPoints = useCallback(() => {
