@@ -16,13 +16,11 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <div className="h-[var(--tg-viewport-stable-height)] text-main-text flex flex-col items-center relative">
-      <main className="h-full w-full bg-main-bg p-2 flex flex-col">
+      <main className="mb-[88px] h-full w-full p-2 flex flex-col overflow-y-auto">
         {children}
       </main>
 
-      <div className="min-h-[88px] w-full" />
-
-      <nav className="min-h-[88px] max-h-[88px] bg-main-bg w-full flex gap-2 p-2 justify-evenly fixed bottom-0">
+      <nav className="h-[88px] bg-main-bg w-full flex gap-2 p-2 justify-evenly fixed bottom-0">
         {navItems.map(({ path, label }) => (
           <Link
             to={path}
