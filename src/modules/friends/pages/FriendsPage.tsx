@@ -1,6 +1,9 @@
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
+import { useReferallsInfinite } from "../hooks/useReferallsInfinite";
 
 export const FrinedsPage = () => {
+  const { data } = useReferallsInfinite();
+
   return (
     <div className="flex flex-col items-center">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
@@ -23,7 +26,16 @@ export const FrinedsPage = () => {
       </div>
 
       <div className="mt-4 bg-primary h-32 w-full text-center flex items-center justify-center rounded">
-        invitations
+        <p>invitations</p>
+        <div>
+          {data?.pages.map((page) =>
+            page.data.data?.map((item) => (
+              <p key={item.username}>
+                {item.username} | {item.ar}
+              </p>
+            ))
+          )}
+        </div>
       </div>
 
       <button className="mt-4 bg-primary p-2 w-full rounded">

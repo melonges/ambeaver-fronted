@@ -7,6 +7,16 @@ module.exports = {
       schemas: "src/modules/api/model",
       client: "react-query",
       prettier: true,
+
+      override: {
+        query: {
+          useQuery: true,
+          useInfinite: true,
+          options: {
+            staleTime: 10000,
+          },
+        },
+      },
     },
     input: {
       target: "./src/modules/api/schemas/schema.yaml",

@@ -5,15 +5,21 @@
  * OpenAPI spec version: 0.0.1
  */
 import type {
+  InfiniteData,
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseInfiniteQueryOptions,
+  UseInfiniteQueryResult,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import * as axios from "axios";
-import type { PlayerAssetsDto } from ".././model";
+import type { PlayerAssetsDto, RemainingTimeDto } from ".././model";
 
 export const assetControllerGetPlayerAssets = (
   options?: AxiosRequestConfig
@@ -23,6 +29,77 @@ export const assetControllerGetPlayerAssets = (
 
 export const getAssetControllerGetPlayerAssetsQueryKey = () => {
   return [`/asset`] as const;
+};
+
+export const getAssetControllerGetPlayerAssetsInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof assetControllerGetPlayerAssets>>
+  >,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof assetControllerGetPlayerAssets>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAssetControllerGetPlayerAssetsQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof assetControllerGetPlayerAssets>>
+  > = ({ signal }) =>
+    assetControllerGetPlayerAssets({ signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof assetControllerGetPlayerAssets>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AssetControllerGetPlayerAssetsInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof assetControllerGetPlayerAssets>>
+>;
+export type AssetControllerGetPlayerAssetsInfiniteQueryError =
+  AxiosError<unknown>;
+
+export const useAssetControllerGetPlayerAssetsInfinite = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof assetControllerGetPlayerAssets>>
+  >,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof assetControllerGetPlayerAssets>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions =
+    getAssetControllerGetPlayerAssetsInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
 };
 
 export const getAssetControllerGetPlayerAssetsQueryOptions = <
@@ -48,7 +125,12 @@ export const getAssetControllerGetPlayerAssetsQueryOptions = <
   > = ({ signal }) =>
     assetControllerGetPlayerAssets({ signal, ...axiosOptions });
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
     Awaited<ReturnType<typeof assetControllerGetPlayerAssets>>,
     TError,
     TData
@@ -74,6 +156,215 @@ export const useAssetControllerGetPlayerAssets = <
   axios?: AxiosRequestConfig;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getAssetControllerGetPlayerAssetsQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const assetControllerChargePoints = (
+  options?: AxiosRequestConfig
+): Promise<AxiosResponse<void>> => {
+  return axios.default.post(`/asset/charge-points`, undefined, options);
+};
+
+export const getAssetControllerChargePointsMutationOptions = <
+  TError = AxiosError<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof assetControllerChargePoints>>,
+    TError,
+    void,
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof assetControllerChargePoints>>,
+  TError,
+  void,
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof assetControllerChargePoints>>,
+    void
+  > = () => {
+    return assetControllerChargePoints(axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AssetControllerChargePointsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof assetControllerChargePoints>>
+>;
+
+export type AssetControllerChargePointsMutationError = AxiosError<void>;
+
+export const useAssetControllerChargePoints = <
+  TError = AxiosError<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof assetControllerChargePoints>>,
+    TError,
+    void,
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof assetControllerChargePoints>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationOptions =
+    getAssetControllerChargePointsMutationOptions(options);
+
+  return useMutation(mutationOptions);
+};
+export const assetControllerGetTimeToFullEnergy = (
+  options?: AxiosRequestConfig
+): Promise<AxiosResponse<RemainingTimeDto>> => {
+  return axios.default.get(`/asset/time-to-full-energy`, options);
+};
+
+export const getAssetControllerGetTimeToFullEnergyQueryKey = () => {
+  return [`/asset/time-to-full-energy`] as const;
+};
+
+export const getAssetControllerGetTimeToFullEnergyInfiniteQueryOptions = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>
+  >,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAssetControllerGetTimeToFullEnergyQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>
+  > = ({ signal }) =>
+    assetControllerGetTimeToFullEnergy({ signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseInfiniteQueryOptions<
+    Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AssetControllerGetTimeToFullEnergyInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>
+>;
+export type AssetControllerGetTimeToFullEnergyInfiniteQueryError =
+  AxiosError<unknown>;
+
+export const useAssetControllerGetTimeToFullEnergyInfinite = <
+  TData = InfiniteData<
+    Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>
+  >,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions =
+    getAssetControllerGetTimeToFullEnergyInfiniteQueryOptions(options);
+
+  const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
+    TData,
+    TError
+  > & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const getAssetControllerGetTimeToFullEnergyQueryOptions = <
+  TData = Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getAssetControllerGetTimeToFullEnergyQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>
+  > = ({ signal }) =>
+    assetControllerGetTimeToFullEnergy({ signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    staleTime: 10000,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type AssetControllerGetTimeToFullEnergyQueryResult = NonNullable<
+  Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>
+>;
+export type AssetControllerGetTimeToFullEnergyQueryError = AxiosError<unknown>;
+
+export const useAssetControllerGetTimeToFullEnergy = <
+  TData = Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof assetControllerGetTimeToFullEnergy>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions =
+    getAssetControllerGetTimeToFullEnergyQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

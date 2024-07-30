@@ -36,6 +36,65 @@ paths:
         - Asset
       security:
         - bearer: []
+  /asset/charge-points:
+    post:
+      operationId: AssetController_chargePoints
+      parameters: []
+      responses:
+        "201":
+          description: ""
+        "400":
+          description: Not enough energy
+      tags:
+        - Asset
+      security:
+        - bearer: []
+  /asset/time-to-full-energy:
+    get:
+      operationId: AssetController_getTimeToFullEnergy
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RemainingTimeDto"
+      tags:
+        - Asset
+      security:
+        - bearer: []
+  /referral:
+    get:
+      operationId: ReferralController_getReferrals
+      parameters:
+        - name: page
+          required: true
+          in: query
+          schema:
+            type: number
+        - name: perPage
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/PaginatedResponse"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/ReferralDto"
+      tags:
+        - Referral
+      security:
+        - bearer: []
   /event/tap:
     patch:
       operationId: EventController_tap
@@ -93,6 +152,45 @@ components:
       required:
         - points
         - energy
+        - ar
+    RemainingTimeDto:
+      type: object
+      properties:
+        remainingTime:
+          type: number
+      required:
+        - remainingTime
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: number
+        perPage:
+          type: number
+        totalPages:
+          type: number
+        totalItems:
+          type: number
+      required:
+        - page
+        - perPage
+        - totalPages
+        - totalItems
+    PaginatedResponse:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
+      required:
+        - meta
+    ReferralDto:
+      type: object
+      properties:
+        username:
+          type: string
+        ar:
+          type: number
+      required:
         - ar
     TapEventDto:
       type: object
