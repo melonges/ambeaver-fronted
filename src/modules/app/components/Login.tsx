@@ -11,7 +11,7 @@ import { Loader } from "./Loader";
 axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 
 export const Login = () => {
-  const lp = useLaunchParams();
+  const launchParams = useLaunchParams();
 
   const {
     mutateAsync: login,
@@ -31,7 +31,7 @@ export const Login = () => {
 
   useLayoutEffect(() => {
     login({
-      data: { initData: lp.initDataRaw || "" },
+      data: { initData: launchParams.initDataRaw || "" },
     }).then(({ data }) => {
       axios.defaults.headers.common.Authorization = `Bearer ${data.access_token}`;
       setCanFetchAssests(true);

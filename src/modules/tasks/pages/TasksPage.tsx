@@ -2,7 +2,7 @@ import AmberIcon from "@/modules/common/assets/amber-icon.png";
 
 export const TasksPage = () => {
   return (
-    <div className="flex flex-col items-center border-4 border-blue-500">
+    <div className="flex flex-col items-center border-blue-500">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
       <p className="mt-2 text-2xl font-bold">Tasks</p>
       <span>Complete tasks and receive rewards</span>

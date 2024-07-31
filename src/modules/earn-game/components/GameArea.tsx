@@ -1,11 +1,9 @@
-import { ReactNode, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 export const GameArea = ({
-  children,
   decPoints,
   clicksToWin,
 }: {
-  children: ReactNode;
   decPoints: () => void;
   clicksToWin: number;
 }) => {
@@ -219,8 +217,6 @@ export const GameArea = ({
           </div>
         )}
       </div>
-
-      {children}
     </div>
   );
 };

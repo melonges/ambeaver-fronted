@@ -28,7 +28,7 @@ export const FrinedsPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center border-4 border-green-500">
+    <div className="flex flex-col items-center">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
       <p className="mt-2 text-2xl font-bold">Ur friends-beavers</p>
       <span>Invite friends and receive ambers.</span>
