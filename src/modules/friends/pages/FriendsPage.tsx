@@ -1,10 +1,12 @@
 import { useReferralControllerGetReferralLink } from "@/modules/api/referral/referral";
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
-import { useTg } from "@/modules/common/telegram/useTg";
+
+import { useHapticFeedback, usePopup } from "@telegram-apps/sdk-react";
 import { useReferallsInfinite } from "../hooks/useReferallsInfinite";
 
 export const FrinedsPage = () => {
-  const tg = useTg();
+  const popup = usePopup();
+  const hapticFeedback = useHapticFeedback();
 
   const {
     data: referralsData,
@@ -16,14 +18,17 @@ export const FrinedsPage = () => {
   const inviteFriendsClickHandler = async () => {
     try {
       await navigator.clipboard.writeText(linkData?.data.link || "");
-      tg.HapticFeedback.notificationOccurred("success");
+      hapticFeedback.notificationOccurred("success");
     } catch (error) {
-      tg.showAlert("Error copying to clipboard: " + (error as any).message);
+      popup.open({
+        message: "Error copying to clipboard: " + (error as any)?.message,
+        buttons: [{ type: "close" }],
+      });
     }
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center border-4 border-green-500">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
       <p className="mt-2 text-2xl font-bold">Ur friends-beavers</p>
       <span>Invite friends and receive ambers.</span>

@@ -3,8 +3,21 @@
 @tailwind utilities;
 
 body {
-  overscroll-behavior: none;
   background-color: #fbfbfb;
+  -webkit-overflow-scrolling: touch !important;
+  -webkit-font-smoothing: antialiased;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(90, 90, 90, 0.3) transparent;
 }
 
 :root {
@@ -13,6 +26,10 @@ body {
   --beaver-z-index: 15;
 
   --tree-width: 25px;
+}
+
+#root {
+  height: 100%;
 }
 
 .slides-container {

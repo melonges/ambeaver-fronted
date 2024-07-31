@@ -1,12 +1,12 @@
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
 import HamsterMiniGameIcon from "@/modules/common/assets/hamster-mini-game-icon.png";
 import { useLayout } from "@/modules/common/layouts/useLayout";
-import { useBackButton } from "@/modules/common/telegram/useBackButton";
+import { useShowBackButton } from "@/modules/common/telegram/useShowBackButton";
 
 export const HamsterMiniGamePage = () => {
   useLayout("empty");
 
-  useBackButton();
+  useShowBackButton();
 
   return (
     <>

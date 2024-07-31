@@ -1,10 +1,11 @@
 import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
 import { useEventControllerTap } from "@/modules/api/event/event";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
-import { useTg } from "@/modules/common/telegram/useTg";
+
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
 import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
+import { useHapticFeedback, usePopup } from "@telegram-apps/sdk-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { EndGameArea } from "../components/EndGameArea";
@@ -20,9 +21,12 @@ const CLICKS_TO_WIN = MAX_POINTS;
 export const EarnGamePage = () => {
   const pointsAmout = useRef(0);
 
+  const hapticFeedback = useHapticFeedback();
+
+  const popup = usePopup();
+
   const { data, refetch } = useAssetControllerGetPlayerAssets();
 
-  const tg = useTg();
   const [arCoint, setArCoin] = useState(data?.data.ar || 0);
   const [points, setPoints] = useState(data?.data.points || 0);
   const [energy, setEnergy] = useState(data?.data.energy || 0);
@@ -57,13 +61,17 @@ export const EarnGamePage = () => {
     setArCoin((arCoint) => arCoint + 1);
     pointsAmout.current++;
     tapEventDebounced(pointsAmout.current);
-    tg.HapticFeedback.impactOccurred("soft");
+    hapticFeedback.impactOccurred("soft");
   }, []);
 
   const buyPoints = useCallback(() => {
     setEnergy((energy) => {
       if (energy < POINTS_PRICE) {
-        tg.showAlert("Недосаточно энергии для покупки поинтов.");
+        popup.open({
+          message: "Not enough energy to buy points.",
+          buttons: [{ type: "close" }],
+        });
+
         return energy;
       }
       setPoints((points) => points + POINTS_AMOUNT);
@@ -72,35 +80,37 @@ export const EarnGamePage = () => {
   }, []);
 
   return (
-    <>
-      {pointsIsOver ? (
-        <EndGameArea buyPoints={buyPoints} pointsPrice={POINTS_PRICE} />
-      ) : (
-        <GameArea decPoints={decPoint} clicksToWin={CLICKS_TO_WIN}>
-          <Link
-            to={PROFILE_PAGE_PATH}
-            className="fixed left-4 top-4 z-10 rounded bg-primary px-4 py-2"
-          >
-            $ AMBERS: {arCoint}
-          </Link>
+    <div className="h-full w-full border-4 border-orange-500">
+      <div className="flex h-full flex-col">
+        {pointsIsOver ? (
+          <EndGameArea buyPoints={buyPoints} pointsPrice={POINTS_PRICE} />
+        ) : (
+          <GameArea decPoints={decPoint} clicksToWin={CLICKS_TO_WIN}>
+            <Link
+              to={PROFILE_PAGE_PATH}
+              className="fixed left-4 top-4 z-10 rounded bg-primary px-4 py-2"
+            >
+              $ AMBERS: {arCoint}
+            </Link>
 
-          <Link
-            to={HAMSTER_MINIGAME_PAGE_PATH}
-            className="fixed right-4 top-4 z-10 rounded bg-primary px-4 py-2"
-          >
-            Ticket for minigame
-          </Link>
-        </GameArea>
-      )}
+            <Link
+              to={HAMSTER_MINIGAME_PAGE_PATH}
+              className="fixed right-4 top-4 z-10 rounded bg-primary px-4 py-2"
+            >
+              Ticket for minigame
+            </Link>
+          </GameArea>
+        )}
 
-      <div className="mt-1 flex w-full justify-between">
-        <p>
-          {points}/{MAX_POINTS} points
-        </p>
-        <Link to={STORE_PAGE_PATH}>
-          {energy}/{MAX_ENERGY} ⚡
-        </Link>
+        <div className="mt-1 flex w-full justify-between">
+          <p>
+            {points}/{MAX_POINTS} points
+          </p>
+          <Link to={STORE_PAGE_PATH}>
+            {energy}/{MAX_ENERGY} ⚡
+          </Link>
+        </div>
       </div>
-    </>
+    </div>
   );
 };

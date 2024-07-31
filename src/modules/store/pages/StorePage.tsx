@@ -1,10 +1,10 @@
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
 import { useLayout } from "@/modules/common/layouts/useLayout";
-import { useBackButton } from "@/modules/common/telegram/useBackButton";
+import { useShowBackButton } from "@/modules/common/telegram/useShowBackButton";
 
 export const StorePage = () => {
   useLayout("empty");
-  useBackButton();
+  useShowBackButton();
 
   return (
     <div className="flex flex-col items-center">

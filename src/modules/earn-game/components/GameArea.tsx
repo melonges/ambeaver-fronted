@@ -210,7 +210,7 @@ export const GameArea = ({
       </div>
 
       <div
-        className="absolute left-1/2 top-1/2 z-10 aspect-square h-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary p-6 opacity-40 xxs:h-[240px] xs:h-[300px]"
+        className="absolute left-1/2 top-1/2 z-10 h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary p-6 opacity-40 xxs:h-[240px] xxs:w-[240px] xs:h-[300px] xs:w-[300px]"
         onClick={clickHanlder}
       >
         {showLoading && (

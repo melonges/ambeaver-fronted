@@ -2,10 +2,97 @@ import AmberIcon from "@/modules/common/assets/amber-icon.png";
 
 export const TasksPage = () => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center border-4 border-blue-500">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
       <p className="mt-2 text-2xl font-bold">Tasks</p>
       <span>Complete tasks and receive rewards</span>
+
+      <ul className="w-full">
+        {taskList.map((task) => {
+          const taskTypeClassName =
+            task.type === "claim"
+              ? "bg-secondary"
+              : task.type === "claimed"
+                ? "bg-disabled"
+                : "bg-primary";
+          return (
+            <li
+              key={task.id}
+              className="flex w-full items-center justify-between gap-1 border-b-2 px-1 py-2 last:border-0"
+            >
+              <div className="flex items-center gap-1">
+                <img src={AmberIcon} alt="$amber" className="h-10 w-10" />
+
+                <div className="flex flex-col">
+                  <strong className="font-bold">{task.title}</strong>
+                  <span>{task.reward}</span>
+                </div>
+              </div>
+              <button className={`w-20 rounded-md p-2 ${taskTypeClassName}`}>
+                {task.type}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      <ul className="w-full">
+        {taskList.map((task) => {
+          const taskTypeClassName =
+            task.type === "claim"
+              ? "bg-secondary"
+              : task.type === "claimed"
+                ? "bg-disabled"
+                : "bg-primary";
+          return (
+            <li
+              key={task.id}
+              className="flex w-full items-center justify-between gap-1 border-b-2 px-1 py-2 last:border-0"
+            >
+              <div className="flex items-center gap-1">
+                <img src={AmberIcon} alt="$amber" className="h-10 w-10" />
+
+                <div className="flex flex-col">
+                  <strong className="font-bold">{task.title}</strong>
+                  <span>{task.reward}</span>
+                </div>
+              </div>
+              <button className={`w-20 rounded-md p-2 ${taskTypeClassName}`}>
+                {task.type}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      <ul className="w-full">
+        {taskList.map((task) => {
+          const taskTypeClassName =
+            task.type === "claim"
+              ? "bg-secondary"
+              : task.type === "claimed"
+                ? "bg-disabled"
+                : "bg-primary";
+          return (
+            <li
+              key={task.id}
+              className="flex w-full items-center justify-between gap-1 border-b-2 px-1 py-2 last:border-0"
+            >
+              <div className="flex items-center gap-1">
+                <img src={AmberIcon} alt="$amber" className="h-10 w-10" />
+
+                <div className="flex flex-col">
+                  <strong className="font-bold">{task.title}</strong>
+                  <span>{task.reward}</span>
+                </div>
+              </div>
+              <button className={`w-20 rounded-md p-2 ${taskTypeClassName}`}>
+                {task.type}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
 
       <ul className="w-full">
         {taskList.map((task) => {

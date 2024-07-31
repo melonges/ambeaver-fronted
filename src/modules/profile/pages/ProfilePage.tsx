@@ -1,12 +1,12 @@
 import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
 import { useLayout } from "@/modules/common/layouts/useLayout";
-import { useBackButton } from "@/modules/common/telegram/useBackButton";
+import { useShowBackButton } from "@/modules/common/telegram/useShowBackButton";
 import { useEffect } from "react";
 
 export const ProfilePage = () => {
   useLayout("empty");
-  useBackButton();
+  useShowBackButton();
 
   const { data, refetch, isFetching } = useAssetControllerGetPlayerAssets();
 

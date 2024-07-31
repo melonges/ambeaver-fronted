@@ -15,12 +15,12 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
   ];
 
   return (
-    <div className="relative flex h-[var(--tg-viewport-stable-height)] flex-col items-center text-main-text">
-      <main className="mb-[88px] flex h-full w-full flex-col overflow-y-auto p-2">
+    <>
+      <main className="absolute left-0 top-0 box-border flex h-full w-full flex-col overflow-y-auto overflow-x-hidden p-2 pb-[94px]">
         {children}
       </main>
 
-      <nav className="fixed bottom-0 flex h-[88px] w-full justify-evenly gap-2 bg-main-bg p-2">
+      <nav className="fixed bottom-0 left-0 right-0 flex h-[94px] justify-evenly gap-2 bg-main-bg p-2 pb-5">
         {navItems.map(({ path, label }) => (
           <Link
             to={path}
@@ -33,6 +33,6 @@ export const DefaultLayout = ({ children }: { children: ReactNode }) => {
           </Link>
         ))}
       </nav>
-    </div>
+    </>
   );
 };

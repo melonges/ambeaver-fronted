@@ -2,7 +2,7 @@ import AmberIcon from "@/modules/common/assets/amber-icon.png";
 
 export const PropertyPage = () => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center border-4 border-purple-500">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
       <p className="mt-2 text-2xl font-bold">Property</p>
 
