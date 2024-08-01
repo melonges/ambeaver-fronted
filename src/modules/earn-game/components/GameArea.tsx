@@ -7,11 +7,9 @@ export const GameArea = ({
   decPoints: () => void;
   clicksToWin: number;
 }) => {
-  // TODO: remove me later
-  // clicksToWin = 60;
-
   const SLIDES_STEP_PX = 10;
   const MAX_TREE_HEIGHT = clicksToWin * SLIDES_STEP_PX;
+
   const INITIAL_TREE_OFFSET = 50;
 
   const [showLoading, setShowLoading] = useState(false);

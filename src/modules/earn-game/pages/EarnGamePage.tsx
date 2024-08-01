@@ -2,22 +2,19 @@ import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
 import { useEventControllerTap } from "@/modules/api/event/event";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
 
+import { useSettingControllerFindOne } from "@/modules/api/setting/setting";
 import { useLayout } from "@/modules/common/layouts/useLayout";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
 import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
 import { useHapticFeedback, usePopup } from "@telegram-apps/sdk-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { EndGameArea } from "../components/EndGameArea";
 import { GameArea } from "../components/GameArea";
 
-const MAX_ENERGY = 48;
-const MAX_POINTS = 500;
 const POINTS_PRICE = 12;
 const POINTS_AMOUNT = 20;
-
-const CLICKS_TO_WIN = MAX_POINTS;
 
 export const EarnGamePage = () => {
   useLayout("game");
@@ -26,12 +23,19 @@ export const EarnGamePage = () => {
   const popup = usePopup();
 
   const { data, refetch } = useAssetControllerGetPlayerAssets();
+  const { data: settingsData } = useSettingControllerFindOne();
   const { mutateAsync: tapEvent } = useEventControllerTap();
 
   const pointsAmout = useRef(0);
+
   const [arCoint, setArCoin] = useState(data?.data.ar || 0);
   const [points, setPoints] = useState(data?.data.points || 0);
   const [energy, setEnergy] = useState(data?.data.energy || 0);
+
+  const clicksToWin = useMemo(
+    () => settingsData?.data.limits.points || 1,
+    [settingsData]
+  );
 
   useEffect(() => {
     refetch();
@@ -57,12 +61,16 @@ export const EarnGamePage = () => {
   const pointsIsOver = points <= 0;
 
   const decPoint = useCallback(() => {
-    setPoints((points) => points - 1);
-    setArCoin((arCoint) => arCoint + 1);
-    pointsAmout.current++;
+    setPoints(
+      (points) => points - (settingsData?.data.price.tap?.points?.amount || 1)
+    );
+    setArCoin(
+      (arCoint) => arCoint + (settingsData?.data.price.tap?.ar?.amount || 1)
+    );
+    pointsAmout.current += 1;
     tapEventDebounced(pointsAmout.current);
     hapticFeedback.impactOccurred("soft");
-  }, []);
+  }, [settingsData]);
 
   const buyPoints = useCallback(() => {
     setEnergy((energy) => {
@@ -98,15 +106,15 @@ export const EarnGamePage = () => {
       {pointsIsOver ? (
         <EndGameArea buyPoints={buyPoints} pointsPrice={POINTS_PRICE} />
       ) : (
-        <GameArea decPoints={decPoint} clicksToWin={CLICKS_TO_WIN}></GameArea>
+        <GameArea decPoints={decPoint} clicksToWin={clicksToWin}></GameArea>
       )}
 
       <div className="mt-1 flex w-full justify-between">
         <p>
-          {points}/{MAX_POINTS} points
+          {points}/{settingsData?.data.limits.points} points
         </p>
         <Link to={STORE_PAGE_PATH}>
-          {energy}/{MAX_ENERGY} ⚡
+          {energy}/{settingsData?.data.limits.energy} ⚡
         </Link>
       </div>
     </div>

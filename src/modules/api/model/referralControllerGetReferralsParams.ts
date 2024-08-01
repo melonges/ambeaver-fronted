@@ -6,6 +6,9 @@
  */
 
 export type ReferralControllerGetReferralsParams = {
+  /**
+   * page pagination starts from 0
+   */
   page: number;
   perPage: number;
 };

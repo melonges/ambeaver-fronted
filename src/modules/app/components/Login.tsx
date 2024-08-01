@@ -1,9 +1,10 @@
 import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
 import { useAuthControllerSignIn } from "@/modules/api/authorization/authorization";
+import { useSettingControllerFindOne } from "@/modules/api/setting/setting";
 import { LayoutProvider } from "@/modules/common/layouts/context";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import axios from "axios";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { RoutesWrapper, UN_AUTHORIZED_PAGE_PATH } from "../routes";
 import { Loader } from "./Loader";
@@ -19,13 +20,19 @@ export const Login = () => {
     status: loginStatus,
   } = useAuthControllerSignIn();
 
-  const [canFetchAssests, setCanFetchAssests] = useState(false);
+  const { status: assetsStatus, refetch: assetsRefetch } =
+    useAssetControllerGetPlayerAssets({
+      query: {
+        enabled: false,
+      },
+    });
 
-  const { status: assetsStatus } = useAssetControllerGetPlayerAssets({
-    query: {
-      enabled: canFetchAssests,
-    },
-  });
+  const { status: settingsStatus, refetch: settingsRefetch } =
+    useSettingControllerFindOne({
+      query: {
+        enabled: false,
+      },
+    });
 
   const navigate = useNavigate();
 
@@ -34,7 +41,8 @@ export const Login = () => {
       data: { initData: launchParams.initDataRaw || "" },
     }).then(({ data }) => {
       axios.defaults.headers.common.Authorization = `Bearer ${data.access_token}`;
-      setCanFetchAssests(true);
+      assetsRefetch();
+      settingsRefetch();
     });
   }, []);
 
@@ -54,7 +62,11 @@ export const Login = () => {
     }
   }, [loginError]);
 
-  if (loginStatus === "pending" || assetsStatus === "pending") {
+  if (
+    loginStatus === "pending" ||
+    assetsStatus === "pending" ||
+    settingsStatus === "pending"
+  ) {
     return <Loader />;
   }
 

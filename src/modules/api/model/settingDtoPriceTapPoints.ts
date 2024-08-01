@@ -5,9 +5,6 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export interface PlayerAssetsDto {
-  ar: number;
-  energy: number;
-  points: number;
-  totalTaps: number;
-}
+export type SettingDtoPriceTapPoints = {
+  amount?: number;
+};

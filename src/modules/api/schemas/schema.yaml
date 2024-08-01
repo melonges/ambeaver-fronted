@@ -71,6 +71,7 @@ paths:
         - name: page
           required: true
           in: query
+          description: page pagination starts from 0
           schema:
             type: number
         - name: perPage
@@ -127,6 +128,21 @@ paths:
         - Event
       security:
         - bearer: []
+  /setting:
+    get:
+      operationId: SettingController_findOne
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SettingDto"
+      tags:
+        - Setting
+      security:
+        - bearer: []
 info:
   title: Ambeaver API
   description: ""
@@ -164,10 +180,13 @@ components:
           type: number
         ar:
           type: number
+        totalTaps:
+          type: number
       required:
         - points
         - energy
         - ar
+        - totalTaps
     RemainingTimeDto:
       type: object
       properties:
@@ -222,3 +241,48 @@ components:
           minimum: 1
       required:
         - amount
+    SettingDto:
+      type: object
+      properties:
+        limits:
+          type: object
+          properties:
+            points:
+              required: true
+              type: number
+            energy:
+              required: true
+              type: number
+            referral:
+              required: true
+              type: number
+        price:
+          type: object
+          properties:
+            recovery:
+              type: object
+              properties:
+                points:
+                  type: object
+                  properties:
+                    amount:
+                      required: true
+                      type: number
+            tap:
+              type: object
+              properties:
+                points:
+                  type: object
+                  properties:
+                    amount:
+                      required: true
+                      type: number
+                ar:
+                  type: object
+                  properties:
+                    amount:
+                      required: true
+                      type: number
+      required:
+        - limits
+        - price
