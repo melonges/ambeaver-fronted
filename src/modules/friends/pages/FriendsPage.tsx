@@ -1,12 +1,19 @@
 import { useReferralControllerGetReferralLink } from "@/modules/api/referral/referral";
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
 
-import { useHapticFeedback, usePopup } from "@telegram-apps/sdk-react";
+import {
+  useHapticFeedback,
+  usePopup,
+  useUtils,
+} from "@telegram-apps/sdk-react";
+import { Button, Modal, Placeholder } from "@telegram-apps/telegram-ui";
+import { ModalHeader } from "@telegram-apps/telegram-ui/dist/components/Overlays/Modal/components/ModalHeader/ModalHeader";
 import { useReferallsInfinite } from "../hooks/useReferallsInfinite";
 
 export const FrinedsPage = () => {
   const popup = usePopup();
   const hapticFeedback = useHapticFeedback();
+  const utils = useUtils();
 
   const {
     data: referralsData,
@@ -67,12 +74,31 @@ export const FrinedsPage = () => {
         </div>
       </div>
 
-      <button
-        className="mt-4 w-full rounded bg-primary p-2"
-        onClick={inviteFriendsClickHandler}
+      <Modal
+        header={<ModalHeader>Only iOS header</ModalHeader>}
+        trigger={
+          <button className="mt-4 w-full rounded bg-primary p-2">
+            INVITE A FREN
+          </button>
+        }
       >
-        INVITE A FRIEND
-      </button>
+        <Placeholder>
+          <Button
+            stretched
+            onClick={() =>
+              utils.openTelegramLink(
+                "https://t.me/share/url?url=" + linkData?.data.link
+              )
+            }
+          >
+            Send
+          </Button>
+
+          <Button mode="outline" stretched onClick={inviteFriendsClickHandler}>
+            Copy link
+          </Button>
+        </Placeholder>
+      </Modal>
     </div>
   );
 };
