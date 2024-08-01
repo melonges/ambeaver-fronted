@@ -1,3 +1,4 @@
+import { useViewport } from "@telegram-apps/sdk-react";
 import { useLayoutEffect, useRef, useState } from "react";
 
 export const GameArea = ({
@@ -7,6 +8,8 @@ export const GameArea = ({
   decPoints: () => void;
   clicksToWin: number;
 }) => {
+  const viewport = useViewport();
+
   const SLIDES_STEP_PX = 10;
   const MAX_TREE_HEIGHT = clicksToWin * SLIDES_STEP_PX;
 
@@ -28,7 +31,9 @@ export const GameArea = ({
 
   useLayoutEffect(() => {
     initValues();
-  }, []);
+    viewport?.on("change", initValues);
+    return () => viewport?.off("change", initValues);
+  }, [viewport]);
 
   const initValues = () => {
     if (
