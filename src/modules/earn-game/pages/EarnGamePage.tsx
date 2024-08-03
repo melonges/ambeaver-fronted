@@ -3,7 +3,6 @@ import { useEventControllerTap } from "@/modules/api/event/event";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
 
 import { useSettingControllerFindOne } from "@/modules/api/setting/setting";
-import { useLayout } from "@/modules/common/layouts/useLayout";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
 import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
@@ -17,8 +16,6 @@ const POINTS_PRICE = 12;
 const POINTS_AMOUNT = 20;
 
 export const EarnGamePage = () => {
-  useLayout("game");
-
   const hapticFeedback = useHapticFeedback();
   const popup = usePopup();
 
