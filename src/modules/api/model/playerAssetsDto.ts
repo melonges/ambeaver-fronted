@@ -6,8 +6,8 @@
  */
 
 export interface PlayerAssetsDto {
-  ar: number;
+  ambers: number;
   energy: number;
   points: number;
-  totalTaps: number;
+  totalTapped: number;
 }

@@ -4,10 +4,8 @@
  * Ambeaver API
  * OpenAPI spec version: 0.0.1
  */
-import type { UpdateTaskDtoCurrency } from "./updateTaskDtoCurrency";
 
 export interface UpdateTaskDto {
-  currency?: UpdateTaskDtoCurrency;
-  reward?: number;
+  rewardInAmbers?: number;
   title?: string;
 }

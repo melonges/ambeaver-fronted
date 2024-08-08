@@ -25,7 +25,7 @@ export const EarnGamePage = () => {
 
   const pointsAmout = useRef(0);
 
-  const [arCoint, setArCoin] = useState(data?.data.ar || 0);
+  const [arCoint, setArCoin] = useState(data?.data.ambers || 0);
   const [points, setPoints] = useState(data?.data.points || 0);
   const [energy, setEnergy] = useState(data?.data.energy || 0);
 
@@ -45,7 +45,7 @@ export const EarnGamePage = () => {
   }, []);
 
   useEffect(() => {
-    setArCoin(data?.data.ar || 0);
+    setArCoin(data?.data.ambers || 0);
     setPoints(data?.data.points || 0);
     setEnergy(data?.data.energy || 0);
   }, [data]);

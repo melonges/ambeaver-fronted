@@ -6,6 +6,6 @@
  */
 
 export interface ReferralDto {
-  ar: number;
+  ambers: number;
   username?: string;
 }

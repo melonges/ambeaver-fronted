@@ -25,7 +25,7 @@ export const ProfilePage = () => {
       <ul className="mt-4">
         <li>
           Total points:{" "}
-          {!isFetching ? data?.data.totalTaps || "..." : "Loading..."}
+          {!isFetching ? data?.data.totalTapped || "..." : "Loading..."}
         </li>
         <li>Passive points: +... /per hour</li>
         <li>EA badge: ...</li>

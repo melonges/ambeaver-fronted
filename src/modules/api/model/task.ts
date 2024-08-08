@@ -5,16 +5,14 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { TaskCreatedAt } from "./taskCreatedAt";
-import type { TaskCurrency } from "./taskCurrency";
 import type { TaskType } from "./taskType";
 import type { TaskUpdatedAt } from "./taskUpdatedAt";
 
 export interface Task {
   createdAt: TaskCreatedAt;
-  currency: TaskCurrency;
   id: number;
   meta: string;
-  reward: number;
+  rewardInAmbers: number;
   title: string;
   type: TaskType;
   updatedAt: TaskUpdatedAt;
