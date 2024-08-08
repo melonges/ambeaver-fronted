@@ -4,7 +4,8 @@
  * Ambeaver API
  * OpenAPI spec version: 0.0.1
  */
+import type { Task } from "./task";
 
-export type SettingDtoPriceRecoveryPoints = {
-  amount?: number;
+export type TasksControllerFindAll200AllOf = {
+  data?: Task[];
 };

@@ -1,6 +1,6 @@
 import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
 import { useAuthControllerSignIn } from "@/modules/api/authorization/authorization";
-import { useSettingControllerFindOne } from "@/modules/api/setting/setting";
+import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
 import { LayoutProvider } from "@/modules/common/layouts/context";
 import { useLaunchParams } from "@telegram-apps/sdk-react";
 import axios from "axios";
@@ -28,7 +28,7 @@ export const Login = () => {
     });
 
   const { status: settingsStatus, refetch: settingsRefetch } =
-    useSettingControllerFindOne({
+    useSettingsControllerFindOne({
       query: {
         enabled: false,
       },

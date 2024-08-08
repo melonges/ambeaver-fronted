@@ -16,25 +16,25 @@ import type {
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import * as axios from "axios";
-import type { SettingDto } from ".././model";
+import type { SettingsDto } from ".././model";
 
-export const settingControllerFindOne = (
+export const settingsControllerFindOne = (
   options?: AxiosRequestConfig
-): Promise<AxiosResponse<SettingDto>> => {
-  return axios.default.get(`/setting`, options);
+): Promise<AxiosResponse<SettingsDto>> => {
+  return axios.default.get(`/settings`, options);
 };
 
-export const getSettingControllerFindOneQueryKey = () => {
-  return [`/setting`] as const;
+export const getSettingsControllerFindOneQueryKey = () => {
+  return [`/settings`] as const;
 };
 
-export const getSettingControllerFindOneInfiniteQueryOptions = <
-  TData = InfiniteData<Awaited<ReturnType<typeof settingControllerFindOne>>>,
+export const getSettingsControllerFindOneInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof settingsControllerFindOne>>>,
   TError = AxiosError<unknown>,
 >(options?: {
   query?: Partial<
     UseInfiniteQueryOptions<
-      Awaited<ReturnType<typeof settingControllerFindOne>>,
+      Awaited<ReturnType<typeof settingsControllerFindOne>>,
       TError,
       TData
     >
@@ -44,11 +44,11 @@ export const getSettingControllerFindOneInfiniteQueryOptions = <
   const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getSettingControllerFindOneQueryKey();
+    queryOptions?.queryKey ?? getSettingsControllerFindOneQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof settingControllerFindOne>>
-  > = ({ signal }) => settingControllerFindOne({ signal, ...axiosOptions });
+    Awaited<ReturnType<typeof settingsControllerFindOne>>
+  > = ({ signal }) => settingsControllerFindOne({ signal, ...axiosOptions });
 
   return {
     queryKey,
@@ -56,31 +56,32 @@ export const getSettingControllerFindOneInfiniteQueryOptions = <
     staleTime: 10000,
     ...queryOptions,
   } as UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof settingControllerFindOne>>,
+    Awaited<ReturnType<typeof settingsControllerFindOne>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type SettingControllerFindOneInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof settingControllerFindOne>>
+export type SettingsControllerFindOneInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof settingsControllerFindOne>>
 >;
-export type SettingControllerFindOneInfiniteQueryError = AxiosError<unknown>;
+export type SettingsControllerFindOneInfiniteQueryError = AxiosError<unknown>;
 
-export const useSettingControllerFindOneInfinite = <
-  TData = InfiniteData<Awaited<ReturnType<typeof settingControllerFindOne>>>,
+export const useSettingsControllerFindOneInfinite = <
+  TData = InfiniteData<Awaited<ReturnType<typeof settingsControllerFindOne>>>,
   TError = AxiosError<unknown>,
 >(options?: {
   query?: Partial<
     UseInfiniteQueryOptions<
-      Awaited<ReturnType<typeof settingControllerFindOne>>,
+      Awaited<ReturnType<typeof settingsControllerFindOne>>,
       TError,
       TData
     >
   >;
   axios?: AxiosRequestConfig;
 }): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getSettingControllerFindOneInfiniteQueryOptions(options);
+  const queryOptions =
+    getSettingsControllerFindOneInfiniteQueryOptions(options);
 
   const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
     TData,
@@ -92,13 +93,13 @@ export const useSettingControllerFindOneInfinite = <
   return query;
 };
 
-export const getSettingControllerFindOneQueryOptions = <
-  TData = Awaited<ReturnType<typeof settingControllerFindOne>>,
+export const getSettingsControllerFindOneQueryOptions = <
+  TData = Awaited<ReturnType<typeof settingsControllerFindOne>>,
   TError = AxiosError<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
-      Awaited<ReturnType<typeof settingControllerFindOne>>,
+      Awaited<ReturnType<typeof settingsControllerFindOne>>,
       TError,
       TData
     >
@@ -108,11 +109,11 @@ export const getSettingControllerFindOneQueryOptions = <
   const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getSettingControllerFindOneQueryKey();
+    queryOptions?.queryKey ?? getSettingsControllerFindOneQueryKey();
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof settingControllerFindOne>>
-  > = ({ signal }) => settingControllerFindOne({ signal, ...axiosOptions });
+    Awaited<ReturnType<typeof settingsControllerFindOne>>
+  > = ({ signal }) => settingsControllerFindOne({ signal, ...axiosOptions });
 
   return {
     queryKey,
@@ -120,31 +121,31 @@ export const getSettingControllerFindOneQueryOptions = <
     staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof settingControllerFindOne>>,
+    Awaited<ReturnType<typeof settingsControllerFindOne>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type SettingControllerFindOneQueryResult = NonNullable<
-  Awaited<ReturnType<typeof settingControllerFindOne>>
+export type SettingsControllerFindOneQueryResult = NonNullable<
+  Awaited<ReturnType<typeof settingsControllerFindOne>>
 >;
-export type SettingControllerFindOneQueryError = AxiosError<unknown>;
+export type SettingsControllerFindOneQueryError = AxiosError<unknown>;
 
-export const useSettingControllerFindOne = <
-  TData = Awaited<ReturnType<typeof settingControllerFindOne>>,
+export const useSettingsControllerFindOne = <
+  TData = Awaited<ReturnType<typeof settingsControllerFindOne>>,
   TError = AxiosError<unknown>,
 >(options?: {
   query?: Partial<
     UseQueryOptions<
-      Awaited<ReturnType<typeof settingControllerFindOne>>,
+      Awaited<ReturnType<typeof settingsControllerFindOne>>,
       TError,
       TData
     >
   >;
   axios?: AxiosRequestConfig;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getSettingControllerFindOneQueryOptions(options);
+  const queryOptions = getSettingsControllerFindOneQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

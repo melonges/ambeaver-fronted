@@ -2,7 +2,7 @@ import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
 import { useEventControllerTap } from "@/modules/api/event/event";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
 
-import { useSettingControllerFindOne } from "@/modules/api/setting/setting";
+import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
 import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
@@ -20,7 +20,7 @@ export const EarnGamePage = () => {
   const popup = usePopup();
 
   const { data, refetch } = useAssetControllerGetPlayerAssets();
-  const { data: settingsData } = useSettingControllerFindOne();
+  const { data: settingsData } = useSettingsControllerFindOne();
   const { mutateAsync: tapEvent } = useEventControllerTap();
 
   const pointsAmout = useRef(0);

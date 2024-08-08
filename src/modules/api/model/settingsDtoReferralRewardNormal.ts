@@ -5,6 +5,6 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export type SettingDtoPriceTapAr = {
+export type SettingsDtoReferralRewardNormal = {
   amount?: number;
 };
