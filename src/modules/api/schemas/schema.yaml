@@ -21,9 +21,9 @@ paths:
           description: ""
       tags:
         - Authorization
-  /asset:
+  /assets:
     get:
-      operationId: AssetController_getPlayerAssets
+      operationId: AssetsController_getPlayerAssets
       parameters: []
       responses:
         "200":
@@ -33,12 +33,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/PlayerAssetsDto"
       tags:
-        - Asset
+        - Assets
       security:
         - bearer: []
-  /asset/charge-points:
+  /assets/charge-points:
     post:
-      operationId: AssetController_chargePoints
+      operationId: AssetsController_chargePoints
       parameters: []
       responses:
         "201":
@@ -46,12 +46,12 @@ paths:
         "400":
           description: Not enough energy
       tags:
-        - Asset
+        - Assets
       security:
         - bearer: []
-  /asset/time-to-full-energy:
+  /assets/time-to-full-energy:
     get:
-      operationId: AssetController_getTimeToFullEnergy
+      operationId: AssetsController_getTimeToFullEnergy
       parameters: []
       responses:
         "200":
@@ -61,7 +61,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/RemainingTimeDto"
       tags:
-        - Asset
+        - Assets
       security:
         - bearer: []
   /referral:
@@ -340,7 +340,7 @@ components:
     SettingsDto:
       type: object
       properties:
-        limits:
+        playerLimits:
           type: object
           properties:
             points:
@@ -349,30 +349,24 @@ components:
             energy:
               required: true
               type: number
-            referral:
+            referrals:
               required: true
               type: number
-        chargePrice:
+        fullChargePointsCostInEnergy:
           type: number
-        referralReward:
+        referralRewards:
           type: object
           properties:
-            normal:
-              type: object
-              properties:
-                amount:
-                  required: true
-                  type: number
             premium:
-              type: object
-              properties:
-                amount:
-                  required: true
-                  type: number
+              required: true
+              type: number
+            normal:
+              required: true
+              type: number
       required:
-        - limits
-        - chargePrice
-        - referralReward
+        - playerLimits
+        - fullChargePointsCostInEnergy
+        - referralRewards
     CreateTaskDto:
       type: object
       properties:
@@ -402,10 +396,10 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-08T21:06:36.674Z
+          default: 2024-08-08T22:34:00.278Z
         updatedAt:
           type: object
-          default: 2024-08-08T21:06:36.674Z
+          default: 2024-08-08T22:34:00.278Z
       required:
         - title
         - rewardInAmbers

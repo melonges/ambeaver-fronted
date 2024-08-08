@@ -4,11 +4,11 @@
  * Ambeaver API
  * OpenAPI spec version: 0.0.1
  */
-import type { SettingsDtoLimits } from "./settingsDtoLimits";
-import type { SettingsDtoReferralReward } from "./settingsDtoReferralReward";
+import type { SettingsDtoPlayerLimits } from "./settingsDtoPlayerLimits";
+import type { SettingsDtoReferralRewards } from "./settingsDtoReferralRewards";
 
 export interface SettingsDto {
-  chargePrice: number;
-  limits: SettingsDtoLimits;
-  referralReward: SettingsDtoReferralReward;
+  fullChargePointsCostInEnergy: number;
+  playerLimits: SettingsDtoPlayerLimits;
+  referralRewards: SettingsDtoReferralRewards;
 }

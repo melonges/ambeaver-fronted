@@ -1,4 +1,4 @@
-import { useAssetControllerGetTimeToFullEnergy } from "@/modules/api/asset/asset";
+import { useAssetsControllerGetTimeToFullEnergy } from "@/modules/api/assets/assets";
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
 import { useLayout } from "@/modules/common/layouts/useLayout";
 import { useShowBackButton } from "@/modules/common/telegram/useShowBackButton";
@@ -9,7 +9,8 @@ export const StorePage = () => {
   useLayout("empty");
   useShowBackButton();
 
-  const { data, refetch, isFetching } = useAssetControllerGetTimeToFullEnergy();
+  const { data, refetch, isFetching } =
+    useAssetsControllerGetTimeToFullEnergy();
 
   const [ms, setMs] = useState(0);
 
@@ -21,7 +22,13 @@ export const StorePage = () => {
     refetch();
 
     const itervalId = setInterval(() => {
-      setMs((ms) => ms - 1000);
+      setMs((ms) => {
+        if (ms <= 0) {
+          clearInterval(itervalId);
+          return 0;
+        }
+        return ms - 1000;
+      });
     }, 1000);
 
     return () => clearInterval(itervalId);

@@ -5,6 +5,8 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export type SettingsDtoReferralRewardPremium = {
-  amount?: number;
+export type SettingsDtoPlayerLimits = {
+  energy?: number;
+  points?: number;
+  referrals?: number;
 };

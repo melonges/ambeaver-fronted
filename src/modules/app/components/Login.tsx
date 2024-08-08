@@ -1,4 +1,4 @@
-import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
+import { useAssetsControllerGetPlayerAssets } from "@/modules/api/assets/assets";
 import { useAuthControllerSignIn } from "@/modules/api/authorization/authorization";
 import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
 import { LayoutProvider } from "@/modules/common/layouts/context";
@@ -21,7 +21,7 @@ export const Login = () => {
   } = useAuthControllerSignIn();
 
   const { status: assetsStatus, refetch: assetsRefetch } =
-    useAssetControllerGetPlayerAssets({
+    useAssetsControllerGetPlayerAssets({
       query: {
         enabled: false,
       },

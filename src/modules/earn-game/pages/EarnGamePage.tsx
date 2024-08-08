@@ -1,11 +1,10 @@
 import {
-  useAssetControllerChargePoints,
-  useAssetControllerGetPlayerAssets,
-} from "@/modules/api/asset/asset";
+  useAssetsControllerChargePoints,
+  useAssetsControllerGetPlayerAssets,
+} from "@/modules/api/assets/assets";
 import { useEventControllerTap } from "@/modules/api/event/event";
-import { useDebounce } from "@/modules/common/hooks/useDebounce";
-
 import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
+import { useDebounce } from "@/modules/common/hooks/useDebounce";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
 import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
@@ -21,20 +20,20 @@ export const EarnGamePage = () => {
   const hapticFeedback = useHapticFeedback();
   const popup = usePopup();
 
-  const { data, refetch } = useAssetControllerGetPlayerAssets();
+  const { data, refetch } = useAssetsControllerGetPlayerAssets();
   const { data: settingsData } = useSettingsControllerFindOne();
   const { mutateAsync: tapEvent } = useEventControllerTap();
   const { mutateAsync: chargePoints, status: chargePointsStatus } =
-    useAssetControllerChargePoints();
+    useAssetsControllerChargePoints();
 
   const pointsAmout = useRef(0);
 
-  const [arCoint, setArCoin] = useState(data?.data.ambers || 0);
+  const [ambers, setAmbers] = useState(data?.data.ambers || 0);
   const [points, setPoints] = useState(data?.data.points || 0);
   const [energy, setEnergy] = useState(data?.data.energy || 0);
 
   const clicksToWin = useMemo(
-    () => settingsData?.data.limits.points || 1,
+    () => settingsData?.data.playerLimits.points || 1,
     [settingsData]
   );
 
@@ -49,7 +48,7 @@ export const EarnGamePage = () => {
   }, []);
 
   useEffect(() => {
-    setArCoin(data?.data.ambers || 0);
+    setAmbers(data?.data.ambers || 0);
     setPoints(data?.data.points || 0);
     setEnergy(data?.data.energy || 0);
   }, [data]);
@@ -62,12 +61,8 @@ export const EarnGamePage = () => {
   const pointsIsOver = points <= 0;
 
   const decPoint = useCallback(() => {
-    setPoints(
-      (points) => points - (settingsData?.data?.price?.tap?.points?.amount || 1)
-    );
-    setArCoin(
-      (arCoint) => arCoint + (settingsData?.data?.price?.tap?.ar?.amount || 1)
-    );
+    setPoints((points) => points - 1);
+    setAmbers((arCoint) => arCoint + 1);
     pointsAmout.current += 1;
     tapEventDebounced(pointsAmout.current);
     hapticFeedback.impactOccurred("soft");
@@ -75,7 +70,7 @@ export const EarnGamePage = () => {
 
   const buyPoints = useCallback(() => {
     setEnergy((energy) => {
-      if (energy < (settingsData?.data.chargePrice || 0)) {
+      if (energy < (settingsData?.data.fullChargePointsCostInEnergy || 0)) {
         popup.open({
           message: "Not enough energy to buy points.",
           buttons: [{ type: "close" }],
@@ -88,7 +83,7 @@ export const EarnGamePage = () => {
         setPoints((points) => points + POINTS_AMOUNT);
       });
 
-      return energy - (settingsData?.data.chargePrice || 0);
+      return energy - (settingsData?.data.fullChargePointsCostInEnergy || 0);
     });
   }, [settingsData]);
 
@@ -98,7 +93,7 @@ export const EarnGamePage = () => {
         to={PROFILE_PAGE_PATH}
         className="fixed left-4 top-6 z-10 rounded bg-primary px-4 py-2"
       >
-        $ AMBERS: {arCoint}
+        $ AMBERS: {ambers}
       </Link>
 
       <Link
@@ -111,7 +106,7 @@ export const EarnGamePage = () => {
       {pointsIsOver || chargePointsStatus === "pending" ? (
         <EndGameArea
           buyPoints={buyPoints}
-          pointsPrice={settingsData?.data.chargePrice || 0}
+          pointsPrice={settingsData?.data.fullChargePointsCostInEnergy || 0}
         />
       ) : (
         <GameArea decPoints={decPoint} clicksToWin={clicksToWin}></GameArea>
@@ -119,10 +114,10 @@ export const EarnGamePage = () => {
 
       <div className="mt-1 flex w-full justify-between">
         <p>
-          {points}/{settingsData?.data.limits.points} points
+          {points}/{settingsData?.data.playerLimits.points} points
         </p>
         <Link to={STORE_PAGE_PATH}>
-          {energy}/{settingsData?.data.limits.energy} ⚡
+          {energy}/{settingsData?.data.playerLimits.energy} ⚡
         </Link>
       </div>
     </div>

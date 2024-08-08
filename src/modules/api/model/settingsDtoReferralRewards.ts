@@ -5,6 +5,7 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export type SettingsDtoPriceTapPoints = {
-  amount?: number;
+export type SettingsDtoReferralRewards = {
+  normal?: number;
+  premium?: number;
 };
