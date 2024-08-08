@@ -66,7 +66,7 @@ export const FrinedsPage = () => {
             (page.data.data?.length || 0) > 0
               ? page.data.data?.map((item) => (
                   <p key={item.username}>
-                    {item.username || "Unknown user"} | {item.ar} AR
+                    {item.username || "Unknown user"} | {item.ambers} AR
                   </p>
                 ))
               : "No friends yet"
