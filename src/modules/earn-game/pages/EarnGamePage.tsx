@@ -92,8 +92,6 @@ export const EarnGamePage = () => {
     });
   }, [settingsData]);
 
-  console.log({ chargePointsStatus });
-
   return (
     <div className="relative flex h-full flex-col">
       <Link
