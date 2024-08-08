@@ -352,33 +352,8 @@ components:
             referral:
               required: true
               type: number
-        price:
-          type: object
-          properties:
-            recovery:
-              type: object
-              properties:
-                points:
-                  type: object
-                  properties:
-                    amount:
-                      required: true
-                      type: number
-            tap:
-              type: object
-              properties:
-                points:
-                  type: object
-                  properties:
-                    amount:
-                      required: true
-                      type: number
-                ar:
-                  type: object
-                  properties:
-                    amount:
-                      required: true
-                      type: number
+        chargePrice:
+          type: number
         referralReward:
           type: object
           properties:
@@ -396,7 +371,7 @@ components:
                   type: number
       required:
         - limits
-        - price
+        - chargePrice
         - referralReward
     CreateTaskDto:
       type: object
@@ -427,10 +402,10 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-08T19:09:19.966Z
+          default: 2024-08-08T21:06:36.674Z
         updatedAt:
           type: object
-          default: 2024-08-08T19:09:19.966Z
+          default: 2024-08-08T21:06:36.674Z
       required:
         - title
         - rewardInAmbers

@@ -5,11 +5,10 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { SettingsDtoLimits } from "./settingsDtoLimits";
-import type { SettingsDtoPrice } from "./settingsDtoPrice";
 import type { SettingsDtoReferralReward } from "./settingsDtoReferralReward";
 
 export interface SettingsDto {
+  chargePrice: number;
   limits: SettingsDtoLimits;
-  price: SettingsDtoPrice;
   referralReward: SettingsDtoReferralReward;
 }

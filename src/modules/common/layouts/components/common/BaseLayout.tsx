@@ -23,7 +23,6 @@ export const BaseLayout = ({
           </div>
         </main>
       </section>
-
       <NavBar />
     </>
   );

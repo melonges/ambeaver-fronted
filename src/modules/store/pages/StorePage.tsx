@@ -1,10 +1,25 @@
+import { useAssetControllerGetTimeToFullEnergy } from "@/modules/api/asset/asset";
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
 import { useLayout } from "@/modules/common/layouts/useLayout";
 import { useShowBackButton } from "@/modules/common/telegram/useShowBackButton";
+import { useEffect, useMemo } from "react";
 
 export const StorePage = () => {
   useLayout("empty");
   useShowBackButton();
+
+  const { data, refetch } = useAssetControllerGetTimeToFullEnergy();
+
+  useEffect(() => {
+    refetch();
+  }, []);
+
+  const time = useMemo(() => {
+    const totalSeconds = Math.floor((data?.data.remainingTime || 0) / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }, [data]);
 
   return (
     <div className="flex flex-col items-center">
@@ -13,7 +28,7 @@ export const StorePage = () => {
       <span>0,5 energies restores in an hour</span>
 
       <div className="mt-4 flex w-10/12 flex-col items-center justify-center rounded-full border border-secondary-border bg-secondary p-2 text-center">
-        <p className="text-2xl font-bold">00:00</p>
+        <p className="text-2xl font-bold">{time}</p>
         <span>timer until full energy storage will be recovered</span>
       </div>
 

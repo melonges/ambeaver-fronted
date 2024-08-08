@@ -1,4 +1,7 @@
-import { useAssetControllerGetPlayerAssets } from "@/modules/api/asset/asset";
+import {
+  useAssetControllerChargePoints,
+  useAssetControllerGetPlayerAssets,
+} from "@/modules/api/asset/asset";
 import { useEventControllerTap } from "@/modules/api/event/event";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
 
@@ -12,8 +15,7 @@ import { Link } from "react-router-dom";
 import { EndGameArea } from "../components/EndGameArea";
 import { GameArea } from "../components/GameArea";
 
-const POINTS_PRICE = 12;
-const POINTS_AMOUNT = 20;
+const POINTS_AMOUNT = 500;
 
 export const EarnGamePage = () => {
   const hapticFeedback = useHapticFeedback();
@@ -22,6 +24,8 @@ export const EarnGamePage = () => {
   const { data, refetch } = useAssetControllerGetPlayerAssets();
   const { data: settingsData } = useSettingsControllerFindOne();
   const { mutateAsync: tapEvent } = useEventControllerTap();
+  const { mutateAsync: chargePoints, status: chargePointsStatus } =
+    useAssetControllerChargePoints();
 
   const pointsAmout = useRef(0);
 
@@ -59,10 +63,10 @@ export const EarnGamePage = () => {
 
   const decPoint = useCallback(() => {
     setPoints(
-      (points) => points - (settingsData?.data.price.tap?.points?.amount || 1)
+      (points) => points - (settingsData?.data?.price?.tap?.points?.amount || 1)
     );
     setArCoin(
-      (arCoint) => arCoint + (settingsData?.data.price.tap?.ar?.amount || 1)
+      (arCoint) => arCoint + (settingsData?.data?.price?.tap?.ar?.amount || 1)
     );
     pointsAmout.current += 1;
     tapEventDebounced(pointsAmout.current);
@@ -71,7 +75,7 @@ export const EarnGamePage = () => {
 
   const buyPoints = useCallback(() => {
     setEnergy((energy) => {
-      if (energy < POINTS_PRICE) {
+      if (energy < (settingsData?.data.chargePrice || 0)) {
         popup.open({
           message: "Not enough energy to buy points.",
           buttons: [{ type: "close" }],
@@ -79,10 +83,16 @@ export const EarnGamePage = () => {
 
         return energy;
       }
-      setPoints((points) => points + POINTS_AMOUNT);
-      return energy - POINTS_PRICE;
+
+      chargePoints().then(() => {
+        setPoints((points) => points + POINTS_AMOUNT);
+      });
+
+      return energy - (settingsData?.data.chargePrice || 0);
     });
-  }, []);
+  }, [settingsData]);
+
+  console.log({ chargePointsStatus });
 
   return (
     <div className="relative flex h-full flex-col">
@@ -100,8 +110,11 @@ export const EarnGamePage = () => {
         Ticket for minigame
       </Link>
 
-      {pointsIsOver ? (
-        <EndGameArea buyPoints={buyPoints} pointsPrice={POINTS_PRICE} />
+      {pointsIsOver || chargePointsStatus === "pending" ? (
+        <EndGameArea
+          buyPoints={buyPoints}
+          pointsPrice={settingsData?.data.chargePrice || 0}
+        />
       ) : (
         <GameArea decPoints={decPoint} clicksToWin={clicksToWin}></GameArea>
       )}
