@@ -1,5 +1,11 @@
+import MainBgImage from "@/modules/common/assets/main-bg.png";
 import { useViewport } from "@telegram-apps/sdk-react";
+import { Spinner } from "@telegram-apps/telegram-ui";
 import { useLayoutEffect, useRef, useState } from "react";
+
+const SLIDES_STEP_PX = 10;
+const ORIGINAL_MAIN_BG_HEIGHT = 3840;
+const ORIGINAL_TREE_POSITION_Y = 3190;
 
 export const GameArea = ({
   decPoints,
@@ -10,27 +16,23 @@ export const GameArea = ({
 }) => {
   const viewport = useViewport();
 
-  const SLIDES_STEP_PX = 10;
-  const MAX_TREE_HEIGHT = clicksToWin * SLIDES_STEP_PX;
-
-  const INITIAL_TREE_OFFSET = 50;
-
+  const [initialLoading, setInitialLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(false);
 
   const slidesContainerRef = useRef<HTMLDivElement | null>(null);
   const treeContainerRef = useRef<HTMLDivElement | null>(null);
   const treeTrunkRef = useRef<HTMLDivElement | null>(null);
-  const treeEatenRef = useRef<HTMLDivElement | null>(null);
   const beaverRef = useRef<HTMLDivElement | null>(null);
   const backgroundSlidesWrapperRef = useRef<HTMLDivElement | null>(null);
+  const mainBgRef = useRef<HTMLImageElement | null>(null);
 
   const clicksCount = useRef(0);
   const currentSlidesTranslateY = useRef(0);
+
   const beaverDirection = useRef<"right" | "left">("right");
   const canClick = useRef(true);
 
   useLayoutEffect(() => {
-    initValues();
     viewport?.on("change", initValues);
     return () => viewport?.off("change", initValues);
   }, [viewport]);
@@ -42,10 +44,19 @@ export const GameArea = ({
       !treeTrunkRef.current ||
       !beaverRef.current ||
       !backgroundSlidesWrapperRef.current ||
-      !treeEatenRef.current
+      !mainBgRef.current
     ) {
       return;
     }
+
+    // TODO: верхушку дерева также посчитать
+    document.documentElement.style.setProperty("--tree-width", "90px");
+    document.documentElement.style.setProperty("--tree-base-width", "142px");
+
+    const currentImageHeight = mainBgRef.current.clientHeight;
+    const scale = currentImageHeight / ORIGINAL_MAIN_BG_HEIGHT;
+    const yPos = ORIGINAL_TREE_POSITION_Y * scale;
+    const initialTreeBottomOffset = currentImageHeight - yPos;
 
     const slides = backgroundSlidesWrapperRef.current.children;
 
@@ -64,10 +75,11 @@ export const GameArea = ({
     slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
 
     treeContainerRef.current.style.bottom =
-      currentSlidesTranslateY.current + INITIAL_TREE_OFFSET + "px";
+      currentSlidesTranslateY.current + initialTreeBottomOffset + "px";
 
-    treeEatenRef.current.style.height = 0 + "px";
     treeTrunkRef.current.style.height = clicksToWin * SLIDES_STEP_PX + "px";
+    treeTrunkRef.current.style.backgroundPositionY =
+      treeTrunkRef.current.style.height;
 
     beaverDirection.current = "right";
     beaverRef.current.style.bottom = 0 + "px";
@@ -80,7 +92,6 @@ export const GameArea = ({
     if (
       !slidesContainerRef.current ||
       !treeTrunkRef.current ||
-      !treeEatenRef.current ||
       !beaverRef.current
     ) {
       return;
@@ -117,6 +128,8 @@ export const GameArea = ({
 
         currentSlidesTranslateY.current -= SLIDES_STEP_PX;
         slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
+        // treeTrunkRef.current.style.backgroundPositionY =
+        //   currentSlidesTranslateY.current + "px";
 
         beaverRef.current.style.bottom =
           parseFloat(beaverRef.current.style.bottom || "0") -
@@ -127,9 +140,11 @@ export const GameArea = ({
 
     currentSlidesTranslateY.current += SLIDES_STEP_PX;
     slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
+    treeTrunkRef.current.style.backgroundPositionY =
+      currentSlidesTranslateY.current + "px";
 
     beaverRef.current.style.bottom =
-      parseFloat(beaverRef.current.style.bottom || "0") + "px";
+      parseFloat(beaverRef.current.style.bottom || "0") + SLIDES_STEP_PX + "px";
 
     if (beaverDirection.current === "left") {
       beaverRef.current.classList.replace("to-left-jump", "to-right-jump");
@@ -139,13 +154,13 @@ export const GameArea = ({
       beaverDirection.current = "left";
     }
 
-    const newTreeTrunkHeight =
-      parseFloat(treeTrunkRef.current.style.height) - SLIDES_STEP_PX;
+    treeTrunkRef.current.style.backgroundPositionY =
+      treeTrunkRef.current.style.height;
+  };
 
-    treeTrunkRef.current.style.height = newTreeTrunkHeight + "px";
-
-    treeEatenRef.current.style.height =
-      MAX_TREE_HEIGHT - newTreeTrunkHeight + "px";
+  const onImageLoad = () => {
+    setInitialLoading(false);
+    initValues();
   };
 
   return (
@@ -156,7 +171,6 @@ export const GameArea = ({
           <div ref={treeTrunkRef} className="tree-trunk">
             <div ref={beaverRef} className="beaver"></div>
           </div>
-          <div ref={treeEatenRef} className="tree-eaten"></div>
           <div className="tree-base"></div>
         </div>
 
@@ -167,10 +181,6 @@ export const GameArea = ({
           <div className="slide slide-2"></div>
           <div className="slide slide-3"></div>
           <div className="slide slide-2"></div>
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
 
           <div className="slide slide-3"></div>
           <div className="slide slide-2"></div>
@@ -178,35 +188,7 @@ export const GameArea = ({
 
           <div className="slide slide-3"></div>
           <div className="slide slide-2"></div>
-          <div className="slide slide-1"></div>
-
-          <div className="slide slide-0">
-            <div className="house">
-              <div className="chimney">
-                <div className="smoke">
-                  <div className="smoke-1">
-                    <div className="smoke">
-                      <div className="smoke-1">
-                        <div className="smoke">
-                          <div className="smoke-1"></div>
-                          <div className="smoke-2"></div>
-                          <div className="smoke-3"></div>
-                        </div>
-                      </div>
-                      <div className="smoke-2"></div>
-                      <div className="smoke-3"></div>
-                    </div>
-                  </div>
-                  <div className="smoke-2"></div>
-                  <div className="smoke-3"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="slide slide-999">
-            <div className="river"></div>
-          </div>
+          <img ref={mainBgRef} src={MainBgImage} onLoad={onImageLoad} />
         </div>
       </div>
 
@@ -220,6 +202,12 @@ export const GameArea = ({
           </div>
         )}
       </div>
+
+      {initialLoading && (
+        <div className="absolute inset-0 z-30 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">
+          <Spinner size="l" />
+        </div>
+      )}
     </div>
   );
 };

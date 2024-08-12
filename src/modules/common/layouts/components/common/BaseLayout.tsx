@@ -15,7 +15,7 @@ export const BaseLayout = ({
     <>
       <section
         style={{ paddingBottom: NAVBAR_HEIGHT + "px", ...style }}
-        className="h-[--tg-viewport-stable-height] w-full"
+        className="app w-full"
       >
         <main className="h-full w-full overflow-y-auto overflow-x-hidden">
           <div style={contentStyle} className="h-full w-full p-2 pt-4">
