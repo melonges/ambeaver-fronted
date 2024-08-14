@@ -26,8 +26,6 @@ export const GameArea = ({
   decPoints: () => void;
   clicksToWin: number;
 }) => {
-  decPoints = () => {};
-
   const viewport = useViewport();
 
   const [initialLoading, setInitialLoading] = useState(true);
@@ -62,18 +60,6 @@ export const GameArea = ({
     ) {
       return;
     }
-
-    // let c = 0;
-
-    // const intervalId = setInterval(() => {
-    //   c++;
-    //   if (c === 499) {
-    //     clearInterval(intervalId);
-
-    //     return;
-    //   }
-    //   clickHanlder();
-    // });
 
     const currentImageHeight = mainBgRef.current.clientHeight;
     const scale = currentImageHeight / ORIGINAL_MAIN_BG_HEIGHT;
