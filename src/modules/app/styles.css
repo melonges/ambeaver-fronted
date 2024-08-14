@@ -27,10 +27,15 @@ body {
 :root {
   --bg-slides-z-index: 5;
   --tree-cotainer-z-index: 10;
-  --beaver-z-index: 15;
+  --tree-z-index: 15;
+  --beaver-z-index: 20;
+
+  --tree-crown-width: 318px;
+  --tree-crown-height: 388px;
 
   --tree-width: 90px;
   --tree-base-width: 142px;
+  --tree-base-height: 143px;
 }
 
 #root {
@@ -85,13 +90,17 @@ body {
   align-items: center;
 
   .tree-crown {
-    height: 388px;
-    width: 318px;
+    position: relative;
+    bottom: -1px;
+    width: var(--tree-crown-width);
+    height: var(--tree-crown-height);
     background-image: url("../common/assets/tree/tree-crown.png");
     background-size: cover;
   }
 
   .tree-trunk {
+    z-index: var(--beaver-z-index);
+
     background-image: url("../common/assets/tree/tree-trunk.png");
     background-position: 0% 100%;
     background-size: var(--tree-width);
@@ -113,8 +122,11 @@ body {
   }
 
   .tree-base {
+    z-index: var(--tree-z-index);
+    position: relative;
+    bottom: 1px;
     width: var(--tree-base-width);
-    height: 143px;
+    height: var(--tree-base-height);
     background-size: contain;
     background-image: url("../common/assets/tree/tree-base.png");
   }
