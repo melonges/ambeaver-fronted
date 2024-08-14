@@ -29,13 +29,18 @@ body {
   --tree-cotainer-z-index: 10;
   --tree-z-index: 15;
   --beaver-z-index: 20;
+  --tree-base-z-index: 25;
 
   --tree-crown-width: 318px;
   --tree-crown-height: 388px;
 
   --tree-width: 90px;
+  --tree-height: 128.2px;
   --tree-base-width: 142px;
   --tree-base-height: 143px;
+
+  --tree-base-grass-width: 142px;
+  --tree-base-grass-height: 143px;
 }
 
 #root {
@@ -84,13 +89,11 @@ body {
   width: 100%;
   pointer-events: none;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
   .tree-crown {
     position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+
     bottom: -1px;
     width: var(--tree-crown-width);
     height: var(--tree-crown-height);
@@ -101,9 +104,13 @@ body {
   .tree-trunk {
     z-index: var(--beaver-z-index);
 
+    left: 50%;
+    transform: translateX(-50%);
+
     background-image: url("../common/assets/tree/tree-trunk.png");
-    background-position: 0% 100%;
     background-size: var(--tree-width);
+
+    background-position: bottom;
 
     width: var(--tree-width);
     position: relative;
@@ -121,14 +128,21 @@ body {
     }
   }
 
-  .tree-base {
-    z-index: var(--tree-z-index);
-    position: relative;
-    bottom: 1px;
-    width: var(--tree-base-width);
-    height: var(--tree-base-height);
+  .tree-base-grass {
+    z-index: var(--tree-base-z-index);
+
+    left: 50%;
+    transform: translateX(-50%);
+
+    position: absolute;
+    bottom: calc(var(--tree-base-grass-height) / 4 * -1);
+
+    width: var(--tree-base-grass-width);
+    height: var(--tree-base-grass-height);
+
+    background-image: url("../common//assets//tree/tree-grass.png");
     background-size: contain;
-    background-image: url("../common/assets/tree/tree-base.png");
+    background-repeat: no-repeat;
   }
 }
 
@@ -157,29 +171,5 @@ body {
   }
   100% {
     transform: translate(-50%);
-  }
-}
-
-@keyframes river {
-  0% {
-    background-color: aqua;
-  }
-  50% {
-    background-color: blue;
-  }
-  100% {
-    background-color: aqua;
-  }
-}
-
-@keyframes smoke {
-  0% {
-    transform: scale(1, 1);
-  }
-  50% {
-    transform: scale(-1, 1);
-  }
-  100% {
-    transform: scale(1, 1);
   }
 }

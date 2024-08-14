@@ -60,12 +60,13 @@ export const Login = () => {
         },
       });
     }
-  }, [loginError]);
+  }, [loginError, assetsStatus, settingsStatus]);
 
   if (
-    loginStatus === "pending" ||
-    assetsStatus === "pending" ||
-    settingsStatus === "pending"
+    !loginError &&
+    (loginStatus === "pending" ||
+      assetsStatus === "pending" ||
+      settingsStatus === "pending")
   ) {
     return <Loader />;
   }

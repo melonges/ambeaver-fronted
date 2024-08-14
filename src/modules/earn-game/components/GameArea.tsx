@@ -6,16 +6,18 @@ import { useLayoutEffect, useRef, useState } from "react";
 const SLIDES_STEP_PX = 10;
 
 const ORIGINAL_MAIN_BG_HEIGHT = 3840;
-const ORIGINAL_TREE_POSITION_Y = 3190 + 25;
+const ORIGINAL_TREE_POSITION_Y = 3125;
 
-const ORIGINAL_CONTENT_WIDTH = 428;
-const ORIGINAL_TREE_WIDTH = 90;
-const ORIGINAL_TREE_HEIGHT = 128.2;
-const ORIGINAL_TREE_BASE_WIDTH = 142;
-const ORIGINAL_TREE_BASE_HEIGHT = 143;
+const ORIGINAL_TREE_WIDTH = 450;
+const ORIGINAL_TREE_HEIGHT = 641;
+const ORIGINAL_TREE_BASE_WIDTH = 708;
+const ORIGINAL_TREE_BASE_HEIGHT = 715;
 
-const ORIGINAL_TREE_CROWN_WIDTH = 318;
-const ORIGINAL_TREE_CROWN_HEIGHT = 388;
+const ORIGINAL_TREE_CROWN_WIDTH = 1598;
+const ORIGINAL_TREE_CROWN_HEIGHT = 1954;
+
+const ORIGINAL_TREE_BASE_GRASS_WIDTH = 708;
+const ORIGINAL_TREE_BASE_GRASS_HEIGHT = 211;
 
 export const GameArea = ({
   decPoints,
@@ -24,6 +26,8 @@ export const GameArea = ({
   decPoints: () => void;
   clicksToWin: number;
 }) => {
+  decPoints = () => {};
+
   const viewport = useViewport();
 
   const [initialLoading, setInitialLoading] = useState(true);
@@ -59,19 +63,39 @@ export const GameArea = ({
       return;
     }
 
-    const contentWidth = mainBgRef.current.clientWidth;
-    const treeScale = contentWidth / ORIGINAL_CONTENT_WIDTH;
+    // let c = 0;
 
-    const newTreeChunkWidth = treeScale * ORIGINAL_TREE_WIDTH;
-    const newTreeChunkHeight = treeScale * ORIGINAL_TREE_HEIGHT;
-    const newTreeBaseWidth = treeScale * ORIGINAL_TREE_BASE_WIDTH;
-    const newTreeBaseHeight = treeScale * ORIGINAL_TREE_BASE_HEIGHT;
-    const newTreeCrownWidth = treeScale * ORIGINAL_TREE_CROWN_WIDTH;
-    const newTreeCrownHeight = treeScale * ORIGINAL_TREE_CROWN_HEIGHT;
+    // const intervalId = setInterval(() => {
+    //   c++;
+    //   if (c === 499) {
+    //     clearInterval(intervalId);
+
+    //     return;
+    //   }
+    //   clickHanlder();
+    // });
+
+    const currentImageHeight = mainBgRef.current.clientHeight;
+    const scale = currentImageHeight / ORIGINAL_MAIN_BG_HEIGHT;
+    const initialTreeYPosition = ORIGINAL_TREE_POSITION_Y * scale;
+    const initialTreeBottomOffset = currentImageHeight - initialTreeYPosition;
+
+    const newTreeChunkWidth = scale * ORIGINAL_TREE_WIDTH;
+    const newTreeChunkHeight = scale * ORIGINAL_TREE_HEIGHT;
+    const newTreeBaseWidth = scale * ORIGINAL_TREE_BASE_WIDTH;
+    const newTreeBaseHeight = scale * ORIGINAL_TREE_BASE_HEIGHT;
+    const newTreeCrownWidth = scale * ORIGINAL_TREE_CROWN_WIDTH;
+    const newTreeCrownHeight = scale * ORIGINAL_TREE_CROWN_HEIGHT;
+    const newTreeBaseGrassWidth = scale * ORIGINAL_TREE_BASE_GRASS_WIDTH;
+    const newTreeBaseGrassHeight = scale * ORIGINAL_TREE_BASE_GRASS_HEIGHT;
 
     document.documentElement.style.setProperty(
       "--tree-width",
       newTreeChunkWidth + "px"
+    );
+    document.documentElement.style.setProperty(
+      "--tree-height",
+      newTreeChunkHeight + "px"
     );
     document.documentElement.style.setProperty(
       "--tree-base-width",
@@ -89,11 +113,14 @@ export const GameArea = ({
       "--tree-crown-height",
       newTreeCrownHeight + "px"
     );
-
-    const currentImageHeight = mainBgRef.current.clientHeight;
-    const bgScale = currentImageHeight / ORIGINAL_MAIN_BG_HEIGHT;
-    const initialTreeYPosition = ORIGINAL_TREE_POSITION_Y * bgScale;
-    const initialTreeBottomOffset = currentImageHeight - initialTreeYPosition;
+    document.documentElement.style.setProperty(
+      "--tree-base-grass-width",
+      newTreeBaseGrassWidth + "px"
+    );
+    document.documentElement.style.setProperty(
+      "--tree-base-grass-height",
+      newTreeBaseGrassHeight + "px"
+    );
 
     const slides = backgroundSlidesWrapperRef.current.children;
 
@@ -114,9 +141,11 @@ export const GameArea = ({
     treeContainerRef.current.style.bottom =
       currentSlidesTranslateY.current + initialTreeBottomOffset + "px";
 
+    const treeBaseHeight = newTreeChunkHeight;
     const potentialTreeHeight = clicksToWin * SLIDES_STEP_PX;
     const realTreeHeight =
-      Math.ceil(potentialTreeHeight / newTreeChunkHeight) * newTreeChunkHeight;
+      Math.ceil(potentialTreeHeight / newTreeChunkHeight) * newTreeChunkHeight +
+      treeBaseHeight;
 
     treeTrunkRef.current.style.height = realTreeHeight + "px";
 
@@ -124,7 +153,7 @@ export const GameArea = ({
       treeTrunkRef.current.style.height;
 
     beaverDirection.current = "right";
-    beaverRef.current.style.bottom = 0 + "px";
+    beaverRef.current.style.bottom = treeBaseHeight + "px";
 
     beaverRef.current.classList.remove("to-left-jump");
     beaverRef.current.classList.add("to-right-jump");
@@ -213,7 +242,7 @@ export const GameArea = ({
           <div ref={treeTrunkRef} className="tree-trunk">
             <div ref={beaverRef} className="beaver"></div>
           </div>
-          <div className="tree-base"></div>
+          <div className="tree-base-grass" />
         </div>
 
         <div ref={backgroundSlidesWrapperRef} className="bg-slides">
