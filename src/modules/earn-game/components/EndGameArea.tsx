@@ -8,7 +8,7 @@ export const EndGameArea = ({
   buyPoints: () => void;
 }) => {
   return (
-    <div className="mt-12 flex h-full flex-col items-center justify-between py-4">
+    <div className="mt-16 flex h-full flex-col items-center justify-between py-4">
       <div className="flex w-8/12 flex-col items-center">
         <p className="rounded border-2 border-secondary-border bg-secondary p-2">
           click limit is over you can restore it and play more

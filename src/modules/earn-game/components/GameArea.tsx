@@ -6,7 +6,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 const SLIDES_STEP_PX = 10;
 
 const ORIGINAL_MAIN_BG_HEIGHT = 3840;
-const ORIGINAL_TREE_POSITION_Y = 3125;
+const ORIGINAL_TREE_POSITION_Y = 3140;
 
 const ORIGINAL_TREE_WIDTH = 450;
 const ORIGINAL_TREE_HEIGHT = 641;
@@ -63,7 +63,7 @@ export const GameArea = ({
 
     const currentImageHeight = mainBgRef.current.clientHeight;
     const scale = currentImageHeight / ORIGINAL_MAIN_BG_HEIGHT;
-    const initialTreeYPosition = ORIGINAL_TREE_POSITION_Y * scale;
+    const initialTreeYPosition = scale * ORIGINAL_TREE_POSITION_Y;
     const initialTreeBottomOffset = currentImageHeight - initialTreeYPosition;
 
     const newTreeChunkWidth = scale * ORIGINAL_TREE_WIDTH;
@@ -185,8 +185,6 @@ export const GameArea = ({
 
         currentSlidesTranslateY.current -= SLIDES_STEP_PX;
         slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
-        // treeTrunkRef.current.style.backgroundPositionY =
-        //   currentSlidesTranslateY.current + "px";
 
         beaverRef.current.style.bottom =
           parseFloat(beaverRef.current.style.bottom || "0") -
@@ -222,7 +220,10 @@ export const GameArea = ({
 
   return (
     <div className="relative h-full w-full overflow-hidden">
-      <div ref={slidesContainerRef} className="absolute inset-0 h-full w-full">
+      <div
+        ref={slidesContainerRef}
+        className="slides-container absolute inset-0 h-full w-full"
+      >
         <div ref={treeContainerRef} className="tree-container">
           <div className="tree-crown"></div>
           <div ref={treeTrunkRef} className="tree-trunk">

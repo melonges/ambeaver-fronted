@@ -112,7 +112,7 @@ export const EarnGamePage = () => {
         <GameArea decPoints={decPoint} clicksToWin={clicksToWin}></GameArea>
       )}
 
-      <div className="mt-1 flex w-full justify-between">
+      <div className="mt-1 flex w-full justify-between px-2">
         <p>
           {points}/{settingsData?.data.playerLimits.points} points
         </p>

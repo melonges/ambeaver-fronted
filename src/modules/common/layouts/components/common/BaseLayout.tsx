@@ -18,7 +18,7 @@ export const BaseLayout = ({
         className="app w-full"
       >
         <main className="h-full w-full overflow-y-auto overflow-x-hidden">
-          <div style={contentStyle} className="h-full w-full p-2 pt-4">
+          <div style={contentStyle} className="h-full w-full">
             {children}
           </div>
         </main>
