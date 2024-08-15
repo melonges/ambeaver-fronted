@@ -48,7 +48,7 @@ body {
 }
 
 .slides-container {
-  transition: all 0.3s ease;
+  transition: none;
 }
 
 .bg-slides {
@@ -78,6 +78,9 @@ body {
     background-color: #8b1383;
   }
 }
+.start-slide {
+  position: relative;
+}
 
 .tree-container {
   z-index: var(--tree-cotainer-z-index);
@@ -91,26 +94,19 @@ body {
     left: 50%;
     transform: translateX(-50%);
 
-    bottom: -1px;
     width: var(--tree-crown-width);
     height: var(--tree-crown-height);
-    background-image: url("../common/assets/tree/tree-crown.png");
-    background-size: cover;
   }
 
   .tree-trunk {
     z-index: var(--tree-z-index);
 
+    position: absolute;
+    bottom: 0;
+    width: var(--tree-width);
+
     left: 50%;
     transform: translateX(-50%);
-
-    background-image: url("../common/assets/tree/tree-trunk.png");
-    background-size: var(--tree-width);
-
-    background-position: bottom;
-
-    width: var(--tree-width);
-    position: relative;
 
     .beaver {
       z-index: var(--beaver-z-index);
@@ -128,18 +124,14 @@ body {
   .tree-base-grass {
     z-index: var(--tree-base-z-index);
 
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
-
-    position: absolute;
+    bottom: 0;
     bottom: calc(var(--tree-base-grass-height) / 4 * -1);
 
     width: var(--tree-base-grass-width);
     height: var(--tree-base-grass-height);
-
-    background-image: url("../common//assets//tree/tree-grass.png");
-    background-size: contain;
-    background-repeat: no-repeat;
   }
 }
 

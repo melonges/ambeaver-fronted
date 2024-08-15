@@ -6,10 +6,12 @@ export const BaseLayout = ({
   children,
   style,
   contentStyle,
+  contentClassName,
 }: {
   children: ReactNode;
   style?: CSSProperties;
   contentStyle?: CSSProperties;
+  contentClassName?: string;
 }) => {
   return (
     <>
@@ -17,7 +19,9 @@ export const BaseLayout = ({
         style={{ paddingBottom: NAVBAR_HEIGHT + "px", ...style }}
         className="app w-full"
       >
-        <main className="h-full w-full overflow-y-auto overflow-x-hidden">
+        <main
+          className={`h-full w-full overflow-y-auto overflow-x-hidden ${contentClassName}`}
+        >
           <div style={contentStyle} className="h-full w-full">
             {children}
           </div>

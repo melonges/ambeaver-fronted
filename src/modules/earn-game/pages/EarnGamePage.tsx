@@ -5,6 +5,7 @@ import {
 import { useEventControllerTap } from "@/modules/api/event/event";
 import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
+import { useLayout } from "@/modules/common/layouts/useLayout";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
 import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
@@ -17,6 +18,8 @@ import { GameArea } from "../components/GameArea";
 const POINTS_AMOUNT = 500;
 
 export const EarnGamePage = () => {
+  useLayout("game");
+
   const hapticFeedback = useHapticFeedback();
   const popup = usePopup();
 
@@ -91,14 +94,14 @@ export const EarnGamePage = () => {
     <div className="relative flex h-full flex-col">
       <Link
         to={PROFILE_PAGE_PATH}
-        className="fixed left-4 top-6 z-10 rounded bg-primary px-4 py-2"
+        className="fixed left-2 top-6 z-10 rounded bg-primary px-4 py-2"
       >
         $ AMBERS: {ambers}
       </Link>
 
       <Link
         to={HAMSTER_MINIGAME_PAGE_PATH}
-        className="fixed right-4 top-6 z-10 rounded bg-primary px-4 py-2"
+        className="fixed right-2 top-6 z-10 rounded bg-primary px-4 py-2"
       >
         Ticket for minigame
       </Link>

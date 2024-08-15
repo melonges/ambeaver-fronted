@@ -1,4 +1,7 @@
 import MainBgImage from "@/modules/common/assets/main-bg.png";
+import TreeCrownImage from "@/modules/common/assets/tree/tree-crown.png";
+import TreeBaseGrassImage from "@/modules/common/assets/tree/tree-grass.png";
+import TreeTrunkImage from "@/modules/common/assets/tree/tree-trunk.png";
 import { useViewport } from "@telegram-apps/sdk-react";
 import { Spinner } from "@telegram-apps/telegram-ui";
 import { useLayoutEffect, useRef, useState } from "react";
@@ -31,12 +34,16 @@ export const GameArea = ({
   const [initialLoading, setInitialLoading] = useState(true);
   const [showLoading, setShowLoading] = useState(false);
 
+  const [trunkChunksCount, setTrunkChunksCount] = useState(0);
+
   const slidesContainerRef = useRef<HTMLDivElement | null>(null);
   const treeContainerRef = useRef<HTMLDivElement | null>(null);
+  const treeCrownRef = useRef<HTMLImageElement | null>(null);
   const treeTrunkRef = useRef<HTMLDivElement | null>(null);
   const beaverRef = useRef<HTMLDivElement | null>(null);
   const backgroundSlidesWrapperRef = useRef<HTMLDivElement | null>(null);
   const mainBgRef = useRef<HTMLImageElement | null>(null);
+  const startSlideRef = useRef<HTMLDivElement | null>(null);
 
   const clicksCount = useRef(0);
   const currentSlidesTranslateY = useRef(0);
@@ -46,6 +53,11 @@ export const GameArea = ({
 
   useLayoutEffect(() => {
     viewport?.on("change", initValues);
+
+    if (slidesContainerRef.current) {
+      slidesContainerRef.current.style.transition = "none";
+    }
+
     return () => viewport?.off("change", initValues);
   }, [viewport]);
 
@@ -56,7 +68,8 @@ export const GameArea = ({
       !treeTrunkRef.current ||
       !beaverRef.current ||
       !backgroundSlidesWrapperRef.current ||
-      !mainBgRef.current
+      !mainBgRef.current ||
+      !treeCrownRef.current
     ) {
       return;
     }
@@ -74,6 +87,8 @@ export const GameArea = ({
     const newTreeCrownHeight = scale * ORIGINAL_TREE_CROWN_HEIGHT;
     const newTreeBaseGrassWidth = scale * ORIGINAL_TREE_BASE_GRASS_WIDTH;
     const newTreeBaseGrassHeight = scale * ORIGINAL_TREE_BASE_GRASS_HEIGHT;
+
+    treeContainerRef.current.style.bottom = initialTreeBottomOffset + "px";
 
     document.documentElement.style.setProperty(
       "--tree-width",
@@ -124,19 +139,20 @@ export const GameArea = ({
 
     slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
 
-    treeContainerRef.current.style.bottom =
-      currentSlidesTranslateY.current + initialTreeBottomOffset + "px";
-
     const treeBaseHeight = newTreeChunkHeight;
+
     const potentialTreeHeight = clicksToWin * SLIDES_STEP_PX;
     const realTreeHeight =
       Math.ceil(potentialTreeHeight / newTreeChunkHeight) * newTreeChunkHeight +
       treeBaseHeight;
 
-    treeTrunkRef.current.style.height = realTreeHeight + "px";
+    setTrunkChunksCount(
+      Math.ceil(potentialTreeHeight / newTreeChunkHeight) + 1
+    );
 
-    treeTrunkRef.current.style.backgroundPositionY =
-      treeTrunkRef.current.style.height;
+    treeCrownRef.current.style.bottom = realTreeHeight + "px";
+
+    treeTrunkRef.current.style.height = realTreeHeight + "px";
 
     beaverDirection.current = "right";
     beaverRef.current.style.bottom = treeBaseHeight + "px";
@@ -157,6 +173,8 @@ export const GameArea = ({
     if (!canClick.current) {
       return;
     }
+
+    slidesContainerRef.current.style.transition = "all 0.3s ease";
 
     clicksCount.current++;
     decPoints();
@@ -224,14 +242,6 @@ export const GameArea = ({
         ref={slidesContainerRef}
         className="slides-container absolute inset-0 h-full w-full"
       >
-        <div ref={treeContainerRef} className="tree-container">
-          <div className="tree-crown"></div>
-          <div ref={treeTrunkRef} className="tree-trunk">
-            <div ref={beaverRef} className="beaver"></div>
-          </div>
-          <div className="tree-base-grass" />
-        </div>
-
         <div ref={backgroundSlidesWrapperRef} className="bg-slides">
           <div className="slide slide-3"></div>
           <div className="slide slide-2"></div>
@@ -252,7 +262,28 @@ export const GameArea = ({
 
           <div className="slide slide-3"></div>
           <div className="slide slide-2"></div>
-          <img ref={mainBgRef} src={MainBgImage} onLoad={onImageLoad} />
+
+          <div ref={startSlideRef} className="start-slide">
+            <div ref={treeContainerRef} className="tree-container">
+              <img
+                ref={treeCrownRef}
+                src={TreeCrownImage}
+                className="tree-crown"
+              />
+
+              <div ref={treeTrunkRef} className="tree-trunk">
+                <div className="tree-chunks">
+                  {[...Array(trunkChunksCount)].map((_, i) => (
+                    <img src={TreeTrunkImage} key={i} />
+                  ))}
+                </div>
+
+                <div ref={beaverRef} className="beaver"></div>
+              </div>
+              <img src={TreeBaseGrassImage} className="tree-base-grass" />
+            </div>
+            <img ref={mainBgRef} src={MainBgImage} onLoad={onImageLoad} />
+          </div>
         </div>
       </div>
 
