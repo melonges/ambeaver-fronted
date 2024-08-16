@@ -1,7 +1,11 @@
+import BushImage from "@/modules/common/assets/end-game/bush.png";
+import SittingBeaverImage from "@/modules/common/assets/end-game/sitting-beaver.png";
+import TreeStump from "@/modules/common/assets/end-game/tree-stump.png";
 import MainBgImage from "@/modules/common/assets/main-bg.png";
 import TreeCrownImage from "@/modules/common/assets/tree/tree-crown.png";
 import TreeBaseGrassImage from "@/modules/common/assets/tree/tree-grass.png";
 import TreeTrunkImage from "@/modules/common/assets/tree/tree-trunk.png";
+
 import { useViewport } from "@telegram-apps/sdk-react";
 import { Spinner } from "@telegram-apps/telegram-ui";
 import { useLayoutEffect, useRef, useState } from "react";
@@ -22,12 +26,29 @@ const ORIGINAL_TREE_CROWN_HEIGHT = 1954;
 const ORIGINAL_TREE_BASE_GRASS_WIDTH = 708;
 const ORIGINAL_TREE_BASE_GRASS_HEIGHT = 211;
 
+const ORIGINAL_TREE_STUMP_WIDTH = 607;
+const ORIGINAL_TREE_STUMP_HEIGHT = 529;
+const ORIGINAL_TREE_STUMP_POSITION_X = 800;
+const ORIGINAL_TREE_STUMP_POSITION_Y = 2725;
+
+const ORIGINAL_SITTING_BEAVER_WIDTH = 961;
+const ORIGINAL_SITTING_BEAVER_HEIGHT = 870;
+const ORIGINAL_SITTING_BEAVER_POSITION_X = 1070;
+const ORIGINAL_SITTING_BEAVER_POSITION_Y = 2350;
+
+const ORIGINAL_BUSH_WIDTH = 531;
+const ORIGINAL_BUSH_HEIGHT = 244;
+const ORIGINAL_BUSH_POSITION_X = 1402;
+const ORIGINAL_BUSH_POSITION_Y = 3073;
+
 export const GameArea = ({
-  decPoints,
+  showEndGame,
   clicksToWin,
+  decPoints,
 }: {
-  decPoints: () => void;
+  showEndGame: boolean;
   clicksToWin: number;
+  decPoints: () => void;
 }) => {
   const viewport = useViewport();
 
@@ -45,6 +66,10 @@ export const GameArea = ({
   const mainBgRef = useRef<HTMLImageElement | null>(null);
   const startSlideRef = useRef<HTMLDivElement | null>(null);
 
+  const treeStumpRef = useRef<HTMLImageElement | null>(null);
+  const sittingBeaverRef = useRef<HTMLImageElement | null>(null);
+  const bushRef = useRef<HTMLImageElement | null>(null);
+
   const clicksCount = useRef(0);
   const currentSlidesTranslateY = useRef(0);
 
@@ -58,26 +83,80 @@ export const GameArea = ({
       slidesContainerRef.current.style.transition = "none";
     }
 
+    initValues();
+
     return () => viewport?.off("change", initValues);
-  }, [viewport]);
+  }, [viewport, showEndGame]);
 
   const initValues = () => {
     if (
       !slidesContainerRef.current ||
-      !treeContainerRef.current ||
-      !treeTrunkRef.current ||
-      !beaverRef.current ||
       !backgroundSlidesWrapperRef.current ||
-      !mainBgRef.current ||
-      !treeCrownRef.current
+      !mainBgRef.current
     ) {
       return;
     }
 
+    const slides = backgroundSlidesWrapperRef.current.children;
+    const totalSlidesHeight = Array.from(slides).reduce(
+      (acc, slide) => acc + slide.clientHeight,
+      0
+    );
+
+    currentSlidesTranslateY.current = -(
+      totalSlidesHeight - slidesContainerRef.current.clientHeight
+    );
+
+    slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
+
     const currentImageHeight = mainBgRef.current.clientHeight;
     const scale = currentImageHeight / ORIGINAL_MAIN_BG_HEIGHT;
-    const initialTreeYPosition = scale * ORIGINAL_TREE_POSITION_Y;
-    const initialTreeBottomOffset = currentImageHeight - initialTreeYPosition;
+
+    if (treeStumpRef.current && sittingBeaverRef.current && bushRef.current) {
+      const newTreeStumpWidth = scale * ORIGINAL_TREE_STUMP_WIDTH;
+      const newTreeStumpHeight = scale * ORIGINAL_TREE_STUMP_HEIGHT;
+      const newTreeStumpPositionX = scale * ORIGINAL_TREE_STUMP_POSITION_X;
+      const newTreeStumpPositionY = scale * ORIGINAL_TREE_STUMP_POSITION_Y;
+
+      treeStumpRef.current.style.width = newTreeStumpWidth + "px";
+      treeStumpRef.current.style.height = newTreeStumpHeight + "px";
+      treeStumpRef.current.style.left = newTreeStumpPositionX + "px";
+      treeStumpRef.current.style.top = newTreeStumpPositionY + "px";
+
+      const newSittingBeaverWidth = scale * ORIGINAL_SITTING_BEAVER_WIDTH;
+      const newSittingBeaverHeight = scale * ORIGINAL_SITTING_BEAVER_HEIGHT;
+      const newSittingBeaverPositionX =
+        scale * ORIGINAL_SITTING_BEAVER_POSITION_X;
+      const newSittingBeaverPositionY =
+        scale * ORIGINAL_SITTING_BEAVER_POSITION_Y;
+
+      sittingBeaverRef.current.style.width = newSittingBeaverWidth + "px";
+      sittingBeaverRef.current.style.height = newSittingBeaverHeight + "px";
+      sittingBeaverRef.current.style.left = newSittingBeaverPositionX + "px";
+      sittingBeaverRef.current.style.top = newSittingBeaverPositionY + "px";
+
+      const newBushWidth = scale * ORIGINAL_BUSH_WIDTH;
+      const newBushHeight = scale * ORIGINAL_BUSH_HEIGHT;
+      const newBushPositionX = scale * ORIGINAL_BUSH_POSITION_X;
+      const newBushPositionY = scale * ORIGINAL_BUSH_POSITION_Y;
+
+      bushRef.current.style.width = newBushWidth + "px";
+      bushRef.current.style.height = newBushHeight + "px";
+      bushRef.current.style.left = newBushPositionX + "px";
+      bushRef.current.style.top = newBushPositionY + "px";
+    }
+
+    if (
+      !treeContainerRef.current ||
+      !treeCrownRef.current ||
+      !treeTrunkRef.current ||
+      !beaverRef.current
+    ) {
+      return;
+    }
+
+    canClick.current = true;
+    clicksCount.current = 0;
 
     const newTreeChunkWidth = scale * ORIGINAL_TREE_WIDTH;
     const newTreeChunkHeight = scale * ORIGINAL_TREE_HEIGHT;
@@ -87,8 +166,6 @@ export const GameArea = ({
     const newTreeCrownHeight = scale * ORIGINAL_TREE_CROWN_HEIGHT;
     const newTreeBaseGrassWidth = scale * ORIGINAL_TREE_BASE_GRASS_WIDTH;
     const newTreeBaseGrassHeight = scale * ORIGINAL_TREE_BASE_GRASS_HEIGHT;
-
-    treeContainerRef.current.style.bottom = initialTreeBottomOffset + "px";
 
     document.documentElement.style.setProperty(
       "--tree-width",
@@ -123,22 +200,6 @@ export const GameArea = ({
       newTreeBaseGrassHeight + "px"
     );
 
-    const slides = backgroundSlidesWrapperRef.current.children;
-
-    canClick.current = true;
-    clicksCount.current = 0;
-
-    const totalSlidesHeight = Array.from(slides).reduce(
-      (acc, slide) => acc + slide.clientHeight,
-      0
-    );
-
-    currentSlidesTranslateY.current = -(
-      totalSlidesHeight - slidesContainerRef.current.clientHeight
-    );
-
-    slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
-
     const treeBaseHeight = newTreeChunkHeight;
 
     const potentialTreeHeight = clicksToWin * SLIDES_STEP_PX;
@@ -147,8 +208,13 @@ export const GameArea = ({
       treeBaseHeight;
 
     setTrunkChunksCount(
-      Math.ceil(potentialTreeHeight / newTreeChunkHeight) + 1
+      Math.ceil(potentialTreeHeight / (newTreeChunkHeight || 1)) + 1
     );
+
+    const initialTreeYPosition = scale * ORIGINAL_TREE_POSITION_Y;
+    const initialTreeBottomOffset = currentImageHeight - initialTreeYPosition;
+
+    treeContainerRef.current.style.bottom = initialTreeBottomOffset + "px";
 
     treeCrownRef.current.style.bottom = realTreeHeight + "px";
 
@@ -264,39 +330,62 @@ export const GameArea = ({
           <div className="slide slide-2"></div>
 
           <div ref={startSlideRef} className="start-slide">
-            <div ref={treeContainerRef} className="tree-container">
-              <img
-                ref={treeCrownRef}
-                src={TreeCrownImage}
-                className="tree-crown"
-              />
-
-              <div ref={treeTrunkRef} className="tree-trunk">
-                <div className="tree-chunks">
-                  {[...Array(trunkChunksCount)].map((_, i) => (
-                    <img src={TreeTrunkImage} key={i} />
-                  ))}
-                </div>
-
-                <div ref={beaverRef} className="beaver"></div>
+            {showEndGame ? (
+              <div key="end-game-area" className="end-game-area">
+                <img
+                  ref={treeStumpRef}
+                  src={TreeStump}
+                  className="tree-stump"
+                />
+                <img
+                  ref={sittingBeaverRef}
+                  src={SittingBeaverImage}
+                  className="sitting-beaver"
+                />
+                <img ref={bushRef} src={BushImage} className="bush" />
               </div>
-              <img src={TreeBaseGrassImage} className="tree-base-grass" />
-            </div>
+            ) : (
+              <div
+                key={"tree-area"}
+                ref={treeContainerRef}
+                className="tree-container"
+              >
+                <img
+                  ref={treeCrownRef}
+                  src={TreeCrownImage}
+                  className="tree-crown"
+                />
+
+                <div ref={treeTrunkRef} className="tree-trunk">
+                  <div className="tree-chunks">
+                    {[...Array(trunkChunksCount)].map((_, i) => (
+                      <img src={TreeTrunkImage} key={i} />
+                    ))}
+                  </div>
+
+                  <div ref={beaverRef} className="beaver"></div>
+                </div>
+                <img src={TreeBaseGrassImage} className="tree-base-grass" />
+              </div>
+            )}
+
             <img ref={mainBgRef} src={MainBgImage} onLoad={onImageLoad} />
           </div>
         </div>
       </div>
 
-      <div
-        className="absolute left-1/2 top-1/2 z-10 h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary p-6 opacity-40 xxs:h-[240px] xxs:w-[240px] xs:h-[300px] xs:w-[300px]"
-        onClick={clickHanlder}
-      >
-        {showLoading && (
-          <div className="flex h-full w-full items-center justify-center">
-            tree update..
-          </div>
-        )}
-      </div>
+      {!showEndGame && (
+        <div
+          className="absolute left-1/2 top-1/2 z-10 h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary p-6 opacity-40 xxs:h-[240px] xxs:w-[240px] xs:h-[300px] xs:w-[300px]"
+          onClick={clickHanlder}
+        >
+          {showLoading && (
+            <div className="flex h-full w-full items-center justify-center">
+              tree update..
+            </div>
+          )}
+        </div>
+      )}
 
       {initialLoading && (
         <div className="absolute inset-0 z-30 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">

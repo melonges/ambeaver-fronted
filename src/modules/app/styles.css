@@ -163,3 +163,18 @@ body {
     transform: translate(-50%);
   }
 }
+
+.end-game-area {
+  z-index: var(--tree-cotainer-z-index);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  pointer-events: none;
+  height: 100%;
+
+  .tree-stump,
+  .sitting-beaver,
+  .bush {
+    position: absolute;
+  }
+}

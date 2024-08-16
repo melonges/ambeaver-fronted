@@ -12,7 +12,6 @@ import { STORE_PAGE_PATH } from "@/modules/store/routes/constants";
 import { useHapticFeedback, usePopup } from "@telegram-apps/sdk-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { EndGameArea } from "../components/EndGameArea";
 import { GameArea } from "../components/GameArea";
 
 const POINTS_AMOUNT = 500;
@@ -62,6 +61,7 @@ export const EarnGamePage = () => {
   }, 500);
 
   const pointsIsOver = points <= 0;
+  const showEndGame = pointsIsOver || chargePointsStatus === "pending";
 
   const decPoint = useCallback(() => {
     setPoints((points) => points - 1);
@@ -106,14 +106,25 @@ export const EarnGamePage = () => {
         Ticket for minigame
       </Link>
 
-      {pointsIsOver || chargePointsStatus === "pending" ? (
-        <EndGameArea
-          buyPoints={buyPoints}
-          pointsPrice={settingsData?.data.fullChargePointsCostInEnergy || 0}
-        />
-      ) : (
-        <GameArea decPoints={decPoint} clicksToWin={clicksToWin}></GameArea>
+      {showEndGame && (
+        <div className="absolute left-1/2 top-24 z-50 flex w-8/12 -translate-x-1/2 flex-col items-center">
+          <p className="rounded border-2 border-secondary-border bg-secondary p-2">
+            click limit is over you can restore it and play more
+          </p>
+          <button
+            onClick={buyPoints}
+            className="-mt-2 rounded border-2 border-secondary-darken-broder bg-secondary-darken px-4 py-2 text-white"
+          >
+            spend {settingsData?.data.fullChargePointsCostInEnergy || 0} ⚡
+          </button>
+        </div>
       )}
+
+      <GameArea
+        showEndGame={showEndGame}
+        clicksToWin={clicksToWin}
+        decPoints={decPoint}
+      />
 
       <div className="mt-1 flex w-full justify-between px-2">
         <p>
