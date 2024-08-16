@@ -113,32 +113,42 @@ export const GameArea = ({
     const scale = currentImageHeight / ORIGINAL_MAIN_BG_HEIGHT;
 
     if (treeStumpRef.current && sittingBeaverRef.current && bushRef.current) {
-      const newTreeStumpWidth = scale * ORIGINAL_TREE_STUMP_WIDTH;
-      const newTreeStumpHeight = scale * ORIGINAL_TREE_STUMP_HEIGHT;
-      const newTreeStumpPositionX = scale * ORIGINAL_TREE_STUMP_POSITION_X;
-      const newTreeStumpPositionY = scale * ORIGINAL_TREE_STUMP_POSITION_Y;
+      const newTreeStumpWidth = Math.ceil(scale * ORIGINAL_TREE_STUMP_WIDTH);
+      const newTreeStumpHeight = Math.ceil(scale * ORIGINAL_TREE_STUMP_HEIGHT);
+      const newTreeStumpPositionX = Math.ceil(
+        scale * ORIGINAL_TREE_STUMP_POSITION_X
+      );
+      const newTreeStumpPositionY = Math.ceil(
+        scale * ORIGINAL_TREE_STUMP_POSITION_Y
+      );
 
       treeStumpRef.current.style.width = newTreeStumpWidth + "px";
       treeStumpRef.current.style.height = newTreeStumpHeight + "px";
       treeStumpRef.current.style.left = newTreeStumpPositionX + "px";
       treeStumpRef.current.style.top = newTreeStumpPositionY + "px";
 
-      const newSittingBeaverWidth = scale * ORIGINAL_SITTING_BEAVER_WIDTH;
-      const newSittingBeaverHeight = scale * ORIGINAL_SITTING_BEAVER_HEIGHT;
-      const newSittingBeaverPositionX =
-        scale * ORIGINAL_SITTING_BEAVER_POSITION_X;
-      const newSittingBeaverPositionY =
-        scale * ORIGINAL_SITTING_BEAVER_POSITION_Y;
+      const newSittingBeaverWidth = Math.ceil(
+        scale * ORIGINAL_SITTING_BEAVER_WIDTH
+      );
+      const newSittingBeaverHeight = Math.ceil(
+        scale * ORIGINAL_SITTING_BEAVER_HEIGHT
+      );
+      const newSittingBeaverPositionX = Math.ceil(
+        scale * ORIGINAL_SITTING_BEAVER_POSITION_X
+      );
+      const newSittingBeaverPositionY = Math.ceil(
+        scale * ORIGINAL_SITTING_BEAVER_POSITION_Y
+      );
 
       sittingBeaverRef.current.style.width = newSittingBeaverWidth + "px";
       sittingBeaverRef.current.style.height = newSittingBeaverHeight + "px";
       sittingBeaverRef.current.style.left = newSittingBeaverPositionX + "px";
       sittingBeaverRef.current.style.top = newSittingBeaverPositionY + "px";
 
-      const newBushWidth = scale * ORIGINAL_BUSH_WIDTH;
-      const newBushHeight = scale * ORIGINAL_BUSH_HEIGHT;
-      const newBushPositionX = scale * ORIGINAL_BUSH_POSITION_X;
-      const newBushPositionY = scale * ORIGINAL_BUSH_POSITION_Y;
+      const newBushWidth = Math.ceil(scale * ORIGINAL_BUSH_WIDTH);
+      const newBushHeight = Math.ceil(scale * ORIGINAL_BUSH_HEIGHT);
+      const newBushPositionX = Math.ceil(scale * ORIGINAL_BUSH_POSITION_X);
+      const newBushPositionY = Math.ceil(scale * ORIGINAL_BUSH_POSITION_Y);
 
       bushRef.current.style.width = newBushWidth + "px";
       bushRef.current.style.height = newBushHeight + "px";
@@ -158,14 +168,18 @@ export const GameArea = ({
     canClick.current = true;
     clicksCount.current = 0;
 
-    const newTreeChunkWidth = scale * ORIGINAL_TREE_WIDTH;
-    const newTreeChunkHeight = scale * ORIGINAL_TREE_HEIGHT;
-    const newTreeBaseWidth = scale * ORIGINAL_TREE_BASE_WIDTH;
-    const newTreeBaseHeight = scale * ORIGINAL_TREE_BASE_HEIGHT;
-    const newTreeCrownWidth = scale * ORIGINAL_TREE_CROWN_WIDTH;
-    const newTreeCrownHeight = scale * ORIGINAL_TREE_CROWN_HEIGHT;
-    const newTreeBaseGrassWidth = scale * ORIGINAL_TREE_BASE_GRASS_WIDTH;
-    const newTreeBaseGrassHeight = scale * ORIGINAL_TREE_BASE_GRASS_HEIGHT;
+    const newTreeChunkWidth = Math.ceil(scale * ORIGINAL_TREE_WIDTH);
+    const newTreeChunkHeight = Math.ceil(scale * ORIGINAL_TREE_HEIGHT);
+    const newTreeBaseWidth = Math.ceil(scale * ORIGINAL_TREE_BASE_WIDTH);
+    const newTreeBaseHeight = Math.ceil(scale * ORIGINAL_TREE_BASE_HEIGHT);
+    const newTreeCrownWidth = Math.ceil(scale * ORIGINAL_TREE_CROWN_WIDTH);
+    const newTreeCrownHeight = Math.ceil(scale * ORIGINAL_TREE_CROWN_HEIGHT);
+    const newTreeBaseGrassWidth = Math.ceil(
+      scale * ORIGINAL_TREE_BASE_GRASS_WIDTH
+    );
+    const newTreeBaseGrassHeight = Math.ceil(
+      scale * ORIGINAL_TREE_BASE_GRASS_HEIGHT
+    );
 
     document.documentElement.style.setProperty(
       "--tree-width",
@@ -211,7 +225,7 @@ export const GameArea = ({
       Math.ceil(potentialTreeHeight / (newTreeChunkHeight || 1)) + 1
     );
 
-    const initialTreeYPosition = scale * ORIGINAL_TREE_POSITION_Y;
+    const initialTreeYPosition = Math.ceil(scale * ORIGINAL_TREE_POSITION_Y);
     const initialTreeBottomOffset = currentImageHeight - initialTreeYPosition;
 
     treeContainerRef.current.style.bottom = initialTreeBottomOffset + "px";
@@ -219,12 +233,12 @@ export const GameArea = ({
     treeCrownRef.current.style.bottom = realTreeHeight + "px";
 
     treeTrunkRef.current.style.height = realTreeHeight + "px";
+    treeTrunkRef.current.style.width = newTreeChunkWidth + "px";
 
     beaverDirection.current = "right";
     beaverRef.current.style.bottom = treeBaseHeight + "px";
 
-    beaverRef.current.classList.remove("to-left-jump");
-    beaverRef.current.classList.add("to-right-jump");
+    // beaverRef.current.style.transform = "translateX(100%)";
   };
 
   const clickHanlder = () => {
@@ -286,10 +300,10 @@ export const GameArea = ({
       parseFloat(beaverRef.current.style.bottom || "0") + SLIDES_STEP_PX + "px";
 
     if (beaverDirection.current === "left") {
-      beaverRef.current.classList.replace("to-left-jump", "to-right-jump");
+      // beaverRef.current.style.transform = "translateX(100%)";
       beaverDirection.current = "right";
     } else {
-      beaverRef.current.classList.replace("to-right-jump", "to-left-jump");
+      // beaverRef.current.style.transform = "translateX(-100%)";
       beaverDirection.current = "left";
     }
 

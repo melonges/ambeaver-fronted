@@ -94,14 +94,14 @@ export const EarnGamePage = () => {
     <div className="relative flex h-full flex-col">
       <Link
         to={PROFILE_PAGE_PATH}
-        className="fixed left-2 top-6 z-10 rounded bg-primary px-4 py-2"
+        className="absolute left-2 top-6 z-10 rounded bg-primary px-4 py-2"
       >
         $ AMBERS: {ambers}
       </Link>
 
       <Link
         to={HAMSTER_MINIGAME_PAGE_PATH}
-        className="fixed right-2 top-6 z-10 rounded bg-primary px-4 py-2"
+        className="absolute right-2 top-6 z-10 rounded bg-primary px-4 py-2"
       >
         Ticket for minigame
       </Link>
