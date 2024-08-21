@@ -41,15 +41,9 @@ export const TasksPage = () => {
         );
       } else if (task.type === "SOCIAL_SUBSCRIPTION") {
         utils.openLink(task.meta?.url || "");
-        window.addEventListener(
-          "focus",
-          () => {
-            startTaskMutateAsync({ id: Number(task.id) }).then(() => {
-              refetchTasks();
-            });
-          },
-          { once: true }
-        );
+        startTaskMutateAsync({ id: Number(task.id) }).then(() => {
+          refetchTasks();
+        });
       }
     }
 
