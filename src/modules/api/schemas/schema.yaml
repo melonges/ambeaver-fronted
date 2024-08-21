@@ -338,9 +338,23 @@ components:
         - playerLimits
         - fullChargePointsCostInEnergy
         - referralRewards
+    SocialSubscriptionMetaTaskDto:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url
     TaskDto:
       type: object
       properties:
+        meta:
+          oneOf:
+            - $ref: "#/components/schemas/SocialSubscriptionMetaTaskDto"
+              description: Metadata for SOCIAL_SUBSCRIPTION task type
+          description: Each task type has its own metadata
+          allOf:
+            - $ref: "#/components/schemas/SocialSubscriptionMetaTaskDto"
         id:
           type: string
         title:

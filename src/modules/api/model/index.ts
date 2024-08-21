@@ -19,6 +19,7 @@ export * from "./remainingTimeDto";
 export * from "./settingsDto";
 export * from "./settingsDtoPlayerLimits";
 export * from "./settingsDtoReferralRewards";
+export * from "./socialSubscriptionMetaTaskDto";
 export * from "./tapEventDto";
 export * from "./task";
 export * from "./taskCreatedAt";

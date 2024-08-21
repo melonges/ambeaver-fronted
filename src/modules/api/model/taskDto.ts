@@ -4,11 +4,14 @@
  * Ambeaver API
  * OpenAPI spec version: 0.0.1
  */
+import type { SocialSubscriptionMetaTaskDto } from "./socialSubscriptionMetaTaskDto";
 import type { TaskDtoStatus } from "./taskDtoStatus";
 import type { TaskDtoType } from "./taskDtoType";
 
 export interface TaskDto {
   id: string;
+  /** Each task type has its own metadata */
+  meta?: SocialSubscriptionMetaTaskDto;
   rewardInAmbers: number;
   status: TaskDtoStatus;
   title: string;

@@ -34,14 +34,13 @@ export const TasksPage = () => {
   }, []);
 
   const completeTask = async (task: TaskDto) => {
-    console.log(task);
-
     if (task.status === "NOT_STARTED") {
       if (task.type === "INVITE_FRIENDS") {
         utils.openTelegramLink(
           "https://t.me/share/url?url=" + linkData?.data.link
         );
       } else if (task.type === "SOCIAL_SUBSCRIPTION") {
+        utils.openLink(task.meta?.url || "");
         window.addEventListener(
           "focus",
           () => {
