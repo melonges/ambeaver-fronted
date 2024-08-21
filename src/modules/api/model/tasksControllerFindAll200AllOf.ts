@@ -4,8 +4,8 @@
  * Ambeaver API
  * OpenAPI spec version: 0.0.1
  */
-import type { Task } from "./task";
+import type { TaskDto } from "./taskDto";
 
 export type TasksControllerFindAll200AllOf = {
-  data?: Task[];
+  data?: TaskDto[];
 };

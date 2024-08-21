@@ -300,10 +300,10 @@ export const GameArea = ({
       parseFloat(beaverRef.current.style.bottom || "0") + SLIDES_STEP_PX + "px";
 
     if (beaverDirection.current === "left") {
-      // beaverRef.current.style.transform = "translateX(100%)";
+      beaverRef.current.style.transform = "translateX(100%)";
       beaverDirection.current = "right";
     } else {
-      // beaverRef.current.style.transform = "translateX(-100%)";
+      beaverRef.current.style.transform = "translateX(-100%)";
       beaverDirection.current = "left";
     }
 

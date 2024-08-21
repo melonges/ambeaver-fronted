@@ -144,22 +144,6 @@ paths:
       security:
         - bearer: []
   /tasks:
-    post:
-      operationId: TasksController_create
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateTaskDto"
-      responses:
-        "201":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CreateTaskDto"
     get:
       operationId: TasksController_findAll
       parameters:
@@ -186,59 +170,45 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: "#/components/schemas/Task"
-  /tasks/{id}:
-    get:
-      operationId: TasksController_findOne
+                          $ref: "#/components/schemas/TaskDto"
+      tags:
+        - Tasks
+  /tasks/start/{id}:
+    post:
+      operationId: TasksController_start
       parameters:
         - name: id
           required: true
           in: path
           schema:
-            type: string
+            type: number
       responses:
-        "200":
+        "201":
           description: ""
-          content:
-            application/json:
-              schema:
-                type: string
+        "400":
+          description: ""
+        "404":
+          description: ""
+      tags:
+        - Tasks
+  /tasks/claim/{id}:
     patch:
-      operationId: TasksController_update
+      operationId: TasksController_claim
       parameters:
         - name: id
           required: true
           in: path
           schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateTaskDto"
+            type: number
       responses:
         "200":
           description: ""
-          content:
-            application/json:
-              schema:
-                type: string
-    delete:
-      operationId: TasksController_remove
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: string
-      responses:
-        "200":
+        "400":
           description: ""
-          content:
-            application/json:
-              schema:
-                type: string
+        "404":
+          description: ""
+      tags:
+        - Tasks
 info:
   title: Ambeaver API
   description: ""
@@ -321,6 +291,7 @@ components:
         ambers:
           type: number
       required:
+        - username
         - ambers
     ReferralLinkDto:
       type: object
@@ -367,51 +338,29 @@ components:
         - playerLimits
         - fullChargePointsCostInEnergy
         - referralRewards
-    CreateTaskDto:
+    TaskDto:
       type: object
       properties:
+        id:
+          type: string
         title:
           type: string
-        rewardInAmbers:
-          type: number
-      required:
-        - title
-        - rewardInAmbers
-    Task:
-      type: object
-      properties:
-        title:
-          type: string
-        rewardInAmbers:
-          type: number
         type:
           type: string
           enum:
-            - welcome
-            - invite
-            - subscribe
-        meta:
-          type: string
-        id:
-          type: number
-        createdAt:
-          type: object
-          default: 2024-08-08T22:34:00.278Z
-        updatedAt:
-          type: object
-          default: 2024-08-08T22:34:00.278Z
-      required:
-        - title
-        - rewardInAmbers
-        - type
-        - meta
-        - id
-        - createdAt
-        - updatedAt
-    UpdateTaskDto:
-      type: object
-      properties:
-        title:
-          type: string
+            - INVITE_FRIENDS
+            - SOCIAL_SUBSCRIPTION
         rewardInAmbers:
           type: number
+        status:
+          type: string
+          enum:
+            - FINISHED
+            - READY_FOR_CLAIM
+            - NOT_STARTED
+      required:
+        - id
+        - title
+        - type
+        - rewardInAmbers
+        - status

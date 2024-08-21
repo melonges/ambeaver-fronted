@@ -1,7 +1,9 @@
+import { Spinner } from "@telegram-apps/telegram-ui";
+
 export const Loader = () => {
   return (
-    <div className="flex h-screen flex-col items-center justify-center font-bold">
-      Loading...
+    <div className="flex h-dvh flex-col items-center justify-center font-bold">
+      <Spinner size="l" />
     </div>
   );
 };

@@ -7,5 +7,5 @@
 
 export interface ReferralDto {
   ambers: number;
-  username?: string;
+  username: string;
 }

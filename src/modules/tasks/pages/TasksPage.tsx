@@ -1,6 +1,74 @@
+import { useTasksControllerFindAll } from "@/modules/api/default/default";
+import { TaskDto } from "@/modules/api/model";
+import { useReferralControllerGetReferralLink } from "@/modules/api/referral/referral";
+import {
+  useTasksControllerClaim,
+  useTasksControllerStart,
+} from "@/modules/api/tasks/tasks";
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
+import { useUtils } from "@telegram-apps/sdk-react";
+import { Spinner } from "@telegram-apps/telegram-ui";
+import { useEffect } from "react";
 
 export const TasksPage = () => {
+  const utils = useUtils();
+
+  const { data: linkData, isLoading: isReferralLinkLoading } =
+    useReferralControllerGetReferralLink();
+  const {
+    data: tasksData,
+    isLoading: isTasksLoading,
+    refetch: refetchTasks,
+  } = useTasksControllerFindAll({
+    page: 0,
+    perPage: 20,
+  });
+
+  const { mutateAsync: startTaskMutateAsync } = useTasksControllerStart();
+  const { mutateAsync: claimTaskMutateAsync } = useTasksControllerClaim();
+
+  const tasks = tasksData?.data.data;
+
+  useEffect(() => {
+    refetchTasks();
+  }, []);
+
+  const completeTask = async (task: TaskDto) => {
+    console.log(task);
+
+    if (task.status === "NOT_STARTED") {
+      if (task.type === "INVITE_FRIENDS") {
+        utils.openTelegramLink(
+          "https://t.me/share/url?url=" + linkData?.data.link
+        );
+      } else if (task.type === "SOCIAL_SUBSCRIPTION") {
+        window.addEventListener(
+          "focus",
+          () => {
+            startTaskMutateAsync({ id: Number(task.id) }).then(() => {
+              refetchTasks();
+            });
+          },
+          { once: true }
+        );
+      }
+    }
+
+    if (task.status === "READY_FOR_CLAIM") {
+      claimTaskMutateAsync({ id: Number(task.id) }).then(() => {
+        refetchTasks();
+      });
+    }
+  };
+
+  if (isTasksLoading || isReferralLinkLoading) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center">
+        <Spinner size="l" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center border-blue-500">
       <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
@@ -8,13 +76,21 @@ export const TasksPage = () => {
       <span>Complete tasks and receive rewards</span>
 
       <ul className="w-full">
-        {taskList.map((task) => {
+        {tasks?.map((task) => {
           const taskTypeClassName =
-            task.type === "claim"
-              ? "bg-secondary"
-              : task.type === "claimed"
-                ? "bg-disabled"
+            task.status === "FINISHED"
+              ? "bg-disabled"
+              : task.status === "READY_FOR_CLAIM"
+                ? "bg-secondary"
                 : "bg-primary";
+
+          const taskStatusName =
+            task.status === "FINISHED"
+              ? "claimed"
+              : task.status === "READY_FOR_CLAIM"
+                ? "claim"
+                : "start";
+
           return (
             <li
               key={task.id}
@@ -25,11 +101,14 @@ export const TasksPage = () => {
 
                 <div className="flex flex-col">
                   <strong className="font-bold">{task.title}</strong>
-                  <span>{task.reward}</span>
+                  <span>{task.rewardInAmbers}</span>
                 </div>
               </div>
-              <button className={`w-20 rounded-md p-2 ${taskTypeClassName}`}>
-                {task.type}
+              <button
+                className={`w-20 rounded-md p-2 ${taskTypeClassName}`}
+                onClick={() => completeTask(task)}
+              >
+                {taskStatusName}
               </button>
             </li>
           );
@@ -38,42 +117,3 @@ export const TasksPage = () => {
     </div>
   );
 };
-
-const taskList = [
-  {
-    id: 1,
-    title: "Welcome to Business, beavers",
-    reward: "+2000 AR",
-    type: "claim",
-  },
-  {
-    id: 2,
-    title: "Invite 1 fren",
-    reward: "+1000 AR",
-    type: "start",
-  },
-  {
-    id: 3,
-    title: "Subscribe to AmbeaveR Telegram",
-    reward: "+500 AR",
-    type: "start",
-  },
-  {
-    id: 4,
-    title: "Follow AmbeaveR on Instagram",
-    reward: "+500 AR",
-    type: "claim",
-  },
-  {
-    id: 5,
-    title: "Follow AmbeaveR on X",
-    reward: "+500 AR",
-    type: "claimed",
-  },
-  {
-    id: 6,
-    title: "Join AmbeaveR Discord",
-    reward: "+500 AR",
-    type: "claimed",
-  },
-];
