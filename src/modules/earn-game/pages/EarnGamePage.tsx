@@ -11,7 +11,7 @@ import { MiniGameTicketIcon } from "@/modules/common/icons/MiniGameTicketIcon";
 import { useLayout } from "@/modules/common/layouts/useLayout";
 import { numberFormatter } from "@/modules/common/utils/numberFormatter";
 import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
-import { PROFILE_PAGE_PATH } from "@/modules/profile/routes/constants";
+import { ProfileModal } from "@/modules/profile/components/ProfileModal";
 import { useHapticFeedback, usePopup } from "@telegram-apps/sdk-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -32,6 +32,8 @@ export const EarnGamePage = () => {
     useAssetsControllerChargePoints();
 
   const pointsAmount = useRef(0);
+
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const [ambers, setAmbers] = useState(data?.data.ambers || 0);
   const [points, setPoints] = useState(data?.data.points || 0);
@@ -95,8 +97,8 @@ export const EarnGamePage = () => {
 
   return (
     <div className="relative flex h-full flex-col">
-      <Link
-        to={PROFILE_PAGE_PATH}
+      <button
+        onClick={() => setShowProfileModal(true)}
         className="absolute left-2 top-6 z-10 w-[130px] rounded-xl bg-[#F8FBF8]/30 px-3 py-2 backdrop-blur-md"
       >
         <div className="flex gap-2">
@@ -117,7 +119,7 @@ export const EarnGamePage = () => {
             />
           </div>
         )}
-      </Link>
+      </button>
 
       <Link
         to={HAMSTER_MINIGAME_PAGE_PATH}
@@ -160,6 +162,10 @@ export const EarnGamePage = () => {
           {energy}/{settingsData?.data.playerLimits.energy} ⚡
         </Link>
       </div> */}
+
+      {showProfileModal && (
+        <ProfileModal onClose={() => setShowProfileModal(false)} />
+      )}
     </div>
   );
 };

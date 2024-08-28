@@ -3,15 +3,17 @@ import {
   useReferralControllerGetReferrals,
 } from "@/modules/api/referral/referral";
 import AmberImage from "@/modules/common/assets/amber.png";
-import FriendsBeaversImage from "@/modules/common/assets/friends-beavers.png";
+import { FriendsIcon } from "@/modules/common/icons/FriendsIcon";
 import { GraphIcon } from "@/modules/common/icons/GraphIcon";
 import { UserIcon } from "@/modules/common/icons/UserIcon";
 import { NAVBAR_HEIGHT } from "@/modules/common/layouts/constants";
 import { Spinner } from "@telegram-apps/telegram-ui";
 import { useEffect, useState } from "react";
-import { InviteFriendModal } from "../components/InviteFriendModal";
+import { InviteFriendMessageBox } from "../components/InviteFriendMessageBox";
 
 const INVITE_FRIEND_BUTTON_WRAPPER_HEIGHT = 70;
+
+const MAX_FRIENDS_COUNT = 10;
 
 export const FriendsPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -37,7 +39,6 @@ export const FriendsPage = () => {
   const formatAmbersBalance = (num: number) => {
     const str = num.toString();
 
-    // Если длина строки меньше или равна 3, возвращаем её как есть
     if (str.length <= 3) {
       return str;
     }
@@ -65,14 +66,14 @@ export const FriendsPage = () => {
 
   return (
     <div
-      className="mt-16 flex flex-col text-[#353B35]"
+      className="flex flex-col text-[#353B35]"
       style={{ paddingBottom: INVITE_FRIEND_BUTTON_WRAPPER_HEIGHT + 10 + "px" }}
     >
       <div className="flex flex-col items-center">
-        <img
-          src={FriendsBeaversImage}
-          alt="frens beavers"
-          className="h-[103.54px]"
+        <FriendsIcon
+          height={60}
+          width={60}
+          className="[&_path]:fill-[#353B35]"
         />
         <h1 className="mt-6 text-3xl font-extrabold">Ur friends-beavers</h1>
         <p className="mt-6">Invite friends and receive ambers.</p>
@@ -127,7 +128,7 @@ export const FriendsPage = () => {
                   For fren with telegram premium
                 </p>
                 <div className="mt-3 flex items-center gap-1">
-                  <p className="text-2xl font-extrabold">+500</p>
+                  <p className="text-2xl font-extrabold">+1500</p>
                   <img className="h-6 w-6" src={AmberImage} alt="amber" />
                 </div>
               </div>
@@ -153,7 +154,7 @@ export const FriendsPage = () => {
 
                         <div className="mt-1 flex items-center">
                           <UserIcon />
-                          <span className="text-[#3F463FE6]">+5</span>
+                          <span className="text-[#3F463FE6]">+0</span>
                         </div>
                       </div>
                     </div>
@@ -179,12 +180,13 @@ export const FriendsPage = () => {
           onClick={() => setShowModal(true)}
           className="h-full w-full rounded-xl bg-[#353B35] text-center text-lg text-[#F2F3F2]"
         >
-          Invite a fren (10 left)
+          Invite a fren (
+          {MAX_FRIENDS_COUNT - (referralsData?.data.data?.length || 0)} left)
         </button>
       </div>
 
       {showModal && (
-        <InviteFriendModal
+        <InviteFriendMessageBox
           inviteLink={linkData?.data.link || ""}
           onClose={() => setShowModal(false)}
         />

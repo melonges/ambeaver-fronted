@@ -1,16 +1,12 @@
-import {
-  bindViewportCSSVars,
-  useLaunchParams,
-  useViewport,
-} from "@telegram-apps/sdk-react";
+import { usePlatform } from "@/modules/common/hooks/usePlatform";
+import { bindViewportCSSVars, useViewport } from "@telegram-apps/sdk-react";
 import { AppRoot } from "@telegram-apps/telegram-ui";
 import { useEffect } from "react";
 import { Login } from "./Login";
 
 export const InitComponent = () => {
-  const launchParams = useLaunchParams();
   const viewport = useViewport();
-
+  const platform = usePlatform();
   // const miniApp = useMiniApp();
   // const themeParams = useThemeParams();
 
@@ -32,9 +28,7 @@ export const InitComponent = () => {
     <AppRoot
       // appearance={miniApp.isDark ? "dark" : "light"}
       appearance="light"
-      platform={
-        ["macos", "ios"].includes(launchParams.platform) ? "ios" : "base"
-      }
+      platform={platform}
     >
       <Login />
     </AppRoot>
