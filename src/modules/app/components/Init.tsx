@@ -1,5 +1,9 @@
 import { usePlatform } from "@/modules/common/hooks/usePlatform";
-import { bindViewportCSSVars, useViewport } from "@telegram-apps/sdk-react";
+import {
+  bindViewportCSSVars,
+  useMiniApp,
+  useViewport,
+} from "@telegram-apps/sdk-react";
 import { AppRoot } from "@telegram-apps/telegram-ui";
 import { useEffect } from "react";
 import { Login } from "./Login";
@@ -7,7 +11,8 @@ import { Login } from "./Login";
 export const InitComponent = () => {
   const viewport = useViewport();
   const platform = usePlatform();
-  // const miniApp = useMiniApp();
+  const miniApp = useMiniApp();
+
   // const themeParams = useThemeParams();
 
   // useEffect(() => {
@@ -19,10 +24,11 @@ export const InitComponent = () => {
   // }, [themeParams]);
 
   useEffect(() => {
+    miniApp.setHeaderColor("#F8FBF8");
     viewport?.expand();
 
     return viewport && bindViewportCSSVars(viewport);
-  }, [viewport]);
+  }, [viewport, miniApp]);
 
   return (
     <AppRoot

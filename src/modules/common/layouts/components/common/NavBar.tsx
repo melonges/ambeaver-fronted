@@ -20,7 +20,7 @@ export const NavBar = () => {
   return (
     <nav
       style={{ height: NAVBAR_HEIGHT }}
-      className="fixed bottom-0 left-0 right-0 z-30 flex justify-evenly gap-2 bg-main-bg pb-5"
+      className="fixed bottom-0 left-0 right-0 z-30 flex justify-evenly gap-2 bg-[#F8FBF8] pb-5"
     >
       {navItems.map(({ path, Icon }) => (
         <NavLink
