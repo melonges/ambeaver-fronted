@@ -16,7 +16,7 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
   }, []);
 
   return (
-    <Modal wrapperClassName="w-8/12" onClose={onClose}>
+    <Modal wrapperClassName="w-8/12 top-[40%]" onClose={onClose}>
       <div className="flex flex-col px-3 pb-8 pt-11">
         <div className="flex flex-col items-center">
           {initData?.user?.photoUrl ? (
@@ -47,7 +47,7 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
 
           <div className="flex items-center justify-between rounded-2xl bg-[#F8FBF8] px-4 py-3 shadow-[0_3px_12px_0_rgba(0,0,0,0.05)]">
             <img className="h-[45px]" src={BlueAmberImage} alt="amber" />
-            <p className="text-2xl font-bold text-[#05AFF2]">soon</p>
+            <p className="text-2xl font-bold text-[#05AFF2]">SOON</p>
           </div>
         </div>
 

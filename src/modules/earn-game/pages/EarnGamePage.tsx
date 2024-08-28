@@ -7,14 +7,12 @@ import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
 import AmberImage from "@/modules/common/assets/amber.png";
 import { useDebounce } from "@/modules/common/hooks/useDebounce";
 import { EnergyIcon } from "@/modules/common/icons/EnergyIcon";
-import { MiniGameTicketIcon } from "@/modules/common/icons/MiniGameTicketIcon";
+import { MiniGameTicketDisabledSoonIcon } from "@/modules/common/icons/MiniGameTicketDisabledSoonIcon";
 import { useLayout } from "@/modules/common/layouts/useLayout";
 import { numberFormatter } from "@/modules/common/utils/numberFormatter";
-import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { ProfileModal } from "@/modules/profile/components/ProfileModal";
 import { useHapticFeedback, usePopup } from "@telegram-apps/sdk-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { GameArea } from "../components/GameArea";
 
 const POINTS_AMOUNT = 500;
@@ -121,12 +119,9 @@ export const EarnGamePage = () => {
         )}
       </button>
 
-      <Link
-        to={HAMSTER_MINIGAME_PAGE_PATH}
-        className="absolute right-2 top-6 z-10"
-      >
-        <MiniGameTicketIcon />
-      </Link>
+      <button className="absolute right-2 top-6 z-10">
+        <MiniGameTicketDisabledSoonIcon />
+      </button>
 
       {showEndGame && (
         <div className="fixed left-1/2 top-24 z-50 flex w-10/12 -translate-x-1/2 flex-col items-center rounded-2xl bg-[#F8FBF8] px-4 py-5">
