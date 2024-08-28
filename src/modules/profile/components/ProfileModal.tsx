@@ -36,13 +36,13 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
           <div className="flex items-center justify-between rounded-2xl bg-[#F8FBF8] px-4 py-3 shadow-[0_3px_12px_0_rgba(0,0,0,0.05)]">
             <img className="h-[45px]" src={AmberImage} alt="amber" />
 
-            <p className="text-2xl font-bold text-[#FCA710]">
+            <div className="text-2xl font-bold text-[#FCA710]">
               {!isFetching ? (
                 data?.data.totalTapped + " AR" || "..."
               ) : (
                 <Spinner className="text-[#FCA710]" size="s" />
               )}
-            </p>
+            </div>
           </div>
 
           <div className="flex items-center justify-between rounded-2xl bg-[#F8FBF8] px-4 py-3 shadow-[0_3px_12px_0_rgba(0,0,0,0.05)]">

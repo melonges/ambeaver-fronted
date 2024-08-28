@@ -2,6 +2,7 @@ import {
   useReferralControllerGetReferralLink,
   useReferralControllerGetReferrals,
 } from "@/modules/api/referral/referral";
+import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
 import AmberImage from "@/modules/common/assets/amber.png";
 import { FriendsIcon } from "@/modules/common/icons/FriendsIcon";
 import { GraphIcon } from "@/modules/common/icons/GraphIcon";
@@ -29,6 +30,7 @@ export const FriendsPage = () => {
   });
   const { data: linkData, isPending: isLinkPending } =
     useReferralControllerGetReferralLink();
+  const { data: settingsData } = useSettingsControllerFindOne();
 
   const haveFriends = (referralsData?.data.data?.length || 0) > 0;
 
@@ -118,7 +120,9 @@ export const FriendsPage = () => {
               <div className="flex w-full flex-col justify-between rounded-2xl px-4 py-3 shadow-[0_3px_12px_0_rgba(0,0,0,0.05)]">
                 <p className="font-medium text-[#3F463FE6]">For fren</p>
                 <div className="mt-3 flex items-center gap-1">
-                  <p className="text-2xl font-extrabold">+500</p>
+                  <p className="text-2xl font-extrabold">
+                    +{settingsData?.data.referralRewards.normal}AR
+                  </p>
                   <img className="h-6 w-6" src={AmberImage} alt="amber" />
                 </div>
               </div>
@@ -128,7 +132,9 @@ export const FriendsPage = () => {
                   For fren with telegram premium
                 </p>
                 <div className="mt-3 flex items-center gap-1">
-                  <p className="text-2xl font-extrabold">+1500</p>
+                  <p className="text-2xl font-extrabold">
+                    +{settingsData?.data.referralRewards.premium}AR
+                  </p>
                   <img className="h-6 w-6" src={AmberImage} alt="amber" />
                 </div>
               </div>
