@@ -8,6 +8,17 @@ export const numberFormatter = (num: number, digits = 2) => {
     { value: 1e15, symbol: "P" },
     { value: 1e18, symbol: "E" },
   ];
+  const regexp = /\.0+$|(?<=\.[0-9]*[1-9])0+$/;
   const item = lookup.findLast((item) => num >= item.value);
+
+  if (num < 1000) {
+    return item
+      ? (num / item.value)
+          .toFixed(digits)
+          .replace(regexp, "")
+          .concat(item.symbol)
+      : "0";
+  }
+
   return item ? (num / item.value).toFixed(digits).concat(item.symbol) : "0";
 };
