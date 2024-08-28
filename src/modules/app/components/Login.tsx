@@ -2,7 +2,7 @@ import { useAssetsControllerGetPlayerAssets } from "@/modules/api/assets/assets"
 import { useAuthControllerSignIn } from "@/modules/api/authorization/authorization";
 import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
 import { LayoutProvider } from "@/modules/common/layouts/context";
-import { useLaunchParams } from "@telegram-apps/sdk-react";
+import { useInitData, useLaunchParams } from "@telegram-apps/sdk-react";
 import axios from "axios";
 import { useEffect, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 
 export const Login = () => {
   const launchParams = useLaunchParams();
+  const initData = useInitData();
 
   const {
     mutateAsync: login,
@@ -37,6 +38,16 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useLayoutEffect(() => {
+    if (initData?.user && !initData.user.username) {
+      navigate(UN_AUTHORIZED_PAGE_PATH, {
+        state: {
+          errorMessage: "Failed to login: you must have a username",
+        },
+      });
+
+      return;
+    }
+
     login({
       data: { initData: launchParams.initDataRaw || "" },
     }).then(({ data }) => {
@@ -56,7 +67,7 @@ export const Login = () => {
         state: {
           errorMessage:
             errorServerData?.message ||
-            "Не удалось авторизоваться " + loginError?.message,
+            "Failed to login: " + loginError?.message,
         },
       });
     }

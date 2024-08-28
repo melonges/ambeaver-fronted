@@ -3,7 +3,7 @@ import { useReferralControllerGetReferralsInfinite } from "@/modules/api/referra
 const PER_PAGE = 10;
 const FIRST_PAGE = 0;
 
-export const useReferallsInfinite = () =>
+export const useReferralsInfinite = () =>
   useReferralControllerGetReferralsInfinite(
     {
       page: FIRST_PAGE,

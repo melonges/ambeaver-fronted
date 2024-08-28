@@ -1,1 +1,1 @@
-export const FRINEDS_PAGE_PATH = "/friends";
+export const FRIENDS_PAGE_PATH = "/friends";

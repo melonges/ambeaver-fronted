@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  background-color: #fbfbfb;
+  background-color: #f2f3f2;
   -webkit-overflow-scrolling: touch !important;
   -webkit-font-smoothing: antialiased;
 
@@ -29,6 +29,7 @@ body {
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(90, 90, 90, 0.3) transparent;
+  font-family: "Inter", sans-serif;
 }
 
 :root {
@@ -71,24 +72,14 @@ body {
 
     height: 65%;
     width: 100%;
-  }
-
-  .slide-1 {
-    background-color: #698b13;
-  }
-
-  .slide-2 {
-    background-color: #13438b;
-  }
-
-  .slide-3 {
-    background-color: #8b1383;
+    background-color: #b2daff;
   }
 }
 
 .start-slide {
   position: relative;
-  background-image: url("../../modules/common/assets/main-bg.png");
+  background-image: url("../../modules/common/assets/main-bg.png"),
+    linear-gradient(360deg, #ffeca8 3.02%, #b2daff 100%);
   background-repeat: round;
 }
 
@@ -171,4 +162,25 @@ body {
   .bush {
     position: absolute;
   }
+}
+
+.active-navbar-link {
+  & svg {
+    & path {
+      fill: #353b35;
+    }
+  }
+}
+
+.points-progress-indicator {
+  height: 100%;
+  border-radius: 14px;
+  -webkit-mask: linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0);
+}
+.points-progress-indicator::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(90deg, #e25804 0%, #fce93c 100%);
 }

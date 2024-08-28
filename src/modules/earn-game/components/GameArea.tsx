@@ -241,7 +241,7 @@ export const GameArea = ({
     // beaverRef.current.style.transform = "translateX(100%)";
   };
 
-  const clickHanlder = () => {
+  const clickHandler = () => {
     if (
       !slidesContainerRef.current ||
       !treeTrunkRef.current ||
@@ -372,9 +372,9 @@ export const GameArea = ({
 
                 <div ref={treeTrunkRef} className="tree-trunk">
                   <div className="tree-chunks">
-                    {[...Array(trunkChunksCount)].map((_, i) => (
-                      <img src={TreeTrunkImage} key={i} />
-                    ))}
+                    {[...Array(trunkChunksCount)].map((_, i) => {
+                      return <img src={TreeTrunkImage} key={i} />;
+                    })}
                   </div>
 
                   <div ref={beaverRef} className="beaver"></div>
@@ -391,7 +391,7 @@ export const GameArea = ({
       {!showEndGame && (
         <div
           className="absolute left-1/2 top-1/2 z-10 h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary p-6 opacity-40 xxs:h-[240px] xxs:w-[240px] xs:h-[300px] xs:w-[300px]"
-          onClick={clickHanlder}
+          onClick={clickHandler}
         >
           {showLoading && (
             <div className="flex h-full w-full items-center justify-center">
@@ -403,7 +403,7 @@ export const GameArea = ({
 
       {initialLoading && (
         <div className="absolute inset-0 z-30 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">
-          <Spinner size="l" />
+          <Spinner className="text-[#353B35]" size="l" />
         </div>
       )}
     </div>

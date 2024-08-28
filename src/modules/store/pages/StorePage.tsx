@@ -45,7 +45,7 @@ export const StorePage = () => {
   return (
     <div className="flex flex-col items-center">
       {isFetching ? (
-        <Spinner size="l" />
+        <Spinner className="text-[#353B35]" size="l" />
       ) : (
         <>
           <img src={AmberIcon} alt="$amber" className="h-20 w-20" />

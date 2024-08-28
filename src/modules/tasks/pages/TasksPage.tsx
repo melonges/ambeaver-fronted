@@ -6,6 +6,7 @@ import {
   useTasksControllerStart,
 } from "@/modules/api/tasks/tasks";
 import AmberIcon from "@/modules/common/assets/amber-icon.png";
+import { FinishedTaskIcon } from "@/modules/common/icons/FinishedTaskIcon";
 import { useUtils } from "@telegram-apps/sdk-react";
 import { Spinner } from "@telegram-apps/telegram-ui";
 import { useEffect } from "react";
@@ -57,51 +58,69 @@ export const TasksPage = () => {
   if (isTasksLoading || isReferralLinkLoading) {
     return (
       <div className="flex h-full flex-col items-center justify-center">
-        <Spinner size="l" />
+        <Spinner className="text-[#353B35]" size="l" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center border-blue-500">
-      <img src={AmberIcon} alt="$amber" className="h-20 w-20" />
-      <p className="mt-2 text-2xl font-bold">Tasks</p>
-      <span>Complete tasks and receive rewards</span>
+    <div className="text-[#353B35]">
+      <h1 className="mt-4 text-3xl font-extrabold">Ambeaver socials</h1>
+      <p className="mt-6">
+        Join the Ambeaver community, stay up to date with new and upcoming
+        updates, find your tribe on Ambeaver
+      </p>
 
-      <ul className="w-full">
+      <ul className="mt-1 w-full">
         {tasks?.map((task) => {
           const taskTypeClassName =
             task.status === "FINISHED"
-              ? "bg-disabled"
+              ? ""
               : task.status === "READY_FOR_CLAIM"
-                ? "bg-secondary"
-                : "bg-primary";
+                ? "bg-[#4D824D] text-[#F2F3F2]"
+                : "bg-[#353B35] text-[#F2F3F2]";
 
           const taskStatusName =
             task.status === "FINISHED"
-              ? "claimed"
+              ? "Claimed"
               : task.status === "READY_FOR_CLAIM"
-                ? "claim"
-                : "start";
+                ? "Claim"
+                : "Start";
 
           return (
             <li
               key={task.id}
-              className="flex w-full items-center justify-between gap-1 border-b-2 px-1 py-2 last:border-0"
+              className="flex w-full items-center justify-between gap-1 border-b-2 py-4 last:border-0"
             >
-              <div className="flex items-center gap-1">
-                <img src={AmberIcon} alt="$amber" className="h-10 w-10" />
+              <div className="flex items-center gap-5">
+                {task.type === "SOCIAL_SUBSCRIPTION" ? (
+                  <img
+                    src={AmberIcon}
+                    alt="$amber"
+                    className="h-[35px] w-[35px]"
+                  />
+                ) : (
+                  <div className="h-[35px] w-[35px]" />
+                )}
 
                 <div className="flex flex-col">
                   <strong className="font-bold">{task.title}</strong>
-                  <span>{task.rewardInAmbers}</span>
+                  <span className="font-semibold text-[#3F463FE6]">
+                    +{task.rewardInAmbers}AR
+                  </span>
                 </div>
               </div>
               <button
-                className={`w-20 rounded-md p-2 ${taskTypeClassName}`}
+                className={`w-[65px] rounded-2xl p-2 text-sm ${taskTypeClassName}`}
                 onClick={() => completeTask(task)}
               >
-                {taskStatusName}
+                {task.status === "FINISHED" ? (
+                  <div className="flex justify-center">
+                    <FinishedTaskIcon />
+                  </div>
+                ) : (
+                  taskStatusName
+                )}
               </button>
             </li>
           );
