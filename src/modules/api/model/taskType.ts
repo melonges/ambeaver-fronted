@@ -8,7 +8,6 @@
 export type TaskType = (typeof TaskType)[keyof typeof TaskType];
 
 export const TaskType = {
-  welcome: "welcome",
-  invite: "invite",
-  subscribe: "subscribe",
+  INVITE_FRIENDS: "INVITE_FRIENDS",
+  SOCIAL_SUBSCRIPTION: "SOCIAL_SUBSCRIPTION",
 } as const;

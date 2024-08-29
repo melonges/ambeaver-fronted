@@ -1,10 +1,10 @@
+import { getTasksControllerFindAllQueryKey } from "@/modules/api/default/default";
 import {
   TaskDto,
   TaskDtoStatus,
   TasksControllerFindAll200,
 } from "@/modules/api/model";
 import {
-  getTasksControllerFindAllQueryKey,
   useTasksControllerClaim,
   useTasksControllerStart,
 } from "@/modules/api/tasks/tasks";

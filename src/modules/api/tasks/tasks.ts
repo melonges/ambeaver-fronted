@@ -19,52 +19,38 @@ import type {
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import * as axios from "axios";
-import type {
-  TasksControllerFindAll200,
-  TasksControllerFindAllParams,
-} from ".././model";
+import type { TaskStatus, TasksController200 } from ".././model";
 
-export const tasksControllerFindAll = (
-  params: TasksControllerFindAllParams,
+export const tasksController = (
   options?: AxiosRequestConfig
-): Promise<AxiosResponse<TasksControllerFindAll200>> => {
-  return axios.default.get(`/tasks`, {
-    ...options,
-    params: { ...params, ...options?.params },
-  });
+): Promise<AxiosResponse<TasksController200>> => {
+  return axios.default.get(`/tasks`, options);
 };
 
-export const getTasksControllerFindAllQueryKey = (
-  params: TasksControllerFindAllParams
-) => {
-  return [`/tasks`, ...(params ? [params] : [])] as const;
+export const getTasksControllerQueryKey = () => {
+  return [`/tasks`] as const;
 };
 
-export const getTasksControllerFindAllInfiniteQueryOptions = <
-  TData = InfiniteData<Awaited<ReturnType<typeof tasksControllerFindAll>>>,
+export const getTasksControllerInfiniteQueryOptions = <
+  TData = InfiniteData<Awaited<ReturnType<typeof tasksController>>>,
   TError = AxiosError<unknown>,
->(
-  params: TasksControllerFindAllParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof tasksControllerFindAll>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  }
-) => {
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof tasksController>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
   const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getTasksControllerFindAllQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getTasksControllerQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof tasksControllerFindAll>>
-  > = ({ signal }) =>
-    tasksControllerFindAll(params, { signal, ...axiosOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof tasksController>>> = ({
+    signal,
+  }) => tasksController({ signal, ...axiosOptions });
 
   return {
     queryKey,
@@ -72,37 +58,31 @@ export const getTasksControllerFindAllInfiniteQueryOptions = <
     staleTime: 10000,
     ...queryOptions,
   } as UseInfiniteQueryOptions<
-    Awaited<ReturnType<typeof tasksControllerFindAll>>,
+    Awaited<ReturnType<typeof tasksController>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type TasksControllerFindAllInfiniteQueryResult = NonNullable<
-  Awaited<ReturnType<typeof tasksControllerFindAll>>
+export type TasksControllerInfiniteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof tasksController>>
 >;
-export type TasksControllerFindAllInfiniteQueryError = AxiosError<unknown>;
+export type TasksControllerInfiniteQueryError = AxiosError<unknown>;
 
-export const useTasksControllerFindAllInfinite = <
-  TData = InfiniteData<Awaited<ReturnType<typeof tasksControllerFindAll>>>,
+export const useTasksControllerInfinite = <
+  TData = InfiniteData<Awaited<ReturnType<typeof tasksController>>>,
   TError = AxiosError<unknown>,
->(
-  params: TasksControllerFindAllParams,
-  options?: {
-    query?: Partial<
-      UseInfiniteQueryOptions<
-        Awaited<ReturnType<typeof tasksControllerFindAll>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  }
-): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getTasksControllerFindAllInfiniteQueryOptions(
-    params,
-    options
-  );
+>(options?: {
+  query?: Partial<
+    UseInfiniteQueryOptions<
+      Awaited<ReturnType<typeof tasksController>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseInfiniteQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getTasksControllerInfiniteQueryOptions(options);
 
   const query = useInfiniteQuery(queryOptions) as UseInfiniteQueryResult<
     TData,
@@ -114,31 +94,22 @@ export const useTasksControllerFindAllInfinite = <
   return query;
 };
 
-export const getTasksControllerFindAllQueryOptions = <
-  TData = Awaited<ReturnType<typeof tasksControllerFindAll>>,
+export const getTasksControllerQueryOptions = <
+  TData = Awaited<ReturnType<typeof tasksController>>,
   TError = AxiosError<unknown>,
->(
-  params: TasksControllerFindAllParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof tasksControllerFindAll>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  }
-) => {
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof tasksController>>, TError, TData>
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
   const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getTasksControllerFindAllQueryKey(params);
+  const queryKey = queryOptions?.queryKey ?? getTasksControllerQueryKey();
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof tasksControllerFindAll>>
-  > = ({ signal }) =>
-    tasksControllerFindAll(params, { signal, ...axiosOptions });
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof tasksController>>> = ({
+    signal,
+  }) => tasksController({ signal, ...axiosOptions });
 
   return {
     queryKey,
@@ -146,34 +117,27 @@ export const getTasksControllerFindAllQueryOptions = <
     staleTime: 10000,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof tasksControllerFindAll>>,
+    Awaited<ReturnType<typeof tasksController>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type TasksControllerFindAllQueryResult = NonNullable<
-  Awaited<ReturnType<typeof tasksControllerFindAll>>
+export type TasksControllerQueryResult = NonNullable<
+  Awaited<ReturnType<typeof tasksController>>
 >;
-export type TasksControllerFindAllQueryError = AxiosError<unknown>;
+export type TasksControllerQueryError = AxiosError<unknown>;
 
-export const useTasksControllerFindAll = <
-  TData = Awaited<ReturnType<typeof tasksControllerFindAll>>,
+export const useTasksController = <
+  TData = Awaited<ReturnType<typeof tasksController>>,
   TError = AxiosError<unknown>,
->(
-  params: TasksControllerFindAllParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof tasksControllerFindAll>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  }
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getTasksControllerFindAllQueryOptions(params, options);
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof tasksController>>, TError, TData>
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getTasksControllerQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -187,7 +151,7 @@ export const useTasksControllerFindAll = <
 export const tasksControllerStart = (
   id: number,
   options?: AxiosRequestConfig
-): Promise<AxiosResponse<void>> => {
+): Promise<AxiosResponse<TaskStatus>> => {
   return axios.default.post(`/tasks/start/${id}`, undefined, options);
 };
 

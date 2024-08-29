@@ -5,8 +5,4 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export interface ReferralDto {
-  ambers: number;
-  invited: number;
-  username: string;
-}
+export type TotalTappedCreatedAt = { [key: string]: unknown };

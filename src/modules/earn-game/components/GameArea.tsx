@@ -299,13 +299,13 @@ export const GameArea = ({
     beaverRef.current.style.bottom =
       parseFloat(beaverRef.current.style.bottom || "0") + SLIDES_STEP_PX + "px";
 
-    if (beaverDirection.current === "left") {
-      beaverRef.current.style.transform = "translateX(100%)";
-      beaverDirection.current = "right";
-    } else {
-      beaverRef.current.style.transform = "translateX(-100%)";
-      beaverDirection.current = "left";
-    }
+    // if (beaverDirection.current === "left") {
+    //   beaverRef.current.style.transform = "translateX(100%)";
+    //   beaverDirection.current = "right";
+    // } else {
+    //   beaverRef.current.style.transform = "translateX(-100%)";
+    //   beaverDirection.current = "left";
+    // }
 
     treeTrunkRef.current.style.backgroundPositionY =
       treeTrunkRef.current.style.height;

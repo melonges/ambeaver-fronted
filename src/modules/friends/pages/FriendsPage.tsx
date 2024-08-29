@@ -160,7 +160,9 @@ export const FriendsPage = () => {
 
                         <div className="mt-1 flex items-center">
                           <UserIcon />
-                          <span className="text-[#3F463FE6]">+0</span>
+                          <span className="text-[#3F463FE6]">
+                            +{referral.invited}
+                          </span>
                         </div>
                       </div>
                     </div>

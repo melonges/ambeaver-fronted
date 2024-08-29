@@ -4,9 +4,8 @@
  * Ambeaver API
  * OpenAPI spec version: 0.0.1
  */
+import type { TaskDto } from "./taskDto";
 
-export interface ReferralDto {
-  ambers: number;
-  invited: number;
-  username: string;
-}
+export type TasksController200AllOf = {
+  data?: TaskDto[];
+};
