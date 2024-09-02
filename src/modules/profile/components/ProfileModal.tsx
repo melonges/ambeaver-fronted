@@ -38,7 +38,7 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
 
             <div className="text-2xl font-bold text-[#FCA710]">
               {!isFetching ? (
-                data?.data.totalTapped + " AR" || "..."
+                data?.data.points + " AR" || "..."
               ) : (
                 <Spinner className="text-[#FCA710]" size="s" />
               )}
