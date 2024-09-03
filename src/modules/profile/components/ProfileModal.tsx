@@ -1,5 +1,6 @@
 import { useAssetsControllerGetPlayerAssets } from "@/modules/api/assets/assets";
 import AmberImage from "@/modules/common/assets/amber.png";
+import DefaultAvatar from "@/modules/common/assets/avatar.png";
 import BlueAmberImage from "@/modules/common/assets/blue-amber.png";
 import { Modal } from "@/modules/common/components/Modal";
 import { useInitData } from "@telegram-apps/sdk-react";
@@ -19,15 +20,11 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
     <Modal wrapperClassName="w-8/12 top-[40%]" onClose={onClose}>
       <div className="flex flex-col px-3 pb-8 pt-11">
         <div className="flex flex-col items-center">
-          {initData?.user?.photoUrl ? (
-            <img
-              className="h-28 max-h-28 min-h-28 w-28 min-w-28 max-w-28 rounded-full object-cover"
-              src={initData?.user?.photoUrl}
-              alt="avatar"
-            />
-          ) : (
-            <div className="h-28 w-28 rounded-full bg-[#D9D9D9] object-cover"></div>
-          )}
+          <img
+            className="h-28 max-h-28 min-h-28 w-28 min-w-28 max-w-28 rounded-full object-cover"
+            src={initData?.user?.photoUrl || DefaultAvatar}
+            alt="avatar"
+          />
 
           <p className="text-sm font-semibold">{initData?.user?.username}</p>
         </div>
