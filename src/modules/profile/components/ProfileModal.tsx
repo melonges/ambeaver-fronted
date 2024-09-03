@@ -38,7 +38,7 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
 
             <div className="text-2xl font-bold text-[#FCA710]">
               {!isFetching ? (
-                data?.data.points + " AR" || "..."
+                data?.data.ambers + " AR" || "..."
               ) : (
                 <Spinner className="text-[#FCA710]" size="s" />
               )}
