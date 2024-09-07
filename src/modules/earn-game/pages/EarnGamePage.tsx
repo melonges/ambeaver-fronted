@@ -34,11 +34,11 @@ export const EarnGamePage = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
 
   const [ambers, setAmbers] = useState(data?.data.ambers || 0);
-  const [points, setPoints] = useState(data?.data.points || 0);
+  const [points, setPoints] = useState(data?.data.points || 100);
   const [, setEnergy] = useState(data?.data.energy || 0);
 
   const clicksToWin = useMemo(
-    () => settingsData?.data.playerLimits.points || 1,
+    () => settingsData?.data.playerLimits.points || 15,
     [settingsData]
   );
 

@@ -15,6 +15,7 @@
     "api:generate": "orval --config ./orval.config.cjs"
   },
   "dependencies": {
+    "@rive-app/react-canvas": "^4.13.8",
     "@tanstack/react-query": "^5.51.9",
     "@telegram-apps/sdk-react": "^1.1.3",
     "@telegram-apps/telegram-ui": "^2.1.7",
@@ -23,7 +24,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-qr-code": "^2.0.15",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",

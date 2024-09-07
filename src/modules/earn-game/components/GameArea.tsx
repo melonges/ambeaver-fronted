@@ -5,12 +5,21 @@ import MainBgImage from "@/modules/common/assets/main-bg.png";
 import TreeCrownImage from "@/modules/common/assets/tree/tree-crown.png";
 import TreeBaseGrassImage from "@/modules/common/assets/tree/tree-grass.png";
 import TreeTrunkImage from "@/modules/common/assets/tree/tree-trunk.png";
+import { useLoaderStore } from "@/modules/common/store/loaderStore";
+import {
+  Alignment,
+  Layout,
+  useRive,
+  useStateMachineInput,
+} from "@rive-app/react-canvas";
 
 import { useViewport } from "@telegram-apps/sdk-react";
 import { Spinner } from "@telegram-apps/telegram-ui";
 import { useLayoutEffect, useRef, useState } from "react";
 
-const SLIDES_STEP_PX = 10;
+const CLICKS_TO_FIX_BEAVER = 3;
+
+const SLIDES_STEP_PX = 50;
 
 const ORIGINAL_MAIN_BG_HEIGHT = 3840;
 const ORIGINAL_TREE_POSITION_Y = 3140;
@@ -50,6 +59,8 @@ export const GameArea = ({
   clicksToWin: number;
   decPoints: () => void;
 }) => {
+  clicksToWin = 15;
+
   const viewport = useViewport();
 
   const [initialLoading, setInitialLoading] = useState(true);
@@ -69,12 +80,38 @@ export const GameArea = ({
   const treeStumpRef = useRef<HTMLImageElement | null>(null);
   const sittingBeaverRef = useRef<HTMLImageElement | null>(null);
   const bushRef = useRef<HTMLImageElement | null>(null);
+  const riveWrapper = useRef<HTMLDivElement | null>(null);
+  const treeBaseGrassRef = useRef<HTMLImageElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const clicksCount = useRef(0);
+  const animationVariant = useRef(0);
   const currentSlidesTranslateY = useRef(0);
+  const isFirstClick = useRef(true);
 
   const beaverDirection = useRef<"right" | "left">("right");
   const canClick = useRef(true);
+  const store = useLoaderStore();
+
+  const { rive, RiveComponent } = useRive({
+    layout: new Layout({
+      alignment: Alignment.Center,
+    }),
+    src: "/beaver.riv",
+    stateMachines: "State Machine 1",
+    artboard: "Beaver",
+    autoplay: true,
+    onLoad: () => onLoad(),
+  });
+
+  const startInput = useStateMachineInput(
+    rive,
+    "State Machine 1",
+    "start",
+    false
+  );
+
+  const tapInput = useStateMachineInput(rive, "State Machine 1", "tap");
 
   useLayoutEffect(() => {
     viewport?.on("change", initValues);
@@ -228,7 +265,7 @@ export const GameArea = ({
     const initialTreeYPosition = Math.ceil(scale * ORIGINAL_TREE_POSITION_Y);
     const initialTreeBottomOffset = currentImageHeight - initialTreeYPosition;
 
-    treeContainerRef.current.style.bottom = initialTreeBottomOffset + "px";
+    // treeContainerRef.current.style.bottom = initialTreeBottomOffset + "px";
 
     treeCrownRef.current.style.bottom = realTreeHeight + "px";
 
@@ -238,7 +275,19 @@ export const GameArea = ({
     beaverDirection.current = "right";
     beaverRef.current.style.bottom = treeBaseHeight + "px";
 
-    // beaverRef.current.style.transform = "translateX(100%)";
+    isFirstClick.current = true;
+
+    if (
+      !riveWrapper.current ||
+      !treeBaseGrassRef.current ||
+      !wrapperRef.current
+    ) {
+      return;
+    }
+
+    treeBaseGrassRef.current.style.bottom =
+      initialTreeBottomOffset * 0.9 + "px";
+    riveWrapper.current.style.height = currentImageHeight + "px";
   };
 
   const clickHandler = () => {
@@ -254,42 +303,9 @@ export const GameArea = ({
       return;
     }
 
-    slidesContainerRef.current.style.transition = "all 0.3s ease";
+    slidesContainerRef.current.style.transition = "all 0.3s linear";
 
-    clicksCount.current++;
     decPoints();
-
-    if (clicksCount.current >= clicksToWin) {
-      canClick.current = false;
-
-      let c = 0;
-      const intervalId = setInterval(() => {
-        if (!slidesContainerRef.current || !beaverRef.current) {
-          return;
-        }
-
-        c++;
-
-        if (c >= clicksToWin) {
-          clearInterval(intervalId);
-
-          setShowLoading(true);
-
-          setTimeout(() => {
-            initValues();
-            setShowLoading(false);
-          }, 500);
-        }
-
-        currentSlidesTranslateY.current -= SLIDES_STEP_PX;
-        slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
-
-        beaverRef.current.style.bottom =
-          parseFloat(beaverRef.current.style.bottom || "0") -
-          SLIDES_STEP_PX +
-          "px";
-      }, 25);
-    }
 
     currentSlidesTranslateY.current += SLIDES_STEP_PX;
     slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
@@ -299,25 +315,80 @@ export const GameArea = ({
     beaverRef.current.style.bottom =
       parseFloat(beaverRef.current.style.bottom || "0") + SLIDES_STEP_PX + "px";
 
-    // if (beaverDirection.current === "left") {
-    //   beaverRef.current.style.transform = "translateX(100%)";
-    //   beaverDirection.current = "right";
-    // } else {
-    //   beaverRef.current.style.transform = "translateX(-100%)";
-    //   beaverDirection.current = "left";
-    // }
-
     treeTrunkRef.current.style.backgroundPositionY =
       treeTrunkRef.current.style.height;
+
+    if (!startInput || !tapInput || !riveWrapper.current) {
+      return;
+    }
+
+    if (clicksCount.current >= CLICKS_TO_FIX_BEAVER) {
+      riveWrapper.current.style.bottom =
+        parseFloat(riveWrapper.current.style.bottom || "0") +
+        SLIDES_STEP_PX +
+        "px";
+    }
+
+    const isLose = clicksCount.current >= clicksToWin && tapInput.value === 8;
+
+    if (isLose) {
+      tapInput.value = 8;
+      startInput.value = false;
+      animationVariant.current = 0;
+      canClick.current = false;
+
+      if (!slidesContainerRef.current || !beaverRef.current) {
+        return;
+      }
+
+      let c = clicksCount.current;
+
+      while (c > 0) {
+        c--;
+        currentSlidesTranslateY.current -= SLIDES_STEP_PX;
+      }
+
+      riveWrapper.current.style.bottom = "-17%";
+      slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
+
+      setShowLoading(true);
+
+      setTimeout(() => {
+        initValues();
+        setShowLoading(false);
+      }, 500);
+
+      return;
+    }
+
+    if (!isFirstClick.current) {
+      if (animationVariant.current === 8) {
+        animationVariant.current = 5;
+        tapInput.value = 5;
+      } else {
+        console.log("@before", tapInput.value);
+        animationVariant.current += 1;
+        console.log("@after", animationVariant.current);
+        tapInput.value = animationVariant.current;
+      }
+
+      clicksCount.current += 1;
+    } else {
+      isFirstClick.current = false;
+      startInput.value = true;
+      tapInput.value = 0;
+    }
   };
 
-  const onImageLoad = () => {
+  const onLoad = () => {
     setInitialLoading(false);
+
+    store.setCanInitAnimation();
     initValues();
   };
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div ref={wrapperRef} className="relative h-full w-full overflow-hidden">
       <div
         ref={slidesContainerRef}
         className="slides-container absolute inset-0 h-full w-full"
@@ -379,11 +450,24 @@ export const GameArea = ({
 
                   <div ref={beaverRef} className="beaver"></div>
                 </div>
-                <img src={TreeBaseGrassImage} className="tree-base-grass" />
+
+                <div
+                  ref={riveWrapper}
+                  // transition-all duration-300 ease-linear
+                  className="absolute bottom-[-17%] left-0 w-full"
+                >
+                  <RiveComponent />
+                </div>
+
+                <img
+                  src={TreeBaseGrassImage}
+                  ref={treeBaseGrassRef}
+                  className="tree-base-grass"
+                />
               </div>
             )}
 
-            <img ref={mainBgRef} src={MainBgImage} onLoad={onImageLoad} />
+            <img ref={mainBgRef} src={MainBgImage} />
           </div>
         </div>
       </div>

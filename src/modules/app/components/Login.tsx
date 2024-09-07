@@ -2,6 +2,7 @@ import { useAssetsControllerGetPlayerAssets } from "@/modules/api/assets/assets"
 import { useAuthControllerSignIn } from "@/modules/api/authorization/authorization";
 import { useSettingsControllerFindOne } from "@/modules/api/settings/settings";
 import { LayoutProvider } from "@/modules/common/layouts/context";
+import { useLoaderStore } from "@/modules/common/store/loaderStore";
 import { useInitData, useLaunchParams } from "@telegram-apps/sdk-react";
 import axios from "axios";
 import { useEffect, useLayoutEffect } from "react";
@@ -14,6 +15,8 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_API_URL;
 export const Login = () => {
   const launchParams = useLaunchParams();
   const initData = useInitData();
+
+  const store = useLoaderStore();
 
   const {
     mutateAsync: login,
@@ -77,7 +80,8 @@ export const Login = () => {
     !loginError &&
     (loginStatus === "pending" ||
       assetsStatus === "pending" ||
-      settingsStatus === "pending")
+      settingsStatus === "pending" ||
+      !store.animationLoaded)
   ) {
     return <Loader />;
   }
