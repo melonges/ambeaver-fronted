@@ -66,7 +66,7 @@ export const InitComponent = () => {
       platform={platform}
     >
       {canHideLoader ? null : (
-        <div className="fixed inset-0 overflow-hidden">
+        <div className="fixed inset-0 z-50 overflow-hidden">
           <div className="absolute -left-1/2 top-0 z-50 h-[200vh] w-[200vw]">
             <RiveComponent />
           </div>

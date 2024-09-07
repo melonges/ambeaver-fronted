@@ -124,7 +124,7 @@ export const EarnGamePage = () => {
       </button>
 
       {showEndGame && (
-        <div className="fixed left-1/2 top-24 z-50 flex w-10/12 -translate-x-1/2 flex-col items-center rounded-2xl bg-[#F8FBF8] px-4 py-5">
+        <div className="fixed left-1/2 top-24 z-30 flex w-10/12 -translate-x-1/2 flex-col items-center rounded-2xl bg-[#F8FBF8] px-4 py-5">
           <p className="text-xl font-medium text-[#353B35]">
             Click Limit is over
           </p>
