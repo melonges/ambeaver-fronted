@@ -1,11 +1,6 @@
 import { usePlatform } from "@/modules/common/hooks/usePlatform";
 import { useLoaderStore } from "@/modules/common/store/loaderStore";
-import {
-  Alignment,
-  Layout,
-  useRive,
-  useStateMachineInput,
-} from "@rive-app/react-canvas";
+import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import {
   bindViewportCSSVars,
   useMiniApp,
@@ -24,9 +19,6 @@ export const InitComponent = () => {
   const store = useLoaderStore();
 
   const { rive, RiveComponent } = useRive({
-    layout: new Layout({
-      alignment: Alignment.Center,
-    }),
     src: "/loader_amber.riv",
     stateMachines: "State Machine 1",
     artboard: "8",
@@ -46,7 +38,6 @@ export const InitComponent = () => {
   useEffect(() => {
     if (progressInput) {
       progressInput.value = 100;
-
       setTimeout(() => {
         setCanHideLoader(true);
       }, 1500);
@@ -75,8 +66,10 @@ export const InitComponent = () => {
       platform={platform}
     >
       {canHideLoader ? null : (
-        <div className="fixed inset-0 z-50">
-          <RiveComponent />
+        <div className="fixed inset-0 overflow-hidden">
+          <div className="absolute -left-1/2 top-0 z-50 h-[200vh] w-[200vw]">
+            <RiveComponent />
+          </div>
         </div>
       )}
 
