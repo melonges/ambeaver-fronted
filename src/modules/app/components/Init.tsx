@@ -62,8 +62,12 @@ export const InitComponent = () => {
           clearInterval(intervalId);
           setCanHideLoader(true);
         }
-      } else {
-        miniApp.setHeaderColor("#F8FBF8");
+      } else if (currentValue === 80) {
+        if (direction === 1) {
+          miniApp.setHeaderColor("#fcf938");
+        } else {
+          miniApp.setHeaderColor("#F8FBF8");
+        }
       }
 
       currentValue += direction;
