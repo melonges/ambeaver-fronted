@@ -73,6 +73,8 @@ export const Login = () => {
             "Failed to login: " + loginError?.message,
         },
       });
+
+      store.setCanInitAnimation();
     }
   }, [loginError, assetsStatus, settingsStatus]);
 
@@ -80,9 +82,12 @@ export const Login = () => {
     !loginError &&
     (loginStatus === "pending" ||
       assetsStatus === "pending" ||
-      settingsStatus === "pending" ||
-      !store.animationLoaded)
+      settingsStatus === "pending")
   ) {
+    return <Loader />;
+  }
+
+  if (!store.animationLoaded) {
     return <Loader />;
   }
 

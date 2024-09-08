@@ -377,12 +377,16 @@ export const GameArea = ({
       isFirstClick.current = false;
       startInput.value = true;
       tapInput.value = 0;
+
+      canClick.current = false;
+      setTimeout(() => {
+        canClick.current = true;
+      }, 1000);
     }
   };
 
   const onLoad = () => {
     setInitialLoading(false);
-
     store.setCanInitAnimation();
     initValues();
   };

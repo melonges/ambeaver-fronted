@@ -10,6 +10,8 @@ import { AppRoot } from "@telegram-apps/telegram-ui";
 import { useEffect, useState } from "react";
 import { Login } from "./Login";
 
+const ANIMATION_TIME = 3000;
+
 export const InitComponent = () => {
   const viewport = useViewport();
   const platform = usePlatform();
@@ -19,12 +21,14 @@ export const InitComponent = () => {
   const store = useLoaderStore();
 
   const { rive, RiveComponent } = useRive({
-    src: "/loader_amber.riv",
+    // src: "/loader_amber.riv",
+    src: "https://public.rive.app/hosted/156163/180731/dRfg5ekxIkW5qTzjNUYYeg.riv",
     stateMachines: "State Machine 1",
-    artboard: "8",
     autoplay: true,
     onLoad: () => {
-      store.setAnimationLoaded();
+      setTimeout(() => {
+        store.setAnimationLoaded();
+      }, 50);
     },
   });
 
@@ -34,15 +38,39 @@ export const InitComponent = () => {
     "progress",
     0
   );
-
   useEffect(() => {
-    if (progressInput) {
-      progressInput.value = 100;
-      setTimeout(() => {
-        setCanHideLoader(true);
-      }, 1500);
+    if (!store.animationLoaded || !progressInput) {
+      return;
     }
-  }, [store.canInitAnimation, progressInput]);
+
+    const intervalTime = ANIMATION_TIME / 100;
+    let currentValue = 0;
+    let direction = 1;
+    let canHide = false;
+
+    const intervalId = setInterval(() => {
+      progressInput.value = currentValue;
+
+      if (currentValue === 100) {
+        direction = -1;
+        miniApp.setHeaderColor("#fcf938");
+        canHide = true;
+      } else if (currentValue === 0) {
+        direction = 1;
+        if (store.canInitAnimation && canHide) {
+          miniApp.setHeaderColor("#F8FBF8");
+          clearInterval(intervalId);
+          setCanHideLoader(true);
+        }
+      } else {
+        miniApp.setHeaderColor("#F8FBF8");
+      }
+
+      currentValue += direction;
+    }, intervalTime);
+
+    return () => clearInterval(intervalId);
+  }, [store.animationLoaded, store.canInitAnimation]);
 
   // const themeParams = useThemeParams();
   // useEffect(() => {
@@ -67,7 +95,7 @@ export const InitComponent = () => {
     >
       {canHideLoader ? null : (
         <div className="fixed inset-0 z-50 overflow-hidden">
-          <div className="absolute -left-1/2 top-0 z-50 h-[200vh] w-[200vw]">
+          <div className="absolute -left-1/2 -top-5 z-50 h-[200vh] w-[200vw]">
             <RiveComponent />
           </div>
         </div>
