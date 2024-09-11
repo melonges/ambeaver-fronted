@@ -348,7 +348,7 @@ export const GameArea = ({
         currentSlidesTranslateY.current -= SLIDES_STEP_PX;
       }
 
-      riveWrapper.current.style.bottom = "-17%";
+      riveWrapper.current.style.bottom = "-16%";
       slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
 
       setShowLoading(true);
@@ -458,7 +458,7 @@ export const GameArea = ({
                 <div
                   ref={riveWrapper}
                   // transition-all duration-300 ease-linear
-                  className="absolute bottom-[-17%] left-0 w-full"
+                  className="absolute bottom-[-16%] left-0 w-full"
                 >
                   <RiveComponent />
                 </div>
@@ -466,12 +466,13 @@ export const GameArea = ({
                 <img
                   src={TreeBaseGrassImage}
                   ref={treeBaseGrassRef}
+                  alt="tree-base-grass"
                   className="tree-base-grass"
                 />
               </div>
             )}
 
-            <img ref={mainBgRef} src={MainBgImage} />
+            <img ref={mainBgRef} src={MainBgImage} alt="background" />
           </div>
         </div>
       </div>
