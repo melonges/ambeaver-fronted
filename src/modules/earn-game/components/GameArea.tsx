@@ -91,7 +91,7 @@ export const GameArea = ({
 
   const beaverDirection = useRef<"right" | "left">("right");
   const canClick = useRef(true);
-  const store = useLoaderStore();
+  const loaderStore = useLoaderStore();
 
   const { rive, RiveComponent } = useRive({
     layout: new Layout({
@@ -387,7 +387,7 @@ export const GameArea = ({
 
   const onLoad = () => {
     setInitialLoading(false);
-    store.setCanInitAnimation();
+    loaderStore.setCanInitAnimation();
     initValues();
   };
 

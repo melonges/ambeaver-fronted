@@ -1,4 +1,5 @@
 import { usePlatform } from "@/modules/common/hooks/usePlatform";
+import { useAppStore } from "@/modules/common/store/appStore";
 import { useLoaderStore } from "@/modules/common/store/loaderStore";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import {
@@ -7,7 +8,7 @@ import {
   useViewport,
 } from "@telegram-apps/sdk-react";
 import { AppRoot } from "@telegram-apps/telegram-ui";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Login } from "./Login";
 
 const ANIMATION_TIME = 3000;
@@ -18,7 +19,8 @@ export const InitComponent = () => {
   const miniApp = useMiniApp();
   const [canHideLoader, setCanHideLoader] = useState(false);
 
-  const store = useLoaderStore();
+  const loaderStore = useLoaderStore();
+  const appStore = useAppStore();
 
   const { rive, RiveComponent } = useRive({
     // src: "/loader_amber.riv",
@@ -27,7 +29,7 @@ export const InitComponent = () => {
     autoplay: true,
     onLoad: () => {
       setTimeout(() => {
-        store.setAnimationLoaded();
+        loaderStore.setAnimationLoaded();
       }, 50);
     },
   });
@@ -38,8 +40,19 @@ export const InitComponent = () => {
     "progress",
     0
   );
+
+  useLayoutEffect(() => {
+    const isIPhone = ["iPhone Simulator", "iPhone"].includes(
+      navigator.platform
+    );
+
+    if (!isIPhone) {
+      appStore.setNavBarPaddingBottom(0);
+    }
+  }, []);
+
   useEffect(() => {
-    if (!store.animationLoaded || !progressInput) {
+    if (!loaderStore.animationLoaded || !progressInput) {
       return;
     }
 
@@ -57,7 +70,7 @@ export const InitComponent = () => {
         canHide = true;
       } else if (currentValue === 0) {
         direction = 1;
-        if (store.canInitAnimation && canHide) {
+        if (loaderStore.canInitAnimation && canHide) {
           miniApp.setHeaderColor("#F8FBF8");
           clearInterval(intervalId);
           setCanHideLoader(true);
@@ -74,7 +87,7 @@ export const InitComponent = () => {
     }, intervalTime);
 
     return () => clearInterval(intervalId);
-  }, [store.animationLoaded, store.canInitAnimation]);
+  }, [loaderStore.animationLoaded, loaderStore.canInitAnimation]);
 
   // const themeParams = useThemeParams();
   // useEffect(() => {

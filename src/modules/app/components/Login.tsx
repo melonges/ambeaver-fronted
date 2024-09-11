@@ -16,7 +16,7 @@ export const Login = () => {
   const launchParams = useLaunchParams();
   const initData = useInitData();
 
-  const store = useLoaderStore();
+  const loaderStore = useLoaderStore();
 
   const {
     mutateAsync: login,
@@ -74,7 +74,7 @@ export const Login = () => {
         },
       });
 
-      store.setCanInitAnimation();
+      loaderStore.setCanInitAnimation();
     }
   }, [loginError, assetsStatus, settingsStatus]);
 
@@ -87,7 +87,7 @@ export const Login = () => {
     return <Loader />;
   }
 
-  if (!store.animationLoaded) {
+  if (!loaderStore.animationLoaded) {
     return <Loader />;
   }
 

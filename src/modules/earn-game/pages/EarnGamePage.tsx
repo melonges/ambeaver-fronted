@@ -97,7 +97,7 @@ export const EarnGamePage = () => {
     <div className="relative flex h-full flex-col">
       <button
         onClick={() => setShowProfileModal(true)}
-        className="absolute left-2 top-6 z-10 w-[130px] rounded-xl bg-[#F8FBF8]/30 px-3 py-2 backdrop-blur-md"
+        className="fixed left-4 top-6 z-10 w-[130px] rounded-xl bg-[#F8FBF8]/30 px-3 py-2 backdrop-blur-md"
       >
         <div className="flex gap-2">
           <img src={AmberImage} alt="amber" className="h-6 w-6" />
@@ -119,7 +119,7 @@ export const EarnGamePage = () => {
         )}
       </button>
 
-      <button className="absolute right-2 top-6 z-10">
+      <button className="fixed right-4 top-6 z-10">
         <MiniGameTicketDisabledSoonIcon />
       </button>
 

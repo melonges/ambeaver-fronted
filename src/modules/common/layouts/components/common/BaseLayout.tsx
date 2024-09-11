@@ -1,5 +1,5 @@
+import { useAppStore } from "@/modules/common/store/appStore";
 import { CSSProperties, ReactNode } from "react";
-import { NAVBAR_HEIGHT } from "../../constants";
 import { NavBar } from "./NavBar";
 
 export const BaseLayout = ({
@@ -13,10 +13,12 @@ export const BaseLayout = ({
   contentStyle?: CSSProperties;
   contentClassName?: string;
 }) => {
+  const appStore = useAppStore();
+
   return (
     <>
       <section
-        style={{ paddingBottom: NAVBAR_HEIGHT + "px", ...style }}
+        style={{ paddingBottom: appStore.navBarHeight + "px", ...style }}
         className="app w-full"
       >
         <main

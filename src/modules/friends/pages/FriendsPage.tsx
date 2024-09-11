@@ -7,7 +7,7 @@ import AmberImage from "@/modules/common/assets/amber.png";
 import { FriendsIcon } from "@/modules/common/icons/FriendsIcon";
 import { GraphIcon } from "@/modules/common/icons/GraphIcon";
 import { UserIcon } from "@/modules/common/icons/UserIcon";
-import { NAVBAR_HEIGHT } from "@/modules/common/layouts/constants";
+import { useAppStore } from "@/modules/common/store/appStore";
 import { Spinner } from "@telegram-apps/telegram-ui";
 import { useEffect, useState } from "react";
 import { InviteFriendMessageBox } from "../components/InviteFriendMessageBox";
@@ -18,6 +18,8 @@ const MAX_FRIENDS_COUNT = 10;
 
 export const FriendsPage = () => {
   const [showModal, setShowModal] = useState(false);
+
+  const appStore = useAppStore();
 
   const {
     data: referralsData,
@@ -179,7 +181,7 @@ export const FriendsPage = () => {
 
       <div
         style={{
-          bottom: NAVBAR_HEIGHT + "px",
+          bottom: appStore.navBarHeight + "px",
           height: INVITE_FRIEND_BUTTON_WRAPPER_HEIGHT + "px",
         }}
         className="fixed left-0 w-full bg-[#F8FBF8] px-6 py-2"

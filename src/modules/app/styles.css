@@ -77,7 +77,7 @@ body {
 }
 
 .start-slide {
-  position: relative;
+  position: fixed;
   background-image: url("../../modules/common/assets/main-bg.png"),
     linear-gradient(360deg, #ffeca8 3.02%, #b2daff 100%);
   background-repeat: round;
