@@ -23,9 +23,9 @@ export const InitComponent = () => {
   const appStore = useAppStore();
 
   const { rive, RiveComponent } = useRive({
-    // src: "/loader_amber.riv",
-    src: "https://public.rive.app/hosted/156163/180731/dRfg5ekxIkW5qTzjNUYYeg.riv",
+    src: "/loader_amber.riv",
     stateMachines: "State Machine 1",
+    artboard: "main",
     autoplay: true,
     onLoad: () => {
       setTimeout(() => {
@@ -58,32 +58,21 @@ export const InitComponent = () => {
 
     const intervalTime = ANIMATION_TIME / 100;
     let currentValue = 0;
-    let direction = 1;
-    let canHide = false;
 
     const intervalId = setInterval(() => {
       progressInput.value = currentValue;
 
-      if (currentValue === 100) {
-        direction = -1;
+      if (currentValue === 35) {
         miniApp.setHeaderColor("#fcf938");
-        canHide = true;
-      } else if (currentValue === 0) {
-        direction = 1;
-        if (loaderStore.canInitAnimation && canHide) {
-          miniApp.setHeaderColor("#F8FBF8");
+      } else if (currentValue === 85) {
+        miniApp.setHeaderColor("#F8FBF8");
+      } else if (currentValue === 100) {
+        if (loaderStore.canInitAnimation) {
           clearInterval(intervalId);
           setCanHideLoader(true);
         }
-      } else if (currentValue === 95) {
-        if (direction === 1) {
-          miniApp.setHeaderColor("#fcf938");
-        } else {
-          miniApp.setHeaderColor("#F8FBF8");
-        }
       }
-
-      currentValue += direction;
+      currentValue++;
     }, intervalTime);
 
     return () => clearInterval(intervalId);
@@ -112,7 +101,7 @@ export const InitComponent = () => {
     >
       {canHideLoader ? null : (
         <div className="fixed inset-0 z-50 overflow-hidden">
-          <div className="absolute -left-1/2 -top-5 z-50 h-[200vh] w-[200vw]">
+          <div className="absolute -left-1/2 top-0 h-full w-[230vw]">
             <RiveComponent />
           </div>
         </div>

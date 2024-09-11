@@ -112,6 +112,11 @@ export const GameArea = ({
   );
 
   const tapInput = useStateMachineInput(rive, "State Machine 1", "tap");
+  const numberOfTapsInput = useStateMachineInput(
+    rive,
+    "State Machine 1",
+    "number of taps"
+  );
 
   useLayoutEffect(() => {
     viewport?.on("change", initValues);
@@ -318,7 +323,12 @@ export const GameArea = ({
     treeTrunkRef.current.style.backgroundPositionY =
       treeTrunkRef.current.style.height;
 
-    if (!startInput || !tapInput || !riveWrapper.current) {
+    if (
+      !startInput ||
+      !tapInput ||
+      !numberOfTapsInput ||
+      !riveWrapper.current
+    ) {
       return;
     }
 
@@ -329,13 +339,14 @@ export const GameArea = ({
         "px";
     }
 
-    const isLose = clicksCount.current >= clicksToWin && tapInput.value === 8;
+    const isLose = clicksCount.current >= clicksToWin && tapInput.value === 12;
 
     if (isLose) {
-      tapInput.value = 8;
+      tapInput.value = 0;
       startInput.value = false;
       animationVariant.current = 0;
       canClick.current = false;
+      numberOfTapsInput.value = 0;
 
       if (!slidesContainerRef.current || !beaverRef.current) {
         return;
@@ -362,17 +373,16 @@ export const GameArea = ({
     }
 
     if (!isFirstClick.current) {
-      if (animationVariant.current === 8) {
-        animationVariant.current = 5;
-        tapInput.value = 5;
+      if (animationVariant.current === 12) {
+        animationVariant.current = 9;
+        tapInput.value = 9;
       } else {
-        console.log("@before", tapInput.value);
         animationVariant.current += 1;
-        console.log("@after", animationVariant.current);
         tapInput.value = animationVariant.current;
       }
 
       clicksCount.current += 1;
+      numberOfTapsInput.value = clicksCount.current;
     } else {
       isFirstClick.current = false;
       startInput.value = true;
