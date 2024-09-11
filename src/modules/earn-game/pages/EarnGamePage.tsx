@@ -10,9 +10,11 @@ import { EnergyIcon } from "@/modules/common/icons/EnergyIcon";
 import { MiniGameTicketDisabledSoonIcon } from "@/modules/common/icons/MiniGameTicketDisabledSoonIcon";
 import { useLayout } from "@/modules/common/layouts/useLayout";
 import { numberFormatter } from "@/modules/common/utils/numberFormatter";
+import { HAMSTER_MINIGAME_PAGE_PATH } from "@/modules/hamster-minigame/routes/constants";
 import { ProfileModal } from "@/modules/profile/components/ProfileModal";
 import { useHapticFeedback, usePopup } from "@telegram-apps/sdk-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 import { GameArea } from "../components/GameArea";
 
 const POINTS_AMOUNT = 500;
@@ -119,9 +121,12 @@ export const EarnGamePage = () => {
         )}
       </button>
 
-      <button className="fixed right-4 top-6 z-10">
+      <NavLink
+        className="fixed right-4 top-6 z-10"
+        to={HAMSTER_MINIGAME_PAGE_PATH}
+      >
         <MiniGameTicketDisabledSoonIcon />
-      </button>
+      </NavLink>
 
       {showEndGame && (
         <div className="fixed left-1/2 top-24 z-30 flex w-10/12 -translate-x-1/2 flex-col items-center rounded-2xl bg-[#F8FBF8] px-4 py-5">
