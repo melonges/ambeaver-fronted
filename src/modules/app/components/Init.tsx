@@ -11,7 +11,7 @@ import { AppRoot } from "@telegram-apps/telegram-ui";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Login } from "./Login";
 
-const ANIMATION_TIME = 3000;
+const ANIMATION_TIME = 1500;
 
 export const InitComponent = () => {
   const viewport = useViewport();
@@ -57,25 +57,32 @@ export const InitComponent = () => {
     }
 
     const intervalTime = ANIMATION_TIME / 100;
+
     let currentValue = 0;
 
-    const intervalId = setInterval(() => {
+    const animate = () => {
       progressInput.value = currentValue;
 
       if (currentValue === 35) {
         miniApp.setHeaderColor("#fcf938");
-      } else if (currentValue === 85) {
-        miniApp.setHeaderColor("#F8FBF8");
       } else if (currentValue === 100) {
         if (loaderStore.canInitAnimation) {
-          clearInterval(intervalId);
           setCanHideLoader(true);
+          setTimeout(() => {
+            miniApp.setHeaderColor("#F8FBF8");
+          }, 3000);
+          return; // останавливаем анимацию
         }
       }
-      currentValue++;
-    }, intervalTime);
 
-    return () => clearInterval(intervalId);
+      currentValue++;
+
+      setTimeout(() => {
+        requestAnimationFrame(animate);
+      }, intervalTime);
+    };
+
+    requestAnimationFrame(animate);
   }, [loaderStore.animationLoaded, loaderStore.canInitAnimation]);
 
   // const themeParams = useThemeParams();
