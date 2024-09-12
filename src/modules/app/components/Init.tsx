@@ -11,7 +11,7 @@ import { AppRoot } from "@telegram-apps/telegram-ui";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Login } from "./Login";
 
-const ANIMATION_TIME = 1500;
+const ANIMATION_TIME = 1750;
 
 export const InitComponent = () => {
   const viewport = useViewport();
@@ -63,7 +63,7 @@ export const InitComponent = () => {
     const animate = () => {
       progressInput.value = currentValue;
 
-      if (currentValue === 35) {
+      if (currentValue === 50) {
         miniApp.setHeaderColor("#fcf938");
       } else if (currentValue === 100) {
         if (loaderStore.canInitAnimation) {
