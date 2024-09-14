@@ -71,7 +71,7 @@ export const InitComponent = () => {
           setTimeout(() => {
             miniApp.setHeaderColor("#F8FBF8");
           }, 3000);
-          return; // останавливаем анимацию
+          return;
         }
       }
 

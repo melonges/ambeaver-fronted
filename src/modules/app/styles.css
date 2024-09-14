@@ -137,21 +137,21 @@ body {
       height: var(--tree-height);
     }
   }
+}
 
-  .tree-base-grass {
-    z-index: var(--tree-base-z-index);
+.tree-base-grass {
+  z-index: var(--tree-base-z-index);
 
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    /* bottom: calc(var(--tree-base-grass-height) / 4 * -1); */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  /* bottom: calc(var(--tree-base-grass-height) / 4 * -1); */
 
-    width: var(--tree-base-grass-width);
-    height: var(--tree-base-grass-height);
+  width: var(--tree-base-grass-width);
+  height: var(--tree-base-grass-height);
 
-    background-image: url("../../modules/common/assets/tree/tree-grass.png");
-    background-repeat: round;
-  }
+  background-image: url("../../modules/common/assets/tree/tree-grass.png");
+  background-repeat: round;
 }
 
 .end-game-area {
@@ -183,9 +183,14 @@ body {
   -webkit-mask: linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0);
 }
+
 .points-progress-indicator::before {
   content: "";
   position: absolute;
   inset: 0;
   background-image: linear-gradient(90deg, #e25804 0%, #fce93c 100%);
+}
+
+.click-area {
+  height: calc(100% - 84px);
 }

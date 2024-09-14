@@ -94,7 +94,7 @@ export const EarnGamePage = () => {
   }, [settingsData]);
 
   return (
-    <div className="relative flex h-full flex-col">
+    <div className="relative flex h-full flex-col overflow-hidden">
       <button
         onClick={() => setShowProfileModal(true)}
         className="fixed left-4 top-6 z-10 w-[130px] rounded-xl bg-[#F8FBF8]/30 px-3 py-2 backdrop-blur-md"

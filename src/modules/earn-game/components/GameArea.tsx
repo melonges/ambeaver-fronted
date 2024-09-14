@@ -8,18 +8,18 @@ import TreeTrunkImage from "@/modules/common/assets/tree/tree-trunk.png";
 import { useLoaderStore } from "@/modules/common/store/loaderStore";
 import {
   Alignment,
+  Fit,
   Layout,
   useRive,
   useStateMachineInput,
 } from "@rive-app/react-canvas";
-
 import { useViewport } from "@telegram-apps/sdk-react";
 import { Spinner } from "@telegram-apps/telegram-ui";
 import { useLayoutEffect, useRef, useState } from "react";
 
-const CLICKS_TO_FIX_BEAVER = 3;
+const CLICKS_TO_UP_BACKGROUND = 4;
 
-const SLIDES_STEP_PX = 50;
+const SLIDES_STEP_PX = 60;
 
 const ORIGINAL_MAIN_BG_HEIGHT = 3840;
 const ORIGINAL_TREE_POSITION_Y = 3140;
@@ -93,16 +93,23 @@ export const GameArea = ({
   const canClick = useRef(true);
   const loaderStore = useLoaderStore();
 
-  const { rive, RiveComponent } = useRive({
-    layout: new Layout({
-      alignment: Alignment.Center,
-    }),
-    src: "/beaver.riv",
-    stateMachines: "State Machine 1",
-    artboard: "Beaver",
-    autoplay: true,
-    onLoad: () => onLoad(),
-  });
+  const { rive, RiveComponent } = useRive(
+    {
+      layout: new Layout({
+        alignment: Alignment.BottomCenter,
+        fit: Fit.FitWidth,
+      }),
+
+      src: "/beaver.riv",
+      stateMachines: "State Machine 1",
+      artboard: "Beaver",
+      autoplay: true,
+      onLoad: () => onLoad(),
+    },
+    {
+      shouldResizeCanvasToContainer: true,
+    }
+  );
 
   const startInput = useStateMachineInput(
     rive,
@@ -283,23 +290,49 @@ export const GameArea = ({
     isFirstClick.current = true;
 
     if (
-      !riveWrapper.current ||
       !treeBaseGrassRef.current ||
-      !wrapperRef.current
+      !wrapperRef.current ||
+      !riveWrapper.current
     ) {
       return;
     }
 
     treeBaseGrassRef.current.style.bottom =
       initialTreeBottomOffset * 0.9 + "px";
-    riveWrapper.current.style.height = currentImageHeight + "px";
+
+    // const riveWidthScale = document.documentElement.clientWidth / 430;
+    const riveHeightScale = document.documentElement.clientHeight / 930;
+
+    riveWrapper.current.style.height = Math.ceil(riveHeightScale * 930) + "px";
+    const clientWidth = document.documentElement.clientWidth;
+
+    if (clientWidth >= 550) {
+      riveWrapper.current.style.width = "490px";
+    } else if (clientWidth >= 545) {
+      riveWrapper.current.style.width = "470px";
+    } else if (clientWidth >= 490) {
+      riveWrapper.current.style.width = "460px";
+    } else if (clientWidth >= 465) {
+      riveWrapper.current.style.width = "430px";
+    } else if (clientWidth >= 425) {
+      riveWrapper.current.style.width = "420px";
+    } else if (clientWidth >= 395) {
+      riveWrapper.current.style.width = "400px";
+    } else if (clientWidth >= 370) {
+      riveWrapper.current.style.width = "385px";
+    } else if (clientWidth >= 345) {
+      riveWrapper.current.style.width = "370px";
+    } else if (clientWidth >= 270) {
+      riveWrapper.current.style.width = "300px";
+    }
   };
 
   const clickHandler = () => {
     if (
       !slidesContainerRef.current ||
       !treeTrunkRef.current ||
-      !beaverRef.current
+      !beaverRef.current ||
+      !treeBaseGrassRef.current
     ) {
       return;
     }
@@ -308,17 +341,9 @@ export const GameArea = ({
       return;
     }
 
-    slidesContainerRef.current.style.transition = "all 0.3s linear";
+    slidesContainerRef.current.style.transition = "all 0.1s linear";
 
     decPoints();
-
-    currentSlidesTranslateY.current += SLIDES_STEP_PX;
-    slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
-    treeTrunkRef.current.style.backgroundPositionY =
-      currentSlidesTranslateY.current + "px";
-
-    beaverRef.current.style.bottom =
-      parseFloat(beaverRef.current.style.bottom || "0") + SLIDES_STEP_PX + "px";
 
     treeTrunkRef.current.style.backgroundPositionY =
       treeTrunkRef.current.style.height;
@@ -332,14 +357,16 @@ export const GameArea = ({
       return;
     }
 
-    if (clicksCount.current >= CLICKS_TO_FIX_BEAVER) {
-      riveWrapper.current.style.bottom =
-        parseFloat(riveWrapper.current.style.bottom || "0") +
-        SLIDES_STEP_PX +
-        "px";
+    if (clicksCount.current >= CLICKS_TO_UP_BACKGROUND) {
+      currentSlidesTranslateY.current += SLIDES_STEP_PX;
+      slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
+      treeTrunkRef.current.style.backgroundPositionY =
+        currentSlidesTranslateY.current + "px";
+      treeBaseGrassRef.current.style.bottom =
+        parseInt(treeBaseGrassRef.current.style.bottom) - SLIDES_STEP_PX + "px";
     }
 
-    const isLose = clicksCount.current >= clicksToWin && tapInput.value === 12;
+    const isLose = clicksCount.current >= clicksToWin && tapInput.value === 16;
 
     if (isLose) {
       tapInput.value = 0;
@@ -352,6 +379,8 @@ export const GameArea = ({
         return;
       }
 
+      // 2 sec linear
+
       let c = clicksCount.current;
 
       while (c > 0) {
@@ -359,7 +388,6 @@ export const GameArea = ({
         currentSlidesTranslateY.current -= SLIDES_STEP_PX;
       }
 
-      riveWrapper.current.style.bottom = "-16%";
       slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
 
       setShowLoading(true);
@@ -373,9 +401,9 @@ export const GameArea = ({
     }
 
     if (!isFirstClick.current) {
-      if (animationVariant.current === 12) {
-        animationVariant.current = 9;
-        tapInput.value = 9;
+      if (animationVariant.current === 16) {
+        animationVariant.current = 13;
+        tapInput.value = 13;
       } else {
         animationVariant.current += 1;
         tapInput.value = animationVariant.current;
@@ -402,94 +430,105 @@ export const GameArea = ({
   };
 
   return (
-    <div ref={wrapperRef} className="relative h-full w-full overflow-hidden">
-      <div
-        ref={slidesContainerRef}
-        className="slides-container absolute inset-0 h-full w-full"
-      >
-        <div ref={backgroundSlidesWrapperRef} className="bg-slides">
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
+    <>
+      <div ref={wrapperRef} className="relative h-full w-full overflow-hidden">
+        <div
+          ref={slidesContainerRef}
+          className="slides-container absolute inset-0 h-full w-full"
+        >
+          <div ref={backgroundSlidesWrapperRef} className="bg-slides">
+            <div className="slide slide-3"></div>
+            <div className="slide slide-2"></div>
+            <div className="slide slide-3"></div>
+            <div className="slide slide-2"></div>
+            <div className="slide slide-3"></div>
+            <div className="slide slide-2"></div>
+            <div className="slide slide-3"></div>
+            <div className="slide slide-2"></div>
+            <div className="slide slide-3"></div>
+            <div className="slide slide-2"></div>
+            <div className="slide slide-3"></div>
+            <div className="slide slide-2"></div>
 
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
-          <div className="slide slide-1"></div>
+            <div className="slide slide-3"></div>
+            <div className="slide slide-2"></div>
+            <div className="slide slide-1"></div>
 
-          <div className="slide slide-3"></div>
-          <div className="slide slide-2"></div>
+            <div className="slide slide-3"></div>
+            <div className="slide slide-2"></div>
 
-          <div ref={startSlideRef} className="start-slide">
-            {showEndGame ? (
-              <div key="end-game-area" className="end-game-area">
-                <img
-                  ref={treeStumpRef}
-                  src={TreeStump}
-                  className="tree-stump"
-                />
-                <img
-                  ref={sittingBeaverRef}
-                  src={SittingBeaverImage}
-                  className="sitting-beaver"
-                />
-                <img ref={bushRef} src={BushImage} className="bush" />
-              </div>
-            ) : (
-              <div
-                key={"tree-area"}
-                ref={treeContainerRef}
-                className="tree-container"
-              >
-                <img
-                  ref={treeCrownRef}
-                  src={TreeCrownImage}
-                  className="tree-crown"
-                />
-
-                <div ref={treeTrunkRef} className="tree-trunk">
-                  <div className="tree-chunks">
-                    {[...Array(trunkChunksCount)].map((_, i) => {
-                      return <img src={TreeTrunkImage} key={i} />;
-                    })}
-                  </div>
-
-                  <div ref={beaverRef} className="beaver"></div>
+            <div ref={startSlideRef} className="start-slide">
+              {showEndGame ? (
+                <div key="end-game-area" className="end-game-area">
+                  <img
+                    ref={treeStumpRef}
+                    src={TreeStump}
+                    className="tree-stump"
+                  />
+                  <img
+                    ref={sittingBeaverRef}
+                    src={SittingBeaverImage}
+                    className="sitting-beaver"
+                  />
+                  <img ref={bushRef} src={BushImage} className="bush" />
                 </div>
-
+              ) : (
                 <div
-                  ref={riveWrapper}
-                  // transition-all duration-300 ease-linear
-                  className="absolute bottom-[-16%] left-0 w-full"
+                  key={"tree-area"}
+                  ref={treeContainerRef}
+                  className="tree-container"
                 >
-                  <RiveComponent />
+                  <img
+                    ref={treeCrownRef}
+                    src={TreeCrownImage}
+                    className="tree-crown"
+                  />
+
+                  <div ref={treeTrunkRef} className="tree-trunk">
+                    <div className="tree-chunks">
+                      {[...Array(trunkChunksCount)].map((_, i) => {
+                        return <img src={TreeTrunkImage} key={i} />;
+                      })}
+                    </div>
+
+                    <div ref={beaverRef} className="beaver"></div>
+                  </div>
                 </div>
+              )}
 
-                <img
-                  src={TreeBaseGrassImage}
-                  ref={treeBaseGrassRef}
-                  alt="tree-base-grass"
-                  className="tree-base-grass"
-                />
-              </div>
-            )}
-
-            <img ref={mainBgRef} src={MainBgImage} alt="background" />
+              <img ref={mainBgRef} src={MainBgImage} alt="background" />
+            </div>
           </div>
         </div>
+
+        {initialLoading && (
+          <div className="absolute inset-0 z-30 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">
+            <Spinner className="text-[#353B35]" size="l" />
+          </div>
+        )}
       </div>
 
       {!showEndGame && (
+        <>
+          <div
+            ref={riveWrapper}
+            className="fixed bottom-0 left-1/2 -translate-x-1/2"
+          >
+            <RiveComponent />
+          </div>
+
+          <img
+            src={TreeBaseGrassImage}
+            ref={treeBaseGrassRef}
+            alt="tree-base-grass"
+            className="tree-base-grass transition-all duration-[100ms] ease-linear"
+          />
+        </>
+      )}
+
+      {!showEndGame && (
         <div
-          className="absolute left-1/2 top-1/2 z-10 h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary p-6 opacity-40 xxs:h-[240px] xxs:w-[240px] xs:h-[300px] xs:w-[300px]"
+          className="click-area absolute bottom-0 z-10 w-full p-6 opacity-40"
           onClick={clickHandler}
         >
           {showLoading && (
@@ -499,12 +538,6 @@ export const GameArea = ({
           )}
         </div>
       )}
-
-      {initialLoading && (
-        <div className="absolute inset-0 z-30 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">
-          <Spinner className="text-[#353B35]" size="l" />
-        </div>
-      )}
-    </div>
+    </>
   );
 };
