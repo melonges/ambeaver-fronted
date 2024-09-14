@@ -19,6 +19,7 @@ body {
   height: 100dvh;
   max-width: 700px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .navbar {

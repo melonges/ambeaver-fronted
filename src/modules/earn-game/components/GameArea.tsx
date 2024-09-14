@@ -512,7 +512,7 @@ export const GameArea = ({
         <>
           <div
             ref={riveWrapper}
-            className="fixed bottom-0 left-1/2 -translate-x-1/2"
+            className="absolute left-1/2 top-0 -translate-x-1/2"
           >
             <RiveComponent />
           </div>
