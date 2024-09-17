@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { BaseLayout } from "./common/BaseLayout";
 
 export const GameLayout = ({ children }: { children: ReactNode }) => {
-  const isDev = false; //import.meta.env.DEV;
+  const isDev = import.meta.env.DEV;
 
   return (
     <BaseLayout
