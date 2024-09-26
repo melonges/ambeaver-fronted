@@ -59,8 +59,8 @@ export const TasksPage = () => {
     <div className="text-[#353B35]">
       <h1 className="text-3xl font-extrabold">Ambeaver socials</h1>
       <p className="mt-6">
-        Join the Ambeaver community, stay up to date with new and upcoming
-        updates, find your tribe on Ambeaver
+        Join the Ambeaver community to stay informed on the latest updates and
+        developments, and let’s embark on this adventure together, beavers!
       </p>
 
       <ul className="mt-1 w-full">
