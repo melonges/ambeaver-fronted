@@ -69,6 +69,7 @@ body {
   width: 100%;
 
   .slide {
+    opacity: 0;
     position: relative;
 
     height: 65%;
@@ -79,9 +80,14 @@ body {
 
 .start-slide {
   position: relative;
-  background-image: url("../../modules/common/assets/main-bg.png"),
-    linear-gradient(360deg, #ffeca8 3.02%, #b2daff 100%);
+  /* background-image: url("../../modules/common/assets/main-bg.png"),
+    linear-gradient(360deg, #ffeca8 3.02%, #b2daff 100%); */
+  /* background-image: linear-gradient(360deg, #ffeca8 3.02%, #b2daff 100%); */
   background-repeat: round;
+}
+
+.main-bg-image {
+  opacity: 0;
 }
 
 .tree-container {
@@ -141,6 +147,7 @@ body {
 }
 
 .tree-base-grass {
+  display: none;
   z-index: var(--tree-base-z-index);
 
   position: absolute;

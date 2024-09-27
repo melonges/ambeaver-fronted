@@ -5,6 +5,7 @@ import MainBgImage from "@/modules/common/assets/main-bg.png";
 import TreeCrownImage from "@/modules/common/assets/tree/tree-crown.png";
 import TreeBaseGrassImage from "@/modules/common/assets/tree/tree-grass.png";
 import TreeTrunkImage from "@/modules/common/assets/tree/tree-trunk.png";
+import { useAppStore } from "@/modules/common/store/appStore";
 import { useLoaderStore } from "@/modules/common/store/loaderStore";
 import {
   Alignment,
@@ -61,6 +62,7 @@ export const GameArea = ({
 }) => {
   clicksToWin = 15;
 
+  const appStore = useAppStore();
   const viewport = useViewport();
 
   const [initialLoading, setInitialLoading] = useState(true);
@@ -119,6 +121,7 @@ export const GameArea = ({
   );
 
   const tapInput = useStateMachineInput(rive, "State Machine 1", "tap");
+  const bgInput = useStateMachineInput(rive, "State Machine 1", "bg");
   const numberOfTapsInput = useStateMachineInput(
     rive,
     "State Machine 1",
@@ -277,8 +280,6 @@ export const GameArea = ({
     const initialTreeYPosition = Math.ceil(scale * ORIGINAL_TREE_POSITION_Y);
     const initialTreeBottomOffset = currentImageHeight - initialTreeYPosition;
 
-    // treeContainerRef.current.style.bottom = initialTreeBottomOffset + "px";
-
     treeCrownRef.current.style.bottom = realTreeHeight + "px";
 
     treeTrunkRef.current.style.height = realTreeHeight + "px";
@@ -300,31 +301,15 @@ export const GameArea = ({
     treeBaseGrassRef.current.style.bottom =
       initialTreeBottomOffset * 0.9 + "px";
 
-    // const riveWidthScale = document.documentElement.clientWidth / 430;
     const riveHeightScale = document.documentElement.clientHeight / 930;
 
     riveWrapper.current.style.height = Math.ceil(riveHeightScale * 930) + "px";
-    const clientWidth = document.documentElement.clientWidth;
 
-    if (clientWidth >= 550) {
-      riveWrapper.current.style.width = "490px";
-    } else if (clientWidth >= 545) {
-      riveWrapper.current.style.width = "470px";
-    } else if (clientWidth >= 490) {
-      riveWrapper.current.style.width = "460px";
-    } else if (clientWidth >= 465) {
-      riveWrapper.current.style.width = "430px";
-    } else if (clientWidth >= 425) {
-      riveWrapper.current.style.width = "420px";
-    } else if (clientWidth >= 395) {
-      riveWrapper.current.style.width = "400px";
-    } else if (clientWidth >= 370) {
-      riveWrapper.current.style.width = "385px";
-    } else if (clientWidth >= 345) {
-      riveWrapper.current.style.width = "370px";
-    } else if (clientWidth >= 270) {
-      riveWrapper.current.style.width = "300px";
-    }
+    const clientWidth = document.documentElement.clientWidth;
+    const clientHeight = document.documentElement.clientHeight;
+
+    riveWrapper.current.style.width = clientWidth + "px";
+    riveWrapper.current.style.height = clientHeight + "px";
   };
 
   const clickHandler = () => {
@@ -352,7 +337,8 @@ export const GameArea = ({
       !startInput ||
       !tapInput ||
       !numberOfTapsInput ||
-      !riveWrapper.current
+      !riveWrapper.current ||
+      !bgInput
     ) {
       return;
     }
@@ -366,10 +352,15 @@ export const GameArea = ({
         parseInt(treeBaseGrassRef.current.style.bottom) - SLIDES_STEP_PX + "px";
     }
 
-    const isLose = clicksCount.current >= clicksToWin && tapInput.value === 16;
+    const isLose =
+      clicksCount.current >= clicksToWin &&
+      Number(tapInput.value) >= 16 &&
+      Number(bgInput.value) >= 17;
 
     if (isLose) {
       tapInput.value = 0;
+      bgInput.value = 0;
+
       startInput.value = false;
       animationVariant.current = 0;
       canClick.current = false;
@@ -378,8 +369,6 @@ export const GameArea = ({
       if (!slidesContainerRef.current || !beaverRef.current) {
         return;
       }
-
-      // 2 sec linear
 
       let c = clicksCount.current;
 
@@ -395,7 +384,7 @@ export const GameArea = ({
       setTimeout(() => {
         initValues();
         setShowLoading(false);
-      }, 500);
+      }, 2000);
 
       return;
     }
@@ -410,11 +399,13 @@ export const GameArea = ({
       }
 
       clicksCount.current += 1;
+      bgInput.value = clicksCount.current;
       numberOfTapsInput.value = clicksCount.current;
     } else {
       isFirstClick.current = false;
       startInput.value = true;
       tapInput.value = 0;
+      bgInput.value = 0;
 
       canClick.current = false;
       setTimeout(() => {
@@ -438,24 +429,6 @@ export const GameArea = ({
         >
           <div ref={backgroundSlidesWrapperRef} className="bg-slides">
             <div className="slide slide-3"></div>
-            <div className="slide slide-2"></div>
-            <div className="slide slide-3"></div>
-            <div className="slide slide-2"></div>
-            <div className="slide slide-3"></div>
-            <div className="slide slide-2"></div>
-            <div className="slide slide-3"></div>
-            <div className="slide slide-2"></div>
-            <div className="slide slide-3"></div>
-            <div className="slide slide-2"></div>
-            <div className="slide slide-3"></div>
-            <div className="slide slide-2"></div>
-
-            <div className="slide slide-3"></div>
-            <div className="slide slide-2"></div>
-            <div className="slide slide-1"></div>
-
-            <div className="slide slide-3"></div>
-            <div className="slide slide-2"></div>
 
             <div ref={startSlideRef} className="start-slide">
               {showEndGame ? (
@@ -496,7 +469,12 @@ export const GameArea = ({
                 </div>
               )}
 
-              <img ref={mainBgRef} src={MainBgImage} alt="background" />
+              <img
+                ref={mainBgRef}
+                src={MainBgImage}
+                className="main-bg-image"
+                alt="background"
+              />
             </div>
           </div>
         </div>
@@ -512,6 +490,7 @@ export const GameArea = ({
         <>
           <div
             ref={riveWrapper}
+            style={{ paddingBottom: appStore.navBarHeight }}
             className="absolute left-1/2 top-0 -translate-x-1/2"
           >
             <RiveComponent />
