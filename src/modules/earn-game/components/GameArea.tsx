@@ -60,13 +60,10 @@ export const GameArea = ({
   clicksToWin: number;
   decPoints: () => void;
 }) => {
-  clicksToWin = 15;
-
   const appStore = useAppStore();
   const viewport = useViewport();
 
   const [initialLoading, setInitialLoading] = useState(true);
-  const [showLoading, setShowLoading] = useState(false);
 
   const [trunkChunksCount, setTrunkChunksCount] = useState(0);
 
@@ -379,11 +376,8 @@ export const GameArea = ({
 
       slidesContainerRef.current.style.transform = `translateY(${currentSlidesTranslateY.current}px)`;
 
-      setShowLoading(true);
-
       setTimeout(() => {
         initValues();
-        setShowLoading(false);
       }, 2000);
 
       return;
@@ -509,13 +503,7 @@ export const GameArea = ({
         <div
           className="click-area absolute bottom-0 z-10 w-full p-6 opacity-40"
           onClick={clickHandler}
-        >
-          {showLoading && (
-            <div className="flex h-full w-full items-center justify-center">
-              tree update..
-            </div>
-          )}
-        </div>
+        ></div>
       )}
     </>
   );
