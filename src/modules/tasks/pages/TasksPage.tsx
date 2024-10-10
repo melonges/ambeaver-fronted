@@ -50,15 +50,15 @@ export const TasksPage = () => {
   if (isTasksLoading || isReferralLinkLoading) {
     return (
       <div className="flex h-full flex-col items-center justify-center">
-        <Spinner className="text-[#353B35]" size="l" />
+        <Spinner className="text-active" size="l" />
       </div>
     );
   }
 
   return (
-    <div className="text-[#353B35]">
+    <div className="text-active dark:text-white-bg">
       <h1 className="text-3xl font-extrabold">Ambeaver socials</h1>
-      <p className="mt-6">
+      <p className="mt-6 dark:text-[#C7CCC7] dark:text-opacity-80">
         Join the Ambeaver community to stay informed on the latest updates and
         developments, and let’s embark on this adventure together, beavers!
       </p>

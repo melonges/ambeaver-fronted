@@ -9,7 +9,7 @@ interface AppStore {
 
 export const useAppStore = create<AppStore>((set) => ({
   // iphone default values
-  navBarHeight: 90,
+  navBarHeight: 80,
   navBarPaddingBottom: 20,
   setNavBarHeight: (value) =>
     set((state) => ({ ...state, navBarHeight: value })),

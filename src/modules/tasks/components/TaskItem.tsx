@@ -84,12 +84,12 @@ export const TaskItem = ({
   const isLoading = isStartTaskPending || isClaimTaskPending;
 
   const taskTypeClassName = isLoading
-    ? "bg-[#353B35]"
+    ? "bg-active"
     : task.status === "FINISHED"
       ? ""
       : task.status === "READY_FOR_CLAIM"
-        ? "bg-[#4D824D] text-[#F2F3F2]"
-        : "bg-[#353B35] text-[#F2F3F2]";
+        ? "bg-[#4D824D] text-white-bg"
+        : "bg-active text-white-bg dark:text-[#111311] dark:bg-white-bg";
 
   const taskStatusName =
     task.status === "FINISHED"
@@ -125,7 +125,7 @@ export const TaskItem = ({
 
         <div className="flex flex-col">
           <strong className="font-bold">{task.title}</strong>
-          <span className="font-semibold text-[#3F463FE6]">
+          <span className="font-semibold text-faded text-opacity-90 dark:text-[#C7CCC7] dark:text-opacity-100">
             +{task.rewardInAmbers}AR
           </span>
         </div>
@@ -139,7 +139,7 @@ export const TaskItem = ({
             <FinishedTaskIcon />
           </div>
         ) : isLoading ? (
-          <Spinner className="text-[#E2E4E2]" size="s" />
+          <Spinner className="text-secondary-white" size="s" />
         ) : (
           taskStatusName
         )}

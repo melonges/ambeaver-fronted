@@ -38,6 +38,7 @@ export const InviteFriendMessageBox = ({
   return (
     <>
       <MessageBox
+        wrapperClassName="dark:bg-[#111311] dark:[&_div_button]:text-white-bg dark:[&_div_div_button]:text-white-bg dark:[&_div_div_p]:text-white-bg dark:[&_div_div_span]:text-[#C7CCC7] dark:[&_div_div_span]:text-opacity-80"
         title="Invite a frens"
         description="Only 10 invitations are available to you"
         actions={[

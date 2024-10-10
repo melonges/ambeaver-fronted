@@ -46,8 +46,8 @@ export const InitComponent = () => {
       navigator.platform
     );
 
-    if (!isIPhone) {
-      appStore.setNavBarPaddingBottom(0);
+    if (isIPhone) {
+      appStore.setNavBarPaddingBottom(32.5);
     }
   }, []);
 
@@ -69,7 +69,11 @@ export const InitComponent = () => {
         if (loaderStore.canInitAnimation) {
           setCanHideLoader(true);
           setTimeout(() => {
-            miniApp.setHeaderColor("#F8FBF8");
+            if (miniApp.isDark) {
+              miniApp.setHeaderColor("#111311");
+            } else {
+              miniApp.setHeaderColor("#F8FBF8");
+            }
           }, 3000);
           return;
         }
@@ -85,13 +89,12 @@ export const InitComponent = () => {
     requestAnimationFrame(animate);
   }, [loaderStore.animationLoaded, loaderStore.canInitAnimation]);
 
-  // const themeParams = useThemeParams();
-  // useEffect(() => {
-  //   return bindMiniAppCSSVars(miniApp, themeParams);
-  // }, [miniApp, themeParams]);
-  // useEffect(() => {
-  //   return bindThemeParamsCSSVars(themeParams);
-  // }, [themeParams]);
+  useLayoutEffect(() => {
+    if (miniApp.isDark) {
+      miniApp.setHeaderColor("bg_color");
+      document.body.classList.add("dark");
+    }
+  }, [miniApp.isDark]);
 
   useEffect(() => {
     miniApp.setHeaderColor("#F8FBF8");
@@ -101,11 +104,7 @@ export const InitComponent = () => {
   }, [viewport, miniApp]);
 
   return (
-    <AppRoot
-      // appearance={miniApp.isDark ? "dark" : "light"}
-      appearance="light"
-      platform={platform}
-    >
+    <AppRoot appearance={miniApp.isDark ? "dark" : "light"} platform={platform}>
       {canHideLoader ? null : (
         <div className="fixed inset-0 z-50 overflow-hidden">
           <div className="absolute -left-1/2 top-0 h-full w-[230vw]">
@@ -113,7 +112,6 @@ export const InitComponent = () => {
           </div>
         </div>
       )}
-
       <Login />
     </AppRoot>
   );

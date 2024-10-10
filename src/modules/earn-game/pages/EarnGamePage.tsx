@@ -97,7 +97,7 @@ export const EarnGamePage = () => {
     <div className="relative flex h-full flex-col overflow-hidden">
       <button
         onClick={() => setShowProfileModal(true)}
-        className="fixed left-4 top-6 z-10 w-[130px] rounded-xl bg-[#F8FBF8]/30 px-3 py-2 backdrop-blur-md"
+        className="fixed left-4 top-6 z-10 w-[130px] rounded-xl bg-white bg-opacity-30 px-3 py-2 backdrop-blur-md"
       >
         <div className="flex gap-2">
           <img src={AmberImage} alt="amber" className="h-6 w-6" />
@@ -124,18 +124,20 @@ export const EarnGamePage = () => {
       </div>
 
       {showEndGame && (
-        <div className="fixed left-1/2 top-24 z-30 flex w-10/12 -translate-x-1/2 flex-col items-center rounded-2xl bg-[#F8FBF8] px-4 py-5">
-          <p className="text-xl font-medium text-[#353B35]">
+        <div className="fixed left-1/2 top-24 z-30 flex w-10/12 -translate-x-1/2 flex-col items-center rounded-2xl bg-white px-4 py-5 dark:bg-[#1D201D]">
+          <p className="text-xl font-medium text-active dark:text-white-bg">
             Click Limit is over
           </p>
-          <p className="text-[#1D201DCC]">You can restore it and play more</p>
+          <p className="text-black text-opacity-90 dark:text-[#C7CCC7] dark:text-opacity-80">
+            You can restore it and play more
+          </p>
 
           <button
             onClick={buyPoints}
-            className="mt-5 flex w-full items-center justify-center gap-1 rounded-xl bg-[#353B35] p-4 text-xl text-[#F2F3F2]"
+            className="mt-5 flex w-full items-center justify-center gap-1 rounded-xl bg-active p-4 text-xl text-white-bg dark:bg-white-bg dark:text-[#1D201D]"
           >
             <span className="font-medium">Spend</span>
-            <strong className="text-2xl font-semibold">
+            <strong className="text-2xl font-semibold text-white-bg dark:text-[#1D201D]">
               {settingsData?.data.fullChargePointsCostInEnergy || 0}
             </strong>
             <EnergyIcon />

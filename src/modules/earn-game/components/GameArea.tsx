@@ -464,6 +464,7 @@ export const GameArea = ({
               )}
 
               <img
+                style={{ opacity: showEndGame ? 1 : 0 }}
                 ref={mainBgRef}
                 src={MainBgImage}
                 className="main-bg-image"

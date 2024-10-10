@@ -15,13 +15,13 @@ export const HamsterMiniGamePage = () => {
         <p className="mt-2 text-2xl font-bold">Hamster catching game</p>
         <span>Play and multiply ur ambers for the last day.</span>
 
-        <div className="grid aspect-square w-full grid-cols-4 gap-2 bg-game-bg">
+        <div className="grid aspect-square w-full grid-cols-4 gap-2">
           {[...new Array(12)].map((_, i) => (
             <div
               key={i}
               className="flex h-full w-full items-center justify-center"
             >
-              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-main-border bg-main-bg xs:h-20 xs:w-20">
+              <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border xs:h-20 xs:w-20">
                 {i % 3 == 0 && (
                   <img
                     src={HamsterMiniGameIcon}

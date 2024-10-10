@@ -177,14 +177,6 @@ body {
   }
 }
 
-.active-navbar-link {
-  & svg {
-    & path {
-      fill: #353b35;
-    }
-  }
-}
-
 .points-progress-indicator {
   height: 100%;
   border-radius: 14px;
