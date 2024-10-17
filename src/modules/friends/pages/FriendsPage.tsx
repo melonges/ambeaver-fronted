@@ -81,7 +81,7 @@ export const FriendsPage = () => {
         />
         <h1 className="mt-6 text-3xl font-extrabold">Ur friends-beavers</h1>
         <p className="mt-6 font-medium dark:text-[#C7CCC7] dark:text-opacity-80">
-          Invite friends and receive ambers.
+          Invite friends and receive ambers
         </p>
       </div>
 
