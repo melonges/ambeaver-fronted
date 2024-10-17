@@ -18,7 +18,7 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <Modal
-      wrapperClassName="w-8/12 top-[40%] dark:bg-[#1D201D]"
+      wrapperClassName="w-[65%] top-[40%] dark:bg-[#1D201D]"
       onClose={onClose}
     >
       <div className="flex flex-col px-3 pb-8 pt-11">

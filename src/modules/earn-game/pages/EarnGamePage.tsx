@@ -124,9 +124,9 @@ export const EarnGamePage = () => {
       </div>
 
       {showEndGame && (
-        <div className="fixed left-1/2 top-24 z-30 flex w-10/12 -translate-x-1/2 flex-col items-center rounded-2xl bg-white px-4 py-5 dark:bg-[#1D201D]">
+        <div className="fixed left-1/2 top-1/3 z-30 flex w-[65%] -translate-x-1/2 -translate-y-1/2 flex-col items-center rounded-2xl bg-white px-4 py-5 dark:bg-[#1D201D]">
           <p className="text-xl font-medium text-active dark:text-white-bg">
-            Click Limit is over
+            Click Limit Is Over
           </p>
           <p className="text-black text-opacity-90 dark:text-[#C7CCC7] dark:text-opacity-80">
             You can restore it and play more

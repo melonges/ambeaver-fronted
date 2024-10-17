@@ -58,7 +58,7 @@ export const TasksPage = () => {
   return (
     <div className="text-active dark:text-white-bg">
       <h1 className="text-3xl font-extrabold">Ambeaver socials</h1>
-      <p className="mt-6 dark:text-[#C7CCC7] dark:text-opacity-80">
+      <p className="mt-6 font-medium dark:text-[#C7CCC7] dark:text-opacity-80">
         Join the Ambeaver community to stay informed on the latest updates and
         developments, and let’s embark on this adventure together, beavers!
       </p>

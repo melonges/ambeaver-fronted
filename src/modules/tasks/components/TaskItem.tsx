@@ -115,7 +115,7 @@ export const TaskItem = ({
   };
 
   return (
-    <li className="flex w-full items-center justify-between gap-1 border-b-2 py-4 last:border-0">
+    <li className="flex w-full items-center justify-between gap-1 border-b-2 py-4 last:border-0 dark:border-[#2b312b]">
       <div className="flex items-center gap-5">
         {task.type === "SOCIAL_SUBSCRIPTION" ? (
           <img src={AmberIcon} alt="task" className="h-[35px] w-[35px]" />
@@ -131,7 +131,7 @@ export const TaskItem = ({
         </div>
       </div>
       <button
-        className={`flex h-[35px] w-[65px] items-center justify-center rounded-2xl px-2 text-sm ${taskTypeClassName}`}
+        className={`flex h-[35px] w-[65px] min-w-[65px] max-w-[65px] items-center justify-center rounded-[18px] px-2 text-sm ${taskTypeClassName}`}
         onClick={completeTask}
       >
         {task.status === "FINISHED" ? (
@@ -141,7 +141,7 @@ export const TaskItem = ({
         ) : isLoading ? (
           <Spinner className="text-secondary-white" size="s" />
         ) : (
-          taskStatusName
+          <span className="font-medium">{taskStatusName}</span>
         )}
       </button>
     </li>

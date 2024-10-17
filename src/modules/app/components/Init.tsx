@@ -1,6 +1,7 @@
 import { usePlatform } from "@/modules/common/hooks/usePlatform";
 import { useAppStore } from "@/modules/common/store/appStore";
 import { useLoaderStore } from "@/modules/common/store/loaderStore";
+import { EARN_GAME_PAGE_PATH } from "@/modules/earn-game/routes/constants";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import {
   bindViewportCSSVars,
@@ -9,14 +10,16 @@ import {
 } from "@telegram-apps/sdk-react";
 import { AppRoot } from "@telegram-apps/telegram-ui";
 import { useEffect, useLayoutEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Login } from "./Login";
 
 const ANIMATION_TIME = 1750;
 
 export const InitComponent = () => {
-  const viewport = useViewport();
   const platform = usePlatform();
+  const viewport = useViewport();
   const miniApp = useMiniApp();
+  const navigate = useNavigate();
   const [canHideLoader, setCanHideLoader] = useState(false);
 
   const loaderStore = useLoaderStore();
@@ -42,14 +45,12 @@ export const InitComponent = () => {
   );
 
   useLayoutEffect(() => {
-    const isIPhone = ["iPhone Simulator", "iPhone"].includes(
-      navigator.platform
-    );
-
-    if (isIPhone) {
+    if (platform === "ios") {
       appStore.setNavBarPaddingBottom(32.5);
     }
-  }, []);
+
+    navigate(EARN_GAME_PAGE_PATH);
+  }, [platform]);
 
   useEffect(() => {
     if (!loaderStore.animationLoaded || !progressInput) {
@@ -104,7 +105,7 @@ export const InitComponent = () => {
   }, [viewport, miniApp]);
 
   return (
-    <AppRoot appearance={miniApp.isDark ? "dark" : "light"} platform={platform}>
+    <AppRoot appearance={miniApp.isDark ? "dark" : "light"} platform={"ios"}>
       {canHideLoader ? null : (
         <div className="fixed inset-0 z-50 overflow-hidden">
           <div className="absolute -left-1/2 top-0 h-full w-[230vw]">

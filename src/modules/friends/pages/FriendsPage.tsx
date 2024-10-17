@@ -80,7 +80,7 @@ export const FriendsPage = () => {
           className="[&_path]:fill-active dark:[&_path]:fill-white-bg"
         />
         <h1 className="mt-6 text-3xl font-extrabold">Ur friends-beavers</h1>
-        <p className="mt-6 dark:text-[#C7CCC7] dark:text-opacity-80">
+        <p className="mt-6 font-medium dark:text-[#C7CCC7] dark:text-opacity-80">
           Invite friends and receive ambers.
         </p>
       </div>
@@ -131,7 +131,7 @@ export const FriendsPage = () => {
                 </p>
                 <div className="mt-3 flex items-center gap-1">
                   <p className="text-2xl font-extrabold dark:text-[#1D201D] dark:text-opacity-80">
-                    +{settingsData?.data.referralRewards.normal}AR
+                    +{settingsData?.data.referralRewards.normal} AR
                   </p>
                   <img className="h-6 w-6" src={AmberImage} alt="amber" />
                 </div>
@@ -143,7 +143,7 @@ export const FriendsPage = () => {
                 </p>
                 <div className="mt-3 flex items-center gap-1">
                   <p className="text-2xl font-extrabold dark:text-[#1D201D] dark:text-opacity-80">
-                    +{settingsData?.data.referralRewards.premium}AR
+                    +{settingsData?.data.referralRewards.premium} AR
                   </p>
                   <img className="h-6 w-6" src={AmberImage} alt="amber" />
                 </div>
@@ -160,7 +160,7 @@ export const FriendsPage = () => {
                 {referralsData?.data.data?.map((referral) => (
                   <li
                     key={referral.username}
-                    className="flex w-full items-center justify-between gap-1 border-b-2 py-4 last:border-0"
+                    className="flex w-full items-center justify-between gap-1 border-b-2 py-4 last:border-0 dark:border-[#2b312b]"
                   >
                     <div className="flex items-center gap-5">
                       <div className="h-11 w-11 rounded-full bg-[#D9D9D9]" />
@@ -172,7 +172,7 @@ export const FriendsPage = () => {
 
                         <div className="mt-1 flex items-center">
                           <UserIcon className="dark:[&_path]:fill-[#C7CCC7]" />
-                          <span className="text-active text-opacity-90 dark:text-[#C7CCC7]">
+                          <span className="font-semibold text-active text-opacity-90 dark:text-[#C7CCC7]">
                             +{referral.invited}
                           </span>
                         </div>
@@ -198,7 +198,7 @@ export const FriendsPage = () => {
       >
         <button
           onClick={() => setShowModal(true)}
-          className="h-full w-full rounded-xl bg-active text-center text-lg text-white-bg dark:bg-white-bg dark:text-[#1D201D]"
+          className="h-full w-full rounded-xl bg-active text-center text-lg font-medium text-white-bg dark:bg-white-bg dark:text-[#1D201D]"
         >
           Invite a fren (
           {MAX_FRIENDS_COUNT - (referralsData?.data.data?.length || 0)} left)

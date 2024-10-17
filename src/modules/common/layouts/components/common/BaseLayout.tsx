@@ -22,7 +22,7 @@ export const BaseLayout = ({
         className="app w-full"
       >
         <main
-          className={`h-full w-full overflow-y-auto overflow-x-hidden dark:bg-[#2B312B] ${contentClassName}`}
+          className={`h-full w-full overflow-y-auto overflow-x-hidden dark:bg-[#1d201d] ${contentClassName}`}
         >
           <div style={contentStyle} className="h-full w-full">
             {children}
