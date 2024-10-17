@@ -440,6 +440,7 @@ export const GameArea = ({
                     ref={sittingBeaverRef}
                     src={SittingBeaverImage}
                     className="sitting-beaver"
+                    onLoad={onLoad}
                   />
                   <img ref={bushRef} src={BushImage} className="bush" />
                 </div>
