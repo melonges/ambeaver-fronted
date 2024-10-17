@@ -53,6 +53,10 @@ export const InitComponent = () => {
   }, [platform]);
 
   useEffect(() => {
+    return () => rive?.cleanup();
+  }, []);
+
+  useEffect(() => {
     if (!loaderStore.animationLoaded || !progressInput) {
       return;
     }

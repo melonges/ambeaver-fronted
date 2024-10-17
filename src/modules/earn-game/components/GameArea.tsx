@@ -16,7 +16,7 @@ import {
 } from "@rive-app/react-canvas";
 import { useViewport } from "@telegram-apps/sdk-react";
 import { Spinner } from "@telegram-apps/telegram-ui";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 const CLICKS_TO_UP_BACKGROUND = 4;
 
@@ -124,6 +124,10 @@ export const GameArea = ({
     "State Machine 1",
     "number of taps"
   );
+
+  useEffect(() => {
+    return () => rive?.cleanup();
+  }, []);
 
   useLayoutEffect(() => {
     viewport?.on("change", initValues);
