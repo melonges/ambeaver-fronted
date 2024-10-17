@@ -128,7 +128,7 @@ export const EarnGamePage = () => {
           <p className="text-xl font-medium text-active dark:text-white-bg">
             Click Limit Is Over
           </p>
-          <p className="text-black text-opacity-90 dark:text-[#C7CCC7] dark:text-opacity-80">
+          <p className="text-center text-black text-opacity-90 dark:text-[#C7CCC7] dark:text-opacity-80">
             You can restore it and play more
           </p>
 
