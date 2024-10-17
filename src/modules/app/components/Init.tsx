@@ -11,30 +11,23 @@ import {
 import { AppRoot } from "@telegram-apps/telegram-ui";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "./Loader";
 import { Login } from "./Login";
 
 const ANIMATION_TIME = 1750;
 
-export const InitComponent = () => {
-  const platform = usePlatform();
-  const viewport = useViewport();
+const InitLoader = () => {
   const miniApp = useMiniApp();
-  const navigate = useNavigate();
-  const [canHideLoader, setCanHideLoader] = useState(false);
-
   const loaderStore = useLoaderStore();
-  const appStore = useAppStore();
+
+  const [canHideLoader, setCanHideLoader] = useState(false);
 
   const { rive, RiveComponent } = useRive({
     src: "/loader_amber.riv",
     stateMachines: "State Machine 1",
     artboard: "main",
     autoplay: true,
-    onLoad: () => {
-      setTimeout(() => {
-        loaderStore.setAnimationLoaded();
-      }, 50);
-    },
+    onLoad: () => onLoaderLoaded(),
   });
 
   const progressInput = useStateMachineInput(
@@ -44,17 +37,13 @@ export const InitComponent = () => {
     0
   );
 
-  useLayoutEffect(() => {
-    if (platform === "ios") {
-      appStore.setNavBarPaddingBottom(32.5);
-    }
-
-    navigate(EARN_GAME_PAGE_PATH);
-  }, [platform]);
-
   useEffect(() => {
     return () => rive?.cleanup();
   }, []);
+
+  const onLoaderLoaded = () => {
+    loaderStore.setAnimationLoaded();
+  };
 
   useEffect(() => {
     if (!loaderStore.animationLoaded || !progressInput) {
@@ -94,30 +83,57 @@ export const InitComponent = () => {
     requestAnimationFrame(animate);
   }, [loaderStore.animationLoaded, loaderStore.canInitAnimation]);
 
-  useLayoutEffect(() => {
-    if (miniApp.isDark) {
-      miniApp.setHeaderColor("bg_color");
-      document.body.classList.add("dark");
-    }
-  }, [miniApp.isDark]);
-
-  useEffect(() => {
-    miniApp.setHeaderColor("#F8FBF8");
-    viewport?.expand();
-
-    return viewport && bindViewportCSSVars(viewport);
-  }, [viewport, miniApp]);
-
   return (
-    <AppRoot appearance={miniApp.isDark ? "dark" : "light"} platform={"ios"}>
-      {canHideLoader ? null : (
+    <>
+      {/* <div className="fixed z-[65]">
+        loaderStore.animationLoaded: {String(loaderStore.animationLoaded)}
+      </div> */}
+
+      {!canHideLoader && (
         <div className="fixed inset-0 z-50 overflow-hidden">
           <div className="absolute -left-1/2 top-0 h-full w-[230vw]">
             <RiveComponent />
           </div>
         </div>
       )}
+
+      {!loaderStore.animationLoaded && <Loader />}
       <Login />
+    </>
+  );
+};
+
+export const InitComponent = () => {
+  const miniApp = useMiniApp();
+  const viewport = useViewport();
+  const platform = usePlatform();
+
+  const navigate = useNavigate();
+  const appStore = useAppStore();
+
+  useLayoutEffect(() => {
+    if (miniApp.isDark) {
+      document.body.classList.add("dark");
+    } else {
+      miniApp.setHeaderColor("#F8FBF8");
+    }
+
+    // TODO: check it in <NavBar />
+    if (platform === "ios") {
+      appStore.setNavBarPaddingBottom(32.5);
+    }
+
+    if (viewport) {
+      bindViewportCSSVars(viewport);
+      viewport.expand();
+    }
+
+    navigate(EARN_GAME_PAGE_PATH);
+  }, [viewport, miniApp]);
+
+  return (
+    <AppRoot appearance={miniApp.isDark ? "dark" : "light"} platform={"ios"}>
+      <InitLoader />
     </AppRoot>
   );
 };
