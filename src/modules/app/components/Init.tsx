@@ -11,7 +11,6 @@ import {
 import { AppRoot } from "@telegram-apps/telegram-ui";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader } from "./Loader";
 import { Login } from "./Login";
 
 const ANIMATION_TIME = 1750;
@@ -97,7 +96,6 @@ const InitLoader = () => {
         </div>
       )}
 
-      {!loaderStore.animationLoaded && <Loader />}
       <Login />
     </>
   );
