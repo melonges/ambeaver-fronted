@@ -17,7 +17,10 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
   }, []);
 
   return (
-    <Modal wrapperClassName="w-8/12 top-[40%]" onClose={onClose}>
+    <Modal
+      wrapperClassName="w-[65%] top-[40%] dark:bg-[#1D201D]"
+      onClose={onClose}
+    >
       <div className="flex flex-col px-3 pb-8 pt-11">
         <div className="flex flex-col items-center">
           <img
@@ -26,11 +29,13 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
             alt="avatar"
           />
 
-          <p className="text-sm font-semibold">{initData?.user?.username}</p>
+          <p className="text-sm font-semibold dark:text-white-bg">
+            {initData?.user?.username}
+          </p>
         </div>
 
         <div className="mt-8 flex flex-col gap-2">
-          <div className="flex items-center justify-between rounded-2xl bg-[#F8FBF8] px-4 py-3 shadow-[0_3px_12px_0_rgba(0,0,0,0.05)]">
+          <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-[0_3px_12px_0_rgba(0,0,0,0.05)]">
             <img className="h-[45px]" src={AmberImage} alt="amber" />
 
             <div className="text-2xl font-bold text-[#FCA710]">
@@ -42,13 +47,13 @@ export const ProfileModal = ({ onClose }: { onClose: () => void }) => {
             </div>
           </div>
 
-          <div className="flex items-center justify-between rounded-2xl bg-[#F8FBF8] px-4 py-3 shadow-[0_3px_12px_0_rgba(0,0,0,0.05)]">
+          <div className="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-[0_3px_12px_0_rgba(0,0,0,0.05)]">
             <img className="h-[45px]" src={BlueAmberImage} alt="amber" />
             <p className="text-2xl font-bold text-[#05AFF2]">SOON</p>
           </div>
         </div>
 
-        <div className="mt-8 flex justify-center text-[#353B35]">
+        <div className="mt-8 flex justify-center text-active dark:text-white-bg">
           <div className="text-2xl font-bold">
             <p>Airdrop Is</p>
             <p>Coming Soon</p>

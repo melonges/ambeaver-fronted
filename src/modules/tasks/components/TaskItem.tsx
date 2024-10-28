@@ -84,12 +84,12 @@ export const TaskItem = ({
   const isLoading = isStartTaskPending || isClaimTaskPending;
 
   const taskTypeClassName = isLoading
-    ? "bg-[#353B35]"
+    ? "bg-active"
     : task.status === "FINISHED"
       ? ""
       : task.status === "READY_FOR_CLAIM"
-        ? "bg-[#4D824D] text-[#F2F3F2]"
-        : "bg-[#353B35] text-[#F2F3F2]";
+        ? "bg-[#4D824D] text-white-bg"
+        : "bg-active text-white-bg dark:text-[#111311] dark:bg-white-bg";
 
   const taskStatusName =
     task.status === "FINISHED"
@@ -115,7 +115,7 @@ export const TaskItem = ({
   };
 
   return (
-    <li className="flex w-full items-center justify-between gap-1 border-b-2 py-4 last:border-0">
+    <li className="flex w-full items-center justify-between gap-1 border-b-2 py-4 last:border-0 dark:border-[#2b312b]">
       <div className="flex items-center gap-5">
         {task.type === "SOCIAL_SUBSCRIPTION" ? (
           <img src={AmberIcon} alt="task" className="h-[35px] w-[35px]" />
@@ -125,13 +125,13 @@ export const TaskItem = ({
 
         <div className="flex flex-col">
           <strong className="font-bold">{task.title}</strong>
-          <span className="font-semibold text-[#3F463FE6]">
+          <span className="font-semibold text-faded text-opacity-90 dark:text-[#C7CCC7] dark:text-opacity-100">
             +{task.rewardInAmbers}AR
           </span>
         </div>
       </div>
       <button
-        className={`flex h-[35px] w-[65px] items-center justify-center rounded-2xl px-2 text-sm ${taskTypeClassName}`}
+        className={`flex h-[35px] w-[65px] min-w-[65px] max-w-[65px] items-center justify-center rounded-[18px] px-2 text-sm ${taskTypeClassName}`}
         onClick={completeTask}
       >
         {task.status === "FINISHED" ? (
@@ -139,9 +139,9 @@ export const TaskItem = ({
             <FinishedTaskIcon />
           </div>
         ) : isLoading ? (
-          <Spinner className="text-[#E2E4E2]" size="s" />
+          <Spinner className="text-secondary-white" size="s" />
         ) : (
-          taskStatusName
+          <span className="font-medium">{taskStatusName}</span>
         )}
       </button>
     </li>

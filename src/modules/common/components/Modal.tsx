@@ -16,7 +16,7 @@ export const Modal = ({ wrapperClassName, children, onClose }: ModalProps) => {
       />
 
       <div
-        className={`fixed left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%] rounded-2xl bg-[#f8fbf8] ${wrapperClassName}`}
+        className={`fixed left-1/2 top-1/2 w-[65%] translate-x-[-50%] translate-y-[-50%] rounded-2xl bg-[#f8fbf8] ${wrapperClassName}`}
       >
         {children}
       </div>

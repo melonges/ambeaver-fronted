@@ -1,19 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+
+  darkMode: "class",
+
   theme: {
     extend: {
       colors: {
-        "main-bg": "#fbfbfb",
-        "main-border": "#e3e3e3",
-        "main-text": "#1e1e1e",
-        "game-bg": "#e4ccff",
-        primary: "#aff4c6",
-        secondary: "#bde3ff",
-        "secondary-border": "#22b4ff",
-        disabled: "#e6e6e6",
-        "secondary-darken": "#0d99ff",
-        "secondary-darken-broder": "#0059b9",
+        white: "#F8FBF8",
+        "white-bg": "#F2F3F2",
+        "secondary-white": "#E2E4E2",
+        interactive: "#A4ADA4",
+        faded: "#3F463F",
+        active: "#353B35",
+        black: "#1D201D",
       },
       screens: {
         xs: "380px",
@@ -21,5 +21,6 @@ export default {
       },
     },
   },
+
   plugins: [],
 };

@@ -27,6 +27,15 @@ body {
   margin: 0 auto;
 }
 
+main::-webkit-scrollbar {
+  display: none;
+}
+
+main {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(90, 90, 90, 0.3) transparent;
@@ -174,14 +183,6 @@ body {
   .sitting-beaver,
   .bush {
     position: absolute;
-  }
-}
-
-.active-navbar-link {
-  & svg {
-    & path {
-      fill: #353b35;
-    }
   }
 }
 
