@@ -9,6 +9,7 @@ import type { TaskDtoStatus } from "./taskDtoStatus";
 import type { TaskDtoType } from "./taskDtoType";
 
 export interface TaskDto {
+  icon: string;
   id: string;
   /** Each task type has its own metadata */
   meta?: SocialSubscriptionMetaTaskDto;

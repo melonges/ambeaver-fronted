@@ -11,7 +11,7 @@
     "format": "prettier --write ./src",
     "preview": "vite preview",
     "prepare": "husky",
-    "api:download": "curl https://api.skufjob.ru/api-yaml -o ./src/modules/api/schemas/schema.yaml",
+    "api:download": "curl https://api.ambeaver.xyz/api-yaml -o ./src/modules/api/schemas/schema.yaml",
     "api:generate": "orval --config ./orval.config.cjs"
   },
   "dependencies": {

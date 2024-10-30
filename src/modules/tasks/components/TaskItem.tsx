@@ -8,7 +8,6 @@ import {
   useTasksControllerClaim,
   useTasksControllerStart,
 } from "@/modules/api/tasks/tasks";
-import AmberIcon from "@/modules/common/assets/amber-icon.png";
 import { FinishedTaskIcon } from "@/modules/common/icons/FinishedTaskIcon";
 import { useQueryClient } from "@tanstack/react-query";
 import { useHapticFeedback, useUtils } from "@telegram-apps/sdk-react";
@@ -117,11 +116,7 @@ export const TaskItem = ({
   return (
     <li className="flex w-full items-center justify-between gap-1 border-b-2 py-4 last:border-0 dark:border-[#2b312b]">
       <div className="flex items-center gap-5">
-        {task.type === "SOCIAL_SUBSCRIPTION" ? (
-          <img src={AmberIcon} alt="task" className="h-[35px] w-[35px]" />
-        ) : (
-          <div className="h-[35px] w-[35px]" />
-        )}
+        <img src={task.icon} alt="task-icon" />
 
         <div className="flex flex-col">
           <strong className="font-bold">{task.title}</strong>

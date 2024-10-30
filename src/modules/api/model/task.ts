@@ -11,6 +11,7 @@ import type { TaskUpdatedAt } from "./taskUpdatedAt";
 
 export interface Task {
   createdAt: TaskCreatedAt;
+  icon: string;
   id: number;
   meta: TaskMeta;
   rewardInAmbers: number;

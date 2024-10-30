@@ -355,6 +355,8 @@ components:
           type: string
         title:
           type: string
+        icon:
+          type: string
         type:
           type: string
           enum:
@@ -371,6 +373,7 @@ components:
       required:
         - id
         - title
+        - icon
         - type
         - rewardInAmbers
         - status
@@ -385,10 +388,10 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-29T18:50:22.858Z
+          default: 2024-10-30T21:18:36.067Z
         updatedAt:
           type: object
-          default: 2024-08-29T18:50:22.858Z
+          default: 2024-10-30T21:18:36.067Z
       required:
         - player
         - amount
@@ -406,10 +409,10 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-29T18:50:22.859Z
+          default: 2024-10-30T21:18:36.068Z
         updatedAt:
           type: object
-          default: 2024-08-29T18:50:22.859Z
+          default: 2024-10-30T21:18:36.068Z
       required:
         - player
         - amount
@@ -433,10 +436,10 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-29T18:50:22.859Z
+          default: 2024-10-30T21:18:36.069Z
         updatedAt:
           type: object
-          default: 2024-08-29T18:50:22.859Z
+          default: 2024-10-30T21:18:36.069Z
       required:
         - player
         - amount
@@ -456,10 +459,10 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-29T18:50:22.860Z
+          default: 2024-10-30T21:18:36.070Z
         updatedAt:
           type: object
-          default: 2024-08-29T18:50:22.860Z
+          default: 2024-10-30T21:18:36.070Z
       required:
         - player
         - amount
@@ -489,10 +492,10 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-29T18:50:22.857Z
+          default: 2024-10-30T21:18:36.067Z
         updatedAt:
           type: object
-          default: 2024-08-29T18:50:22.857Z
+          default: 2024-10-30T21:18:36.067Z
       required:
         - username
         - points
@@ -508,6 +511,8 @@ components:
       properties:
         title:
           type: string
+        icon:
+          type: string
         rewardInAmbers:
           type: number
         type:
@@ -521,12 +526,13 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-29T18:50:22.861Z
+          default: 2024-10-30T21:18:36.072Z
         updatedAt:
           type: object
-          default: 2024-08-29T18:50:22.861Z
+          default: 2024-10-30T21:18:36.072Z
       required:
         - title
+        - icon
         - rewardInAmbers
         - type
         - meta
@@ -549,10 +555,10 @@ components:
           type: number
         createdAt:
           type: object
-          default: 2024-08-29T18:50:22.856Z
+          default: 2024-10-30T21:18:36.065Z
         updatedAt:
           type: object
-          default: 2024-08-29T18:50:22.856Z
+          default: 2024-10-30T21:18:36.065Z
       required:
         - player
         - task
